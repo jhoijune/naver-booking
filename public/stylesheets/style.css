@@ -1,8 +1,91 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@charset "UTF-8";
+
+:root {
+    --main-color: #1EC800;
+    --grey-color: #e9ecef;
+    --text-bright-color: #fff;
+    --breakpoint-width: 1080px;
 }
 
-a {
-  color: #00B7FF;
+@font-face {
+    font-family: "Nanum Gothic Regular";
+    src: url(../font/NanumGothicRegular.woff);
+}
+
+@font-face {
+    font-family: "Nanum Gothic Bold";
+    src: url(../font/NanumGothicBold.woff);
+}
+
+
+body {
+    margin: 0;
+    font-family: "Nanum Gothic Regular","맑은 고딕",
+        "Apple SD Gothic Neo",sans-serif;
+    font-size: 16px;
+}
+
+
+header .container {
+    display: flex;
+    background-color: #1EC800;
+    background-color: var(--main-color);
+    justify-content: space-between;
+    align-items: center;
+}
+
+header img {
+    display: inline-block;
+    width: 6rem;
+    padding: 10px;
+}
+
+header h2 {
+    font-size: 1.25rem;
+    padding-right: 10px;
+    margin: 0px;
+    color: #fff;
+    color: var(--text-bright-color);
+}
+
+@media (min-width: 1080px){
+    header .container {
+        max-width: 1080px;
+        max-width: var(--breakpoint-width);
+        margin: 0 auto;
+    }
+}
+
+.promotion {
+    color: #fff;
+    color: var(--text-bright-color);
+}
+
+.promotion .container {
+    background-image: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),url(../images/20_th_50.png);
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vw;
+}
+
+@media (min-width: 1080px){
+    .promotion .container {
+        margin: 0 auto;
+        max-width: 1080px;
+        max-width: var(--breakpoint-width);
+    }
+}
+
+
+.category ul {
+    display:flex;
+    margin: 0;
+    padding: 0;
+    list-style:none;
+}
+
+.category li {
+    flex: auto;
 }
