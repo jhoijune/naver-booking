@@ -6,9 +6,11 @@ const session = require('express-session');
 const flash = require('connect-flash');
 require('dotenv').config();
 
-const pageRouter = require('./routes/page');
+const apiRouter = require('./routes/api');
+const sequelize = require('./models').sequelize;
 
 const app = express();
+sequelize.sync();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -41,7 +43,7 @@ if(process.env.NODE_ENV === "production"){
 app.use(session(sessionOption));
 app.use(flash());
 
-app.use('/', pageRouter);
+app.use("/api",apiRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
