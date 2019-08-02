@@ -15,12 +15,12 @@ function autoScroll(delay = 1){
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function(){
-        if(xhr.status === 200){
-            const datas = JSON.parse(xhr.responseText).items;
+    const xhrPromotion = new XMLHttpRequest();
+    xhrPromotion.onload = function(){
+        if(xhrPromotion.status === 200){
+            const datas = JSON.parse(xhrPromotion.responseText).items;
             const promotionList = document.createElement("ul");
-            for(i=0,len=datas.length;i<len;i++){
+            for(let i=0,len=datas.length;i<len;i++){
                 const item = document.createElement("li");
                 const anchor = document.createElement("a");
                 anchor.href = datas[i].productID; // 임시
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             promotionContainer.appendChild(promotionList);
             scrollAble = true;
             autoScroll(2);
-            window.addEventListener("resize",(event)=>{
+            window.addEventListener("resize",()=>{
                 // 즉시 멈추고 resize한 width에 맞게 translateX를 바꿔야 함
                 // resize 끝나면 다시 autoScroll
                 scrollAble = false;
@@ -42,18 +42,18 @@ document.addEventListener("DOMContentLoaded",()=>{
             promotionList.addEventListener("mousemove",()=>{
                 scrollAble = false;
             });
-            promotionList.addEventListener("mouseleave",(event)=>{
+            promotionList.addEventListener("mouseleave",()=>{
                 scrollAble = true;
                 // 즉시 스크롤 되게 바꿔야함
             });
         }    
         else{
-            console.error(xhr.responseText);
+            console.error(xhrPromotion.responseText);
         }
     };
-    xhr.onerror = function(){
-        console.error(xhr.responseText);
+    xhrPromotion.onerror = function(){
+        console.error(xhrPromotion.responseText);
     }
-    xhr.open("GET","/api/promotions");
-    xhr.send();
+    xhrPromotion.open("GET","/api/promotions");
+    xhrPromotion.send();
 });
