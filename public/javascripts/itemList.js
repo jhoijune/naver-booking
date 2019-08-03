@@ -12,8 +12,12 @@ function createArticle(){
     headPart.appendChild(itemPlace);
     const textPart = document.createElement("div");
     textPart.className = "mainText";
-    const itemText = document.createElement("p");
-    textPart.appendChild(itemText);
+    const itemTextSimple = document.createElement("p");
+    itemTextSimple.setAttribute("class","simple");
+    const itemTextDetail = document.createElement("p");
+    itemTextDetail.setAttribute("class","detail");
+    textPart.appendChild(itemTextSimple);
+    textPart.appendChild(itemTextDetail);
     anchor.appendChild(itemImg);
     anchor.appendChild(headPart);
     anchor.appendChild(textPart);
@@ -25,17 +29,31 @@ function updateArticle(article,itemInfo){
     article.querySelector(".photo").style.backgroundImage = `url("${itemInfo.productImageUrl}")`;
     article.querySelector("h1").innerText = itemInfo.productDescription;
     article.querySelector("h2").innerText = itemInfo.placeName;
-    const paragraph = article.querySelector("p");
-    paragraph.innerText = reduceText(itemInfo.productContent);
-    paragraph.innerHTML = paragraph.innerHTML.replace("<br>","");
+    const paragraphSimple = article.querySelector("p.simple");
+    const textObj = splitText(itemInfo.productContent);
+    paragraphSimple.innerText = textObj.simple;
+    paragraphSimple.innerHTML = paragraphSimple.innerHTML.replace(/\<br\>/g,"");
+    if(textObj.detail){
+        const paragraphDetail = article.querySelector("p.detail");
+        paragraphDetail.innerText = textObj.detail;
+        paragraphDetail.innerHTML = paragraphDetail.innerHTML.replace(/\<br\>/g,"");
+    }
 }
 
-function reduceText(text,limit=100){
-    if(text.length >= limit){
-        text = text.slice(0,limit);
-        text = text + "...";
+function splitText(text,limit=100){
+    text = text.trim();
+    text = text.replace("\n","");
+    let textObj;
+    if(text.length > limit){
+        textSimple = text.slice(0,limit);
+        textSimple += "...";
+        textDetail = text.slice(limit);
+        textObj = {simple:textSimple,detail:textDetail};
     }
-    return text;
+    else{
+        textObj = {simple:text,detail:""};
+    }
+    return textObj;
 }
 
 function filterProduct(products,categoryId){
@@ -57,10 +75,11 @@ function filterProduct(products,categoryId){
     let currentId;
     rawSpecificProducts.forEach(element=>{
         if(currentId && currentId === element.productId){
-            specificProducts[productLen - 1].placeName += `,${element.placeName}`;
+            specificProducts[productLen - 1].placeName += `,${element.placeName.trim()}`;
         }
         else{
             currentId = element.productId;
+            element.placeName = element.placeName.trim();
             specificProducts.push(element);
             productLen += 1;
         }
@@ -195,6 +214,21 @@ document.addEventListener("DOMContentLoaded",()=>{
                     fillArticle();
                 }                     
             } 
+            function showDetailText(event){
+                if(event.target.className === "simple"){
+                    const simpleText = event.target;
+                    const previousText = simpleText.innerText;
+                    const detailText = event.target.nextElementSibling;
+                    // previousText에 ... 있으면 제거하고 합침
+                    if(previousText.slice(-3) === "..."){
+                        simpleText.innerText = previousText.slice(0,-3);
+                    }
+                    simpleText.innerText += detailText.innerText;
+                    event.target.parentElement.addEventListener("mouseleave",()=>{
+                        simpleText.innerText = previousText;
+                    });
+                }
+            }
             const products = JSON.parse(xhrProducts.responseText).items;
             let selectedCategory = document.querySelector(".selected");
             let categoryName = selectedCategory.getAttribute("id"); 
@@ -232,7 +266,8 @@ document.addEventListener("DOMContentLoaded",()=>{
             const tabUI = document.querySelector(".category ul");
             const moreButton = document.querySelector(".helping .more");
             tabUI.addEventListener("click",changeCategory);
-            moreButton.addEventListener("click",showMoreProduct)
+            moreButton.addEventListener("click",showMoreProduct);
+            itemList.addEventListener("mouseover",showDetailText);
         };
         xhrProducts.onerror = function(){
             console.error(xhrProducts.responseText);
