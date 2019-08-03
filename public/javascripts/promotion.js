@@ -1,23 +1,17 @@
-let scrollAble;
-
-function autoScroll(delay = 1){
-    const promotionList = document.querySelector(".promotion ul");
-    const len = promotionList.querySelectorAll("li").length;
-    const item = promotionList.firstElementChild;
-    let degree = 0;
-    setInterval(()=> {
-        if(scrollAble){
-            degree = (degree + 1) % len;
-            const interval = item.clientWidth;
-            promotionList.style.transform = `translateX(-${interval*degree}px)`;
-        }
-    },delay*1000);
-}
-
 document.addEventListener("DOMContentLoaded",()=>{
     const xhrPromotion = new XMLHttpRequest();
     xhrPromotion.onload = function(){
         if(xhrPromotion.status === 200){
+            function autoScroll(delay = 1){
+                let degree = 0;
+                setInterval(()=> {
+                    if(scrollAble){
+                        degree = (degree + 1) % len;
+                        const interval = firstItem.clientWidth;
+                        promotionList.style.transform = `translateX(-${interval*degree}px)`;
+                    }
+                },delay*1000);
+            }
             const datas = JSON.parse(xhrPromotion.responseText).items;
             const promotionList = document.createElement("ul");
             for(let i=0,len=datas.length;i<len;i++){
@@ -32,7 +26,9 @@ document.addEventListener("DOMContentLoaded",()=>{
             }
             const promotionContainer = document.querySelector(".promotion .container");
             promotionContainer.appendChild(promotionList);
-            scrollAble = true;
+            const len = promotionList.querySelectorAll("li").length;
+            const firstItem = promotionList.firstElementChild;
+            let scrollAble = true;
             autoScroll(2);
             window.addEventListener("resize",()=>{
                 // 즉시 멈추고 resize한 width에 맞게 translateX를 바꿔야 함
