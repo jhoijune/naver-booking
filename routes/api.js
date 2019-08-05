@@ -23,6 +23,11 @@ router.get("/products",function(req,res,next){
     })
 });
 
+router.get("/products/:displayInfoId",function(req,res,next){
+    const subquery = `select product_id from display_info WHERE id=${req.params.displayInfoId}`;
+
+});
+
 router.get("/categories",function(req,res,next){
     const query = "SELECT count(*) as count,category_id as id,category.name " +
         "from product INNER JOIN category ON product.category_id = category.id group by id";

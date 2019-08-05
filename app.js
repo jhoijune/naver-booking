@@ -7,6 +7,7 @@ const flash = require('connect-flash');
 require('dotenv').config();
 
 const apiRouter = require('./routes/api');
+const detailRouter = require('./routes/detail');
 const sequelize = require('./models').sequelize;
 
 const app = express();
@@ -44,6 +45,7 @@ app.use(session(sessionOption));
 app.use(flash());
 
 app.use("/api",apiRouter);
+app.use("/detail",detailRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
