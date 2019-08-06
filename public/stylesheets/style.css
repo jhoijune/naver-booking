@@ -29,7 +29,7 @@ body {
 }
 
 
-header .container {
+header.GNBMain .container {
     display: flex;
     position: fixed;
     top: 0;
@@ -43,13 +43,13 @@ header .container {
     z-index:1
 }
 
-header img {
+header.GNBMain img {
     display: inline-block;
     width: 17.5vw;
     padding: 2.5vw;
 }
 
-header h2 {
+header.GNBMain h2 {
     font-size: 3.5vw;
     padding-right: 2.5vw;
     margin: 0px;
@@ -58,15 +58,15 @@ header h2 {
 }
 
 @media (min-width: 414px){
-    header .container {
+    header.GNBMain .container {
         margin: 0 auto;
         left: calc(calc(100% - 414px) / 2);
     }
-    header img {
+    header.GNBMain img {
         width: 72.45px;
         padding: 10.35px;
     }
-    header h2 {
+    header.GNBMain h2 {
         font-size: 14.49px;
         padding-right: 10.35px;
     }
