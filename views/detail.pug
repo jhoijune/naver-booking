@@ -10,47 +10,114 @@ html
     body
         header.GNBDetail#GNB
             .container
-                img(src="../images/icon/icon.png",alt="")
+                a(href="../mainpage.html")
+                    img(src="../images/icon/icon.png",alt="")
                 h2 {id or login} 
-        section.title
+        section.titleImage
             .container
-            h1= data.displayInfo.productDescription
+                ul
+                    - let imageCount = 0;
+                    each imgInfo in data.productImages
+                        if imgInfo.type !== "th"
+                            - imageCount += 1
+                            li
+                                img(src=`../${imgInfo.saveFileName}`, alt="")
+        section.titleText
+            .container
+                .topSection
+                    span.counting= `1/${imageCount}`
+                .middleSection
+                    .leftSection
+                        if imageCount > 1
+                            div <
+                    .centerSection
+                        h1= data.displayInfo.productDescription
+                    .rightSection
+                        if imageCount > 1
+                            div >
+                .bottomSection
         section.productDescription
             .container
                 p= data.displayInfo.productContent
-                button(label="펼쳐보기")
+                button 펼쳐보기 ∨
         section.event
             .container
                 h2 이벤트정보
-                p [네이버예약 특별할인] 
+                - const discountInfo = []
+                each priceInfo in data.productPrices
+                    if priceInfo.discountRate > Number.EPSILON 
+                        - discountInfo.push(`${priceInfo.priceTypeName}석 ${Math.round(priceInfo.discountRate)}%`)
+                - const discountText = discountInfo.join(", ") + " 할인"
+                p!= "[네이버예약 특별할인] <br>" + discountText
         section.reservation
             .container
-                button(label="예매하기")
+                button 예매하기
         section.comment
-            .container
+            .outerContainer
+                .innerContainer
+                    article.commentSummary
+                        h2 예매자 한줄평
+                        .summaryContainer
+                            .leftContainer
+                                - const maxStar = 5
+                                - const getStar = Math.floor(data.averageScore)
+                                - const notGetStar = maxStar - getStar
+                                span.starCount=  "★".repeat(getStar) + "☆".repeat(notGetStar)
+                                span.averageScore= Math.round(data.averageScore*10)/10
+                                span.maxScore / 5.0
+                            .rightContainer
+                                span.commentCount= data.comments.length + "건 "
+                                span.enrollText 등록
+                    if data.comments.length !== 0
+                        - let count = 1
+                        while count <= 3 && count <= data.comments.length
+                            article.eachComment
+                                .eachContainer
+                                    .leftContainer
+                                        h2= data.displayInfo.productDescription
+                                        p= data.comments[count-1].comment
+                                    if data.comments[count-1].commentImages.length !== 0
+                                        .rightContainer(background-image= `url(../${data.comments[count-1].commentImages[0].saveFileName})`)
+                                        span= data.comments[count-1].commentImages.length
+                                    else
+                                        .rightContainer
+                                span.score= data.comments[count-1].score
+                                span.email= data.comments[count-1].reservationEmail.slice(0,4) + "****"
+                                span.visitDate= data.comments[count-1].reservationDate.slice(0,10) + " 방문"
+                                - count +=1
+                    aside
+                        p 네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.
+                a(href= `../review/${data.displayInfo.displayInfoId}`) 예매자 한줄평 더보기 →
         section.detailDescription
             .container
                 nav
                     ul
-                        li 상세정보
-                        li 오시는길
-                article
+                        li.selected 상세정보
+                        li.unselected 오시는길
+                article.productInfo
                     h2 [소개]
                     p= data.displayInfo.productContent
                     h2 [공지사항]
-                article
+                article.locInfo
                     img(src= `../${data.displayInfoImage.saveFileName}`)
                     h2= data.displayInfo.productDescription
-                    p 
-                        | 지도 아이콘 #{data.displayInfo.placeLot}
-                        br
-                        | 지번 #{data.displayInfo.placeStreet}
-                        br
-                        | #{data.displayInfo.placeName}
-                        br
-                        | 전화 아이콘 #{data.displayInfo.telephone}
-
-
+                    .locText
+                        .tableRow
+                            p.icon 지도 아이콘
+                            p.text= data.displayInfo.placeLot
+                        .tableRow
+                            p.icon 
+                            p.text!= "<span class='greyText'>지번</span> " + data.displayInfo.placeStreet
+                        .tableRow
+                            p.icon
+                            p.text
+                                span.greyText= data.displayInfo.placeName
+                        .tableRow
+                            p.icon 전화 아이콘
+                            p.text= data.displayInfo.telephone
+                    .buttonContainer
+                        button.findRoad 길찾기
+                        button.navigation 내비게이션
         aside.helping
             .container
                 a(href="#GNB") ↑ TOP

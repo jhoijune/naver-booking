@@ -80,7 +80,7 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
             "price,price_type_name as priceTypeName,product_id as productId,id as productPriceID from product_price " +
             `where product_id = ${productId}`;
         const productPrices = (await sequelize.query(productPricesQuery))[0];
-        result.prdouctPrices = productPrices;
+        result.productPrices = productPrices;
         res.json(result);
     }
     catch(error){

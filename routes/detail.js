@@ -30,7 +30,6 @@ router.get("/:displayInfoId",function(req,res,next){
         response.on('end', () => {
             data = JSON.parse(data);
             res.locals.data = data;
-            console.log(res.locals.data);
             res.render("detail");
         });
       });
