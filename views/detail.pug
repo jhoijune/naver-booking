@@ -25,7 +25,7 @@ html
         section.titleText
             .container
                 .topSection
-                    span.counting= `1/${imageCount}`
+                    span.counting!= `<span class="bright"> 1 </span> / ${imageCount} `
                 .middleSection
                     .leftSection
                         if imageCount > 1
@@ -39,10 +39,10 @@ html
         section.productDescription
             .container
                 p= data.displayInfo.productContent
-                button 펼쳐보기 ∨
+                button!= "펼쳐보기 <i class='fn fn-down2'></i>"
         section.event
             .container
-                h2 이벤트정보
+                h2!= "<i class='fn fn-present1'></i> 이벤트정보"
                 - const discountInfo = []
                 each priceInfo in data.productPrices
                     if priceInfo.discountRate > Number.EPSILON 
@@ -51,7 +51,7 @@ html
                 p!= "[네이버예약 특별할인] <br>" + discountText
         section.reservation
             .container
-                button 예매하기
+                button!= "<i class='fn fn-nbooking-calender2'></i> 예매하기" 
         section.comment
             .outerContainer
                 .innerContainer
@@ -61,8 +61,12 @@ html
                             .leftContainer
                                 - const maxStar = 5
                                 - const getStar = Math.floor(data.averageScore)
+                                //- const getRatioStar = data.averageScore - getStar 
+                                //- const notGetStar = maxStar - getStar - Math.ceil(getRatioStar)
                                 - const notGetStar = maxStar - getStar
-                                span.starCount=  "★".repeat(getStar) + "☆".repeat(notGetStar)
+                                - const getStarText = "<i class='fn fn-star2 getStar'></i>"
+                                - const notGetStarText = "<i class='fn fn-star2 notGetStar'></i>"
+                                span.starCount!= getStarText.repeat(getStar) + notGetStarText.repeat(notGetStar)
                                 span.averageScore= Math.round(data.averageScore*10)/10
                                 span.maxScore / 5.0
                             .rightContainer
@@ -86,8 +90,8 @@ html
                                 span.visitDate= data.comments[count-1].reservationDate.slice(0,10) + " 방문"
                                 - count +=1
                     aside
-                        p 네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.
-                a(href= `../review/${data.displayInfo.displayInfoId}`) 예매자 한줄평 더보기 →
+                        p!= "<i class='fn fn-alarm1'></i> 네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다."
+                a(href= `../review/${data.displayInfo.displayInfoId}`)!= "예매자 한줄평 더보기 <i class='fn fn-forward1'></i>"
         section.detailDescription
             .container
                 nav
@@ -103,7 +107,8 @@ html
                     h2= data.displayInfo.productDescription
                     .locText
                         .tableRow
-                            p.icon 지도 아이콘
+                            p.icon
+                                i.fn.fn-pin4
                             p.text= data.displayInfo.placeLot
                         .tableRow
                             p.icon 
@@ -113,14 +118,15 @@ html
                             p.text
                                 span.greyText= data.displayInfo.placeName
                         .tableRow
-                            p.icon 전화 아이콘
+                            p.icon
+                                i.fn.fn-call2
                             p.text= data.displayInfo.telephone
                     .buttonContainer
-                        button.findRoad 길찾기
-                        button.navigation 내비게이션
+                        button.findRoad!= "<i class='fn fn-path-find2'></i> 길찾기"
+                        button.navigation!= "<i class='fn fn-car-find2'></i> 내비게이션 " 
         aside.helping
             .container
-                a(href="#GNB") ↑ TOP
+                a(href="#GNB")!="<i class='fn fn-up1'></i> TOP" 
         footer
             .container
                 p.caution 네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.

@@ -20,12 +20,170 @@
     src: url(../font/NanumGothicBold.woff);
 }
 
+@font-face{
+    font-family: "Naver Icons";
+    src: url(../font/Naver-Icons.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Naver booking Icons";
+    src: url(../font/Naver-booking-Icons.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
 
 body {
     margin: 0;
     font-family: "Nanum Gothic Regular","맑은 고딕",
         "Apple SD Gothic Neo",sans-serif;
     font-size: 14px;
+}
+
+.fn {
+    display: inline-block;
+    height: 1em
+}
+
+.fn:before {
+    font-family: "Naver Icons";
+    font-style: normal;
+    font-weight: 400;
+    speak: none;
+    display: inline;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+.fn-alarm1:before{
+    content:"\EA07"
+}
+
+.fn-alarm2:before{
+    content:"\EA08"
+}
+
+.fn-backward1:before {
+    content: "\EA12"
+}
+
+.fn-backward2:before {
+    content: "\EA13"
+}
+
+.fn-call1:before {
+    content: "\EA25"
+}
+
+.fn-call2:before {
+    content: "\EA26"
+}
+
+.fn-present1:before{
+    content: "\EA2C"
+}
+
+.fn-present2:before{
+    content: "\EA2D"
+}
+
+.fn-down2:before {
+    content: "\EA3D"
+}
+
+.fn-forward1:before {
+    content: "\EA44"
+}
+
+.fn-forward2:before{
+    content: "\EA45"
+}
+
+.fn-home1:before {
+    content: "\EA4A"
+}
+
+.fn-car-find1:before{
+    content: "\EA64"
+}
+
+.fn-car-find2:before{
+    content: "\EA65"
+}
+
+.fn-nbooking-calender1:before{
+    content: "\EA66"
+}
+
+.fn-nbooking-calender2:before {
+    content: "\EA67"
+}
+
+.fn-path-find1:before {
+    content: "\EA74"
+}
+
+.fn-path-find2:before {
+    content: "\EA75"
+}
+
+.fn-pin1:before{
+    content:"\EA7A"
+}
+
+.fn-pin2:before {
+    content: "\EA7B"
+}
+
+.fn-pin3:before{
+    content:"\EA7C"
+}
+
+.fn-pin4:before{
+    content:"\EA7D"
+}
+
+.fn-share1:before {
+    content: "\EA96"
+}
+
+.fn-star1:before{
+    content:"\EAA2"
+}
+
+.fn-star2:before{
+    content:"\EAA3"
+}
+
+.fn-up1:before {
+    content: "\EABF"
+}
+
+.fn-up2:before {
+    content: "\EAC0"
+}
+
+.fn-navigation2:before {
+    content: "\EA65"
+}
+
+.fn-mail1:before {
+    content: "\EA58"
+}
+
+.fn-write2:before {
+	content: "\EADB"
+}
+
+.fn-image1:before {
+	content: "\EA4C"
 }
 
 
@@ -50,6 +208,7 @@ header.GNBMain img {
 }
 
 header.GNBMain h2 {
+    font-family: "Nanum Gothic Bold";
     font-size: 3.5vw;
     padding-right: 2.5vw;
     margin: 0px;
@@ -78,7 +237,6 @@ header.GNBMain h2 {
 }
 
 .promotion .container {
-    background-image: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1));
     width: 100vw;
     height: 100vw;
     max-width: 414px; 
@@ -134,8 +292,8 @@ header.GNBMain h2 {
 }
 
 .category li {
+    font-family: "Nanum Gothic Bold";
     flex: auto;
-    font-weight: bold;
     padding: 7.5px 0px;
 }
 
@@ -233,6 +391,7 @@ header.GNBMain h2 {
 }
 
 .itemList h1 {
+    font-family: "Nanum Gothic Bold";
     margin:0;
     font-size: 14px;
     padding: 7px;
@@ -348,6 +507,7 @@ header.GNBDetail img {
 }
 
 header.GNBDetail h2 {
+    font-family: "Nanum Gothic Bold";
     font-size: 3.5vw;
     padding-right: 2.5vw;
     margin: 0px;
@@ -388,15 +548,22 @@ header.GNBDetail h2 {
 }
 
 .titleImage ul {
+    width: 100vw;
+    height: 100%;
     display: flex;
     margin: 0;
     padding: 0;
     transition: transform 1s;
+    background: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1));
+    z-index: 1;
+    list-style: none;
 }
 
 .titleImage img {
+    position:relative;
     width: 100vw;
     height: 100vw;
+    z-index: -1;
 }
 
 @media (min-width: 414px){
@@ -426,23 +593,52 @@ header.GNBDetail h2 {
 
 .titleText .topSection{
     flex: 3;
+    text-align:center;
+}
+
+.titleText .topSection span {
+    line-height: calc((100vw / 10) * 3);
+    font-size: 16px;
+    color: #C0C0C0;
+    background-color: #000;
+    border-radius: 45%;
+    background: rgba(0,0,0,0.5);
+}
+
+.titleText .topSection span.bright {
+    color: #fff;
+    color: var(--text-bright-color);
+    background-color: transparent;
 }
 
 .titleText .middleSection{
     flex: 4;
     display: flex;
+    align-items: center;
 }
 
 .titleText .leftSection {
-    flex: 2;
+    flex: 1;
+    font-size: 35px;
+    line-height: 80px;
+    color: #fff;
+    color: var(--text-bright-color);
+    text-align: center;
+    z-index: 2;
 }
 
 .titleText .centerSection {
-    flex: 6;
+    flex: 8;
 }
 
 .titleText .rightSection {
-    flex: 2;
+    flex: 1;
+    font-size: 35px;
+    line-height: 80px;
+    color: #fff;
+    color: var(--text-bright-color);
+    text-align: center;
+    z-index: 2;
 }
 
 .titleText .bottomSection{
@@ -450,19 +646,25 @@ header.GNBDetail h2 {
 }
 
 .titleText h1 {
-    font-size: 30px;
+    font-family: "Nanum Gothic Bold";
+    font-size: 35px;
+    line-height: 80px;
+    /*text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;*/
     padding: 0;
     margin: 0;
-    line-height: 100px;
     color: #fff;
     color: var(--text-bright-color);
     text-align: center;
-    z-index: 100;
+    z-index: 2;
 }
 
 @media (min-width:414px){
     .titleText .container {
         margin: 0 auto;
+    }
+
+    .titleText .topSection span{
+        line-height: 124.2px;
     }
 }
 
@@ -512,6 +714,7 @@ header.GNBDetail h2 {
 }
 
 .event h2 {
+    font-family: "Nanum Gothic Bold";
     font-size: 1rem;
     margin: 0;
     padding: 0 0 10px 0;
@@ -544,8 +747,7 @@ header.GNBDetail h2 {
     background-color: var(--main-color);
     color: #fff;
     color: var(--text-bright-color);
-    font-family: inherit;
-    font-weight: bold;
+    font-family: "Nanum Gothic Bold";
     font-size: 14px;
     width: 100vw;
     max-width: 414px;
@@ -581,9 +783,26 @@ header.GNBDetail h2 {
 }
 
 .comment .commentSummary h2 {
+    font-family: "Nanum Gothic Bold";
     font-size: 16px;
     padding-bottom: 10px;
     margin: 0;
+}
+
+.comment .commentSummary .getStar {
+    color: #f00;
+}
+
+.comment .commentSummary .getRatioStar::before{
+    background:linear-gradient(to Right,#f00 70% ,#808080 30%);
+    background-clip:text;
+    -webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.comment .commentSummary .notGetStar {
+    color: #808080;
+    color: var(--text-grey-color);
 }
 
 .comment .summaryContainer {
@@ -646,6 +865,7 @@ header.GNBDetail h2 {
 }
 
 .comment .eachComment h2 {
+    font-family: "Nanum Gothic Bold";
     font-size: 14px;
     margin: 0;
     padding: 0;
@@ -711,10 +931,11 @@ header.GNBDetail h2 {
 
 .detailDescription .container {
     width: 100vw;
-    max-width: 414px;
-    max-width: var(--breakpoint-width);
+    max-width: 412px;
+    border-color: #C0C0C0;
+    border-style: solid;
+    border-width: 0  1px 1px 1px;    
     overflow: hidden;
-    
 }
 
 .detailDescription ul {
@@ -727,7 +948,7 @@ header.GNBDetail h2 {
 }
 
 .detailDescription li {
-    font-weight: bold;
+    font-family: "Nanum Gothic Bold";
     padding: 7.5px 0px;
 }
 
@@ -748,6 +969,7 @@ header.GNBDetail h2 {
 }
 
 .detailDescription .productInfo h2 {
+    font-family: "Nanum Gothic Bold";
     padding-left: 7px;
     margin: 14px 0px 14px 0px;
     font-size: 16px;
@@ -772,6 +994,7 @@ header.GNBDetail h2 {
 }
 
 .detailDescription .locInfo h2 {
+    font-family: "Nanum Gothic Bold";
     font-size: 16px;
     margin: 0;
     padding: 0 0 0 10px;

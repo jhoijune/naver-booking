@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const apiRouter = require('./routes/api');
 const detailRouter = require('./routes/detail');
+const reviewRouter = require('./routes/review');
 const sequelize = require('./models').sequelize;
 
 const app = express();
@@ -46,6 +47,7 @@ app.use(flash());
 
 app.use("/api",apiRouter);
 app.use("/detail",detailRouter);
+app.use("/review",reviewRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
