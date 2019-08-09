@@ -7,6 +7,7 @@ html
         title= data.displayInfo.productDescription
         link(rel="stylesheet",href="../stylesheets/style.css")
         link(rel="icon",href="../images/img/favicon.ico",type="image/x-icon")
+        script(src="https://code.jquery.com/jquery-3.2.1.min.js")
     body
         header.GNBDetail#GNB
             .container
@@ -29,17 +30,15 @@ html
                 .middleSection
                     .leftSection
                         if imageCount > 1
-                            div <
+                            i.fn.fn-backward2
                     .centerSection
                         h1= data.displayInfo.productDescription
                     .rightSection
                         if imageCount > 1
-                            div >
+                            i.fn.fn-forward2
                 .bottomSection
         section.productDescription
             .container
-                p= data.displayInfo.productContent
-                button!= "펼쳐보기 <i class='fn fn-down2'></i>"
         section.event
             .container
                 h2!= "<i class='fn fn-present1'></i> 이벤트정보"
@@ -96,8 +95,8 @@ html
             .container
                 nav
                     ul
-                        li.selected 상세정보
-                        li.unselected 오시는길
+                        li#productInfo.selected 상세정보
+                        li#locInfo.unselected 오시는길
                 article.productInfo
                     h2 [소개]
                     p= data.displayInfo.productContent
@@ -131,4 +130,7 @@ html
             .container
                 p.caution 네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.
                 span.copyright © NAVER Corp.
+        script(src="../javascripts/titleImageScroll.js")
+        script(src="../javascripts/detailDescription.js")
+        script(src="../javascripts/descriptionOnOff.js")
 

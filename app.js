@@ -6,6 +6,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 require('dotenv').config();
 
+const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const detailRouter = require('./routes/detail');
 const reviewRouter = require('./routes/review');
@@ -45,6 +46,8 @@ if(process.env.NODE_ENV === "production"){
 app.use(session(sessionOption));
 app.use(flash());
 
+
+app.use("/",indexRouter);
 app.use("/api",apiRouter);
 app.use("/detail",detailRouter);
 app.use("/review",reviewRouter);

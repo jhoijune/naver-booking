@@ -412,7 +412,7 @@ header.GNBMain h2 {
     padding: 7px;
 }
 
-.itemList p.detail {
+.itemList span.moreInfo {
     display: none;
 }
 
@@ -497,7 +497,7 @@ header.GNBDetail .container {
     width: 100vw;
     max-width: 414px;
     max-width: var(--breakpoint-width);
-    z-index:1;
+    z-index: 1;
 }
 
 header.GNBDetail img {
@@ -537,7 +537,7 @@ header.GNBDetail h2 {
 
 .titleImage .container {
     position: absolute;
-    background-image: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1));
+    background: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1));
     width: 100vw;
     height: 100vw;
     max-width: 414px; 
@@ -553,9 +553,7 @@ header.GNBDetail h2 {
     display: flex;
     margin: 0;
     padding: 0;
-    transition: transform 1s;
-    background: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1));
-    z-index: 1;
+    transition: transform 0.5s;
     list-style: none;
 }
 
@@ -563,7 +561,7 @@ header.GNBDetail h2 {
     position:relative;
     width: 100vw;
     height: 100vw;
-    z-index: -1;
+    z-index:-1;
 }
 
 @media (min-width: 414px){
@@ -624,7 +622,10 @@ header.GNBDetail h2 {
     color: #fff;
     color: var(--text-bright-color);
     text-align: center;
-    z-index: 2;
+}
+
+.titleText .leftSection i:hover{
+    cursor:pointer;
 }
 
 .titleText .centerSection {
@@ -638,7 +639,10 @@ header.GNBDetail h2 {
     color: #fff;
     color: var(--text-bright-color);
     text-align: center;
-    z-index: 2;
+}
+
+.titleText .rightSection i:hover{
+    cursor:pointer;
 }
 
 .titleText .bottomSection{
@@ -655,7 +659,6 @@ header.GNBDetail h2 {
     color: #fff;
     color: var(--text-bright-color);
     text-align: center;
-    z-index: 2;
 }
 
 @media (min-width:414px){
@@ -680,8 +683,8 @@ header.GNBDetail h2 {
 
 .productDescription p {
     margin: 0;
-    padding: 20px;
     line-height: 20px;
+    padding: 20px;
 }
 
 .productDescription button {
@@ -982,8 +985,7 @@ header.GNBDetail h2 {
 }
 
 .detailDescription .locInfo {
-    /*display:none;*/
-
+    display:none;
 }
 
 .detailDescription .locInfo img {
@@ -1048,6 +1050,42 @@ header.GNBDetail h2 {
 
 @media (min-width:414px){
     .detailDescription .container {
+        margin: 0 auto;
+    }
+}
+
+.reviewHeader .container{
+    padding: 20px 10px;
+    width: 100vw;
+    max-width: 392px;
+    border-color: #C0C0C0;
+    border-style: solid;
+    border-width: 1px 1px 10px 1px;
+    display: flex;
+    font-size: 18px;
+}
+
+.reviewHeader .leftSection{
+    flex: 1;
+}
+
+.reviewHeader .centerSection{
+    flex: 8;
+}
+
+.reviewHeader .rightSection{
+    flex: 1;
+}
+
+.reviewHeader h1{
+    font-size: 18px;
+    font-family: "Nanum Gothic Bold";
+    margin: 0;
+    padding: 0;
+}
+
+@media(min-width:414px){
+    .reviewHeader .container {
         margin: 0 auto;
     }
 }
