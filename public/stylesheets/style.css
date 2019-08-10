@@ -44,7 +44,7 @@ body {
 
 .fn {
     display: inline-block;
-    height: 1em
+    height: 1em;
 }
 
 .fn:before {
@@ -52,7 +52,7 @@ body {
     font-style: normal;
     font-weight: 400;
     speak: none;
-    display: inline;
+    display: inline-block;
     text-decoration: inherit;
     width: 1em;
     text-align: center;
@@ -162,6 +162,15 @@ body {
     content:"\EAA3"
 }
 
+.fn-star3:before{
+    content:"\EAA3";
+    background: linear-gradient(to Right,#f00 70%,#808080 30%);
+    background-clip:text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display:initial;
+}
+
 .fn-up1:before {
     content: "\EABF"
 }
@@ -186,6 +195,9 @@ body {
 	content: "\EA4C"
 }
 
+i:before{
+    vertical-align:middle;
+}
 
 header.GNBMain .container {
     display: flex;
@@ -497,7 +509,7 @@ header.GNBDetail .container {
     width: 100vw;
     max-width: 414px;
     max-width: var(--breakpoint-width);
-    z-index: 1;
+    z-index: 3;
 }
 
 header.GNBDetail img {
@@ -505,6 +517,8 @@ header.GNBDetail img {
     width: 17.5vw;
     padding: 2.5vw;
 }
+
+
 
 header.GNBDetail h2 {
     font-family: "Nanum Gothic Bold";
@@ -537,7 +551,6 @@ header.GNBDetail h2 {
 
 .titleImage .container {
     position: absolute;
-    background: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1));
     width: 100vw;
     height: 100vw;
     max-width: 414px; 
@@ -545,6 +558,17 @@ header.GNBDetail h2 {
     max-height: 414px;
     max-height: var(--breakpoint-width);
     overflow: hidden;
+}
+
+.titleImage .container:before {
+    content: '';
+    position:absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1));
+    z-index: 1;
 }
 
 .titleImage ul {
@@ -558,10 +582,8 @@ header.GNBDetail h2 {
 }
 
 .titleImage img {
-    position:relative;
     width: 100vw;
     height: 100vw;
-    z-index:-1;
 }
 
 @media (min-width: 414px){
@@ -587,18 +609,23 @@ header.GNBDetail h2 {
     max-height: 414px;
     display: flex;
     flex-direction: column;
+    z-index: 2;
 }
 
 .titleText .topSection{
     flex: 3;
     text-align:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.titleText .topSection span {
-    line-height: calc((100vw / 10) * 3);
-    font-size: 16px;
+.titleText .topSection > span {
+    display: inline-block;
+    font-size: 12px;
     color: #C0C0C0;
     background-color: #000;
+    padding: 5px 10px;
     border-radius: 45%;
     background: rgba(0,0,0,0.5);
 }
@@ -664,10 +691,6 @@ header.GNBDetail h2 {
 @media (min-width:414px){
     .titleText .container {
         margin: 0 auto;
-    }
-
-    .titleText .topSection span{
-        line-height: 124.2px;
     }
 }
 
@@ -796,11 +819,12 @@ header.GNBDetail h2 {
     color: #f00;
 }
 
-.comment .commentSummary .getRatioStar::before{
-    background:linear-gradient(to Right,#f00 70% ,#808080 30%);
+.comment .commentSummary .ratioStar:before{
+    content:"\EAA3";    
     background-clip:text;
     -webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+    display:initial;
 }
 
 .comment .commentSummary .notGetStar {

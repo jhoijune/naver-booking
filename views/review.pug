@@ -7,6 +7,23 @@ html
         title= data.displayInfo.productDescription
         link(rel="stylesheet",href="../stylesheets/style.css")
         link(rel="icon",href="../images/img/favicon.ico",type="image/x-icon")
+        - const maxStar = 5
+        - const getStar = Math.floor(data.averageScore)
+        - const ratioStar = Math.round(data.averageScore*10)/10 - getStar
+        - let notGetStar
+        if ratioStar > Number.EPSILON
+            - notGetStar = maxStar - getStar - 1 
+            style.
+                .comment .commentSummary .ratioStar:before{
+                    background: linear-gradient(to Right,#f00 #{Math.round(ratioStar*100)}%,#808080 #{Math.round((1-ratioStar)*100)}%);
+                    content:"\EAA3";    
+                    background-clip:text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    display:initial;
+                }
+        else
+            - notGetStar = maxStar - getStar
     body
         header.reviewHeader#reviewHeader
             .container
@@ -24,15 +41,14 @@ html
                         h2 예매자 한줄평
                         .summaryContainer
                             .leftContainer
-                                - const maxStar = 5
-                                - const getStar = Math.floor(data.averageScore)
-                                //- const getRatioStar = data.averageScore - getStar 
-                                //- const notGetStar = maxStar - getStar - Math.ceil(getRatioStar)
-                                - const notGetStar = maxStar - getStar
                                 - const getStarText = "<i class='fn fn-star2 getStar'></i>"
                                 - const notGetStarText = "<i class='fn fn-star2 notGetStar'></i>"
-                                span.starCount!= getStarText.repeat(getStar) + notGetStarText.repeat(notGetStar)
-                                span.averageScore= Math.round(data.averageScore*10)/10
+                                if ratioStar > Number.EPSILON
+                                    - const ratioStarText = "<i class='fn fn-star2 ratioStar'></i>"
+                                    span.starCount!= getStarText.repeat(getStar) + ratioStarText + notGetStarText.repeat(notGetStar)
+                                else
+                                    span.starCount!= getStarText.repeat(getStar) + notGetStarText.repeat(notGetStar)
+                                span.averageScore= getStar + ratioStar
                                 span.maxScore / 5.0
                             .rightContainer
                                 span.commentCount= data.comments.length + "건 "
