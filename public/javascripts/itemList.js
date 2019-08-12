@@ -201,12 +201,14 @@ document.addEventListener("DOMContentLoaded",()=>{
             function showDetailText(event){
                 if(event.target.tagName === "P"){
                     const dotText = event.target.querySelector(".dots");
-                    dotText.style.display = "none";
-                    $(event.target).children(".moreInfo").slideDown(100);
-                    event.target.addEventListener("mouseleave",()=>{
+                    if(dotText){
+                        dotText.style.display = "none";
+                        $(event.target).children(".moreInfo").slideDown(100);
+                        event.target.addEventListener("mouseleave",()=>{
                         dotText.style.display = "inline";
                         $(event.target).children(".moreInfo").slideUp(100);
-                    });
+                        });
+                    }
                 }
             }
             const products = JSON.parse(xhrProducts.responseText).items;

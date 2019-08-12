@@ -199,6 +199,23 @@ i:before{
     vertical-align:middle;
 }
 
+.spr_book {
+    overflow: hidden;
+    display: inline-block;
+    color: transparent;
+    background-image: url('../images/img/spr_book.png?1602251400');
+    background-size: 400px 400px;
+    vertical-align: top;
+    text-indent: 100%;
+    white-space: nowrap;
+}
+
+.spr_book.ico_evt {
+    width: 27px;
+    height: 27px;
+    background-position: -270px -150px;
+}
+
 header.GNBMain .container {
     display: flex;
     position: fixed;
@@ -739,8 +756,10 @@ header.GNBDetail h2 {
     border-width: 0 1px 1px 1px;    
 }
 
+
 .event h2 {
     font-family: "Nanum Gothic Bold";
+    line-height: 27px;
     font-size: 1rem;
     margin: 0;
     padding: 0 0 10px 0;
@@ -768,7 +787,10 @@ header.GNBDetail h2 {
     max-width: var(--breakpoint-width);
 }
 
-.reservation button {
+.reservation a {
+    display: block;
+    text-decoration: none;
+    text-align: center;
     background-color: #1EC800;
     background-color: var(--main-color);
     color: #fff;
@@ -780,6 +802,10 @@ header.GNBDetail h2 {
     max-width: var(--breakpoint-width);
     line-height: 40px;
     border-width: 0;
+}
+
+.reservation i {
+    font-size: 20px;
 }
 
 @media (min-width:414px){
@@ -891,16 +917,9 @@ header.GNBDetail h2 {
     width: 100%;
 }
 
-.comment .eachComment h2 {
-    font-family: "Nanum Gothic Bold";
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-}
-
 .comment .eachComment p {
     margin:0;
-    padding: 10px 0;
+    padding: 0 0 10px 0;
 }
 
 .comment .eachComment span {

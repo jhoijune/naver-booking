@@ -58,7 +58,6 @@ html
                             article.eachComment
                                 .eachContainer
                                     .leftContainer
-                                        h2= data.displayInfo.productDescription
                                         p= comments.comment
                                     if comments.commentImages.length !== 0
                                         .rightContainer(background-image= `url(../${comments.commentImages[0].saveFileName})`)

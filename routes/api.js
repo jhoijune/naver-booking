@@ -3,6 +3,8 @@ const path = require("path");
 const router = express.Router();
 
 const sequelize = require("../models").sequelize;
+const ReservationInfo = require("../models").ReservationInfo;
+const ReservationInfoPrice = require("../models").ReservationInfoPrice;
 
 router.get("/products",function(req,res,next){
     const query = "SELECT display_info.id as displayInfoId,place_name as placeName," +
@@ -83,9 +85,88 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
         result.productPrices = productPrices;
         res.json(result);
     }
-    catch(error){
-        console.error(error);
+    catch(err){
+        console.error(err);
     }
+});
+
+router.get("/reservations",async (req,res,next) => {
+    try{
+        const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
+            "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
+            "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info";
+        const reservationInfo = (await sequelize.query(reservationInfoQuery))[0];
+        for(const element of reservationInfo){
+            const totalPriceQuery = "SELECT SUM(price*count) as totalPrice from reservation_info_price INNER JOIN product_price " +
+                "ON product_price.id = reservation_info_price.product_price_id INNER JOIN reservation_info ON " +
+                `reservation_info_price.reservation_info_id = reservation_info.id WHERE reservation_info_id = ${element.reservationInfoId}`;
+            const totalPrice = (await sequelize.query(totalPriceQuery))[0][0].totalPrice;
+            element.totalPrice = totalPrice;
+            const displayInfoQuery = "SELECT category.id as categoryId,category.name as categoryName,display_info.create_date as createDate," +
+                "display_info.id as displayInfoId,email,homepage,display_info.modify_date as modifyDate,opening_hours as openingHours," +
+                 "place_lot as placeLot,place_name as placeName,place_street as placeStreet,content as productContent,description as productDescription," +
+                 "event as productEvent,product.id as productId,tel as telephone from display_info INNER JOIN product ON " +
+                 "display_info.product_id = product.id INNER JOIN category ON product.category_id = category.id " +
+                 `WHERE display_info.id = ${element.displayInfoId}`;
+            const displayInfo = (await sequelize.query(displayInfoQuery))[0][0];
+            element.displayInfo = displayInfo;
+        }
+        const result = {
+            reservations: reservationInfo,
+            size: reservationInfo.length,
+        }
+        res.json(result);
+    }
+    catch(err){
+        console.error(err);
+    }
+});
+
+router.post("/reservations",async (req,res,next) => {
+    // 나중에 테스팅
+    const creationInfo = await ReservationInfo.create({
+        product_id: req.body.productId,
+        dispaly_info_id: req.body.displayInfoId,
+        reservation_name: req.body.reservationName,
+        reservation_tel: req.body.reservationTelephone,
+        reservation_email: req.body.reservationEmail,
+        reservation_date: req.body.reservationYearMonthDay,
+    });
+    for(const element of req.body.prices){
+        await ReservationInfoPrice.create({
+            reservation_info_id: creationInfo.id,
+            product_price_id: element.productPriceId,
+            count: element.count,
+        });
+    }
+    const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
+        "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
+        "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info " +
+        `WHERE id = ${creationInfo.id}`;
+    const reservationInfo = (await sequelize.query(reservationInfoQuery))[0][0];
+    const reservationInfoPriceQuery = "SELECT count,product_price_id as productPriceId,reservation_info_id as reservationInfoId," +
+        `id as reservationInfoPriceId from reservation_info_price WHERE reservation_info_id = ${creationInfo.id}`;
+    const reservationInfoPrice = (await sequelize.query(reservationInfoPriceQuery))[0];
+    reservationInfo.prices = reservationInfoPrice;
+    res.json(reservationInfo);
+});
+
+router.put("/reservations/:reservationInfoId",async (req,res,next) => {
+    await ReservationInfo.update({
+        cancel_flag: 1
+    },{
+        where: {id:req.params.reservationInfoId},
+    });
+    const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
+        "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
+        "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info " +
+        `WHERE id = ${req.params.reservationInfoId}`;
+    const reservationInfo = (await sequelize.query(reservationInfoQuery))[0][0];
+    const reservationInfoPriceQuery = "SELECT count,product_price_id as productPriceId,reservation_info_id as reservationInfoId," +
+        `id as reservationInfoPriceId from reservation_info_price WHERE reservation_info_id = ${req.params.reservationInfoId}`;
+    const reservationInfoPrice = (await sequelize.query(reservationInfoPriceQuery))[0];
+    reservationInfo.prices = reservationInfoPrice;
+    res.json(reservationInfo);
 });
 
 router.get("/categories",function(req,res,next){

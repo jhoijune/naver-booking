@@ -10,6 +10,8 @@ const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const detailRouter = require('./routes/detail');
 const reviewRouter = require('./routes/review');
+const reserveRouter = require('./routes/reserve');
+const myReservationRouter = require('./routes/myReservation');
 const sequelize = require('./models').sequelize;
 
 const app = express();
@@ -51,6 +53,8 @@ app.use("/",indexRouter);
 app.use("/api",apiRouter);
 app.use("/detail",detailRouter);
 app.use("/review",reviewRouter);
+app.use("/reserve",reserveRouter);
+app.use("/myreservation",myReservationRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');

@@ -58,7 +58,7 @@ html
             .container
         section.event
             .container
-                h2!= "<i class='fn fn-present1'></i> 이벤트정보"
+                h2!= "<i class='spr_book ico_evt'></i> 이벤트정보"
                 - const discountInfo = []
                 each priceInfo in data.productPrices
                     if priceInfo.discountRate > Number.EPSILON 
@@ -70,7 +70,7 @@ html
                     p!= "[네이버예약 특별할인] <br>" + discountText
         section.reservation
             .container
-                button!= "<i class='fn fn-nbooking-calender2'></i> 예매하기" 
+                a(href=`../reserve/${data.displayInfo.displayInfoId}`)!= "<i class='fn fn-nbooking-calender2'></i> 예매하기" 
         section.comment
             .outerContainer
                 .innerContainer
@@ -96,7 +96,6 @@ html
                             article.eachComment
                                 .eachContainer
                                     .leftContainer
-                                        h2= data.displayInfo.productDescription
                                         p= data.comments[count-1].comment
                                     if data.comments[count-1].commentImages.length !== 0
                                         .rightContainer(background-image= `url(../${data.comments[count-1].commentImages[0].saveFileName})`)

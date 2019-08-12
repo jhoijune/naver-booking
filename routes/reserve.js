@@ -16,11 +16,10 @@ router.get("/:displayInfoId",function(req,res,next){
         response.on('end', () => {
             data = JSON.parse(data);
             res.locals.data = data;
-            res.render("review");
+            res.render("reservation");
         });
       });
       request.end();
 });
-
 
 module.exports = router;
