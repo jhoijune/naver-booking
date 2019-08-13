@@ -7,3 +7,95 @@ html
         title= data.displayInfo.productDescription
         link(rel="stylesheet",href="../stylesheets/style.css")
         link(rel="icon",href="../images/img/favicon.ico",type="image/x-icon")
+        script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+    body
+        header.reserveHeader
+            .container
+                .leftSection
+                    a(href=`/detail/${data.displayInfo.displayInfoId}`)
+                        i.fn.fn-backward1
+                .CenterSection
+                    h1= data.displayInfo.productDescription
+                .rightSection
+        section.productImage
+            - let lowesetPrice
+            - const priceList = []
+            each priceInfo in data.productPrices
+                if lowestPrice 
+                    if lowestPrice > priceInfo.price
+                        - lowestPrice = priceInfo.price
+                else
+                    - lowestPrice = priceInfo.price
+                - priceList.push(`${priceTypeMapper[priceInfo.priceTypeName]} ${transformMoneyUnit(priceInfo.price)}원`)
+            each imageInfo in data.productImages
+                if imageInfo.type === "ma"
+                    .container(style=`background-image:linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),url(../${imageInfo.saveFileName})`)
+                        p!= "₩"+ transformMoneyUnit(lowestPrice) + " ~ <br>" + data.displayInfo.openingHours.split("\n")[0]
+        section.productInfo
+            .container
+                h2= data.displayInfo.productDescription
+                p
+                    | 장소 : #{data.displayInfo.placeLot} <br>
+                    | 기간 :
+                h2 관람시간
+                p= data.displayInfo.openingHours
+                h2 요금
+                p= priceList.join(" / ")
+        section.reserveSection
+            .container
+                form(action="/tempFormHandle",method="POST")
+                    article.inputTicket
+                        each priceInfo in data.productPrices
+                            .eachTicket
+                                .leftContainer
+                                    h2!= priceTypeMapper[priceInfo.priceTypeName]+"<br>" + transformMoneyUnit(priceInfo.price) + " 원"
+                                    if priceInfo.discountRate > Number.EPSILON
+                                        p!= `${transformMoneyUnit(priceInfo.price)}원 (${Math.round(priceInfo.discountRate)}% 할인가)`
+                                    else
+                                        p!= `${transformMoneyUnit(priceInfo.price)} 원` 
+                                .rightContainer
+                                    .adjustTicket
+                                        button.spr_book2.ico_minus3
+                                        input(type="number",name="quantity",min="0" value="0" readonly)
+                                        button.clickable.spr_book2.ico_plus3
+                                    p 0 원
+                    article.inputReserver
+                        .reserverHeader
+                            h2 예매자 정보
+                            p!= "<i class='fn fn-check'></i> 필수입력"
+                        .tableRow
+                            p!= "<i class='fn fn-check'></i> 예매자"
+                            p
+                                input(type="text",name="reservationName")
+                        .tableRow
+                            p!= "<i class='fn fn-check'></i> 연락처"
+                            p    
+                                input(type="text",name="reservationTelephone")
+                        .tableRow
+                            p!= "<i class='fn fn-check'></i> 이메일"
+                            p    
+                                input(type="text",name="reservationEmail")
+                        .tableRow
+                            p!= "<i class='fn fn-check' style='color:transparent'></i> 예매내용"
+                            p 2017.02.23,총 0매
+                    article.TOS
+                        h2 이용자 약관 전체동의
+                        p 필수 동의
+                        p 개인정보 수집 및 이용 동의
+                        p!= "보기 <i class='fn fn-down2'></i>" 
+                        p(style="display:none")
+                            | &lt;개인정보 수집 및 이용 동의&gt;<br><br> 1. 수집항목 : [필수] 이름, 연락처, [선택] 이메일주소<br><br> 2. 수집 및 이용목적 : 사업자회원과 예약이용자의 원활한 거래 진행, 고객상담, 불만처리 등 민원 처리, 분쟁조정 해결을 위한 기록보존, 네이버 예약 이용 후 리뷰작성에 따른 네이버페이 포인트 지급 및 관련 안내<br><br> 3. 보관기간<br> - 회원탈퇴 등
+                            |    개인정보 이용목적 달성 시까지 보관<br> - 단, 상법 및 ‘전자상거래 등에서의 소비자 보호에 관한 법률’ 등 관련 법령에 의하여 일정 기간 보관이 필요한 경우에는 해당 기간 동안 보관함<br><br> 4. 동의 거부권 등에 대한 고지: 정보주체는 개인정보의 수집 및 이용 동의를 거부할 권리가 있으나, 이 경우 상품 및 서비스 예약이 제한될 수 있습니다.<br>
+                        p 개인정보 제3자 제공 동의
+                        p!= "보기 <i class='fn fn-down2'></i>"
+                        p(style="display:none")
+                            | &lt;개인정보 제3자 제공 동의&gt;<br><br> 1. 개인정보를 제공받는 자 : 미디어앤아트<br><br> 2. 제공하는 개인정보 항목 : [필수] 네이버 아이디, 이름, 연락처 [선택] 이메일 주소<br><br> 3. 개인정보를 제공받는 자의 이용목적 : 사업자회원과 예약이용자의 원활한 거래 진행, 고객상담, 불만처리 등 민원 처리, 서비스 이용에 따른 설문조사 및 혜택 제공, 분쟁조정
+                            |        해결을 위한 기록보존<br><br> 4. 개인정보를 제공받는 자의 개인정보 보유 및 이용기간 : 개인정보 이용목적 달성 시 까지 보관합니다.<br><br> 5. 동의 거부권 등에 대한 고지 : 정보주체는 개인정보 제공 동의를 거부할 권리가 있으나, 이 경우 상품 및 서비스 예약이 제한될 수 있습니다.<br>
+                    button(type="submit")!= "<i class='spr_book ico_naver_s'></i> 예약하기" 
+        aside.helping
+            .container
+                a(href="#")!="<i class='fn fn-up1'></i> TOP" 
+        footer
+            .container
+                p.caution 네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.
+                span.copyright © NAVER Corp.

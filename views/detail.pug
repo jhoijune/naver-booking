@@ -26,7 +26,7 @@ html
             - notGetStar = maxStar - getStar
         script(src="https://code.jquery.com/jquery-3.2.1.min.js")
     body
-        header.GNBDetail#GNB
+        header.GNBDetail
             .container
                 a(href="../mainpage.html")
                     img(src="../images/icon/icon.png",alt="")
@@ -62,7 +62,7 @@ html
                 - const discountInfo = []
                 each priceInfo in data.productPrices
                     if priceInfo.discountRate > Number.EPSILON 
-                        - discountInfo.push(`${priceInfo.priceTypeName}석 ${Math.round(priceInfo.discountRate)}%`)
+                        - discountInfo.push(`${priceTypeMapper[priceInfo.priceTypeName]} ${Math.round(priceInfo.discountRate)}%`)
                 if discountInfo.length === 0
                     p!= "[네이버예약 특별할인] <br>"
                 else
@@ -144,7 +144,7 @@ html
                         button.navigation!= "<i class='fn fn-car-find2'></i> 내비게이션 " 
         aside.helping
             .container
-                a(href="#GNB")
+                a(href="#")
                     span!="<i class='fn fn-up1'></i> TOP" 
         footer
             .container

@@ -94,6 +94,10 @@ body {
     content: "\EA2D"
 }
 
+.fn-check:before{
+    content: "\EA35"
+}
+
 .fn-down2:before {
     content: "\EA3D"
 }
@@ -203,7 +207,7 @@ i:before{
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    background-image: url('../images/img/spr_book.png?1602251400');
+    background-image: url(../images/img/spr_book.png?1602251400);
     background-size: 400px 400px;
     vertical-align: top;
     text-indent: 100%;
@@ -214,6 +218,29 @@ i:before{
     width: 27px;
     height: 27px;
     background-position: -270px -150px;
+}
+
+.spr_book.ico_naver_s {
+    width: 21px;
+    height: 21px;
+    background-position: -226px -237px
+}
+
+.spr_book2 {
+    background-image: url(../images/img/spr_book2.png);
+    background-size: 330px 400px
+}
+
+.spr_book2.ico_minus3 {
+    width: 40px;
+    height: 40px;
+    background-position: -42px -305px
+}
+
+.spr_book2.ico_plus3 {
+    width: 40px;
+    height: 40px;
+    background-position: -168px -305px
 }
 
 header.GNBMain .container {
@@ -1133,3 +1160,271 @@ header.GNBDetail h2 {
     }
 }
 
+
+.reserveHeader .container{
+    padding: 20px 10px;
+    width: 100vw;
+    max-width: 394px;
+    display: flex;
+    font-size: 18px;
+}
+
+.reserveHeader .leftSection{
+    flex: 1;
+}
+
+.reserveHeader .centerSection{
+    flex: 8;
+}
+
+.reserveHeader .rightSection{
+    flex: 1;
+}
+
+.reserveHeader h1{
+    font-size: 18px;
+    font-family: "Nanum Gothic Bold";
+    margin: 0;
+    padding: 0;
+}
+
+@media(min-width:414px){
+    .reserveHeader .container {
+        margin: 0 auto;
+    }
+}
+
+.productImage .container{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100vw;
+    height: 100vw;
+    max-width: 414px;
+    max-width: var(--breakpoint-width);
+    max-height: 414px;
+    max-height: var(--breakpoint-width);
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+}
+
+.productImage p {
+    padding: 0 0 20px 0;
+    margin: 0;
+    font-size: 16px;
+    color: #fff;
+    color: var(--text-bright-color);
+}
+
+@media(min-width:414px){
+    .productImage .container {
+        margin: 0 auto;
+    }
+}
+
+.productInfo .container{
+    width: 100vw;
+    max-width: 414px;
+    max-width: var(--breakpoint-width);
+    border-bottom-color: #E9ECEF;
+    border-bottom-color: var(--grey-color);
+    border-bottom-style: solid;
+    border-bottom-width: 10px;
+}
+
+.productInfo h2 {
+    margin: 20px 0 5px 0;
+    padding: 0 20px;
+    font-family: "Nanum Gothic Bold";
+    font-size: 16px;
+}
+
+.productInfo p {
+    margin: 5px 0 20px 0;
+    padding: 0 20px;
+    font-size: 14px;
+}
+
+
+@media(min-width:414px){
+    .productInfo .container {
+        margin: 0 auto;
+    }
+}
+
+.reserveSection .container{
+    width: 100vw;
+    max-width: 414px;
+    max-width: var(--breakpoint-width);
+}
+
+.reserveSection .inputTicket{
+    border-bottom-color: #E9ECEF;
+    border-bottom-color: var(--grey-color);
+    border-bottom-style: solid;
+    border-bottom-width: 10px;
+}
+
+.reserveSection .eachTicket {
+    display: flex;
+    margin: 0 20px;
+    padding: 10px 0;
+    border-bottom-color: #E9ECEF;
+    border-bottom-color: var(--grey-color);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.reserveSection .eachTicket .leftContainer {
+    flex: 6;
+}
+
+.reserveSection .eachTicket .leftContainer h2{
+    margin: 0;
+    height: 40px;
+    line-height: 20px;
+    font-family: "Nanum Gothic Bold";
+    font-size: 16px;
+}
+
+.reserveSection .eachTicket  p {
+    font-size: 14px;
+    color: #808080;
+    color: var(--text-grey-color);
+    margin: 10px 0 0 0;
+}
+
+.reserveSection .eachTicket .rightContainer {
+    flex:4;
+}
+
+.reserveSection .eachTicket .rightContainer p {
+    text-align:  right;
+}
+
+.reserveSection .eachTicket .adjustTicket {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.reserveSection .eachTicket .adjustTicket button {
+    flex:1;
+    box-sizing: content-box;
+    padding:0;
+    margin: 0;
+    max-width:40px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #1EC800;
+    border-color: var(--main-color);
+    font-family: "Nanum Gothic Bold";
+    background-color: #fff;
+    background-color: var(--text-bright-color);
+    color: #1EC800;
+    color: var(--main-color);
+}
+
+.reserveSection .eachTicket .adjustTicket button.clickable {
+    background-color: #1EC800;
+    background-color: var(--main-color);
+    color: #fff;
+    color: var(--text-bright-color);
+}
+
+.reserveSection .eachTicket .adjustTicket input {
+    flex: 1;
+    box-sizing: content-box;
+    padding: 0 0 0 10px;
+    margin: 0;
+    font-size: 20px;
+    font-family: "Nanum Gothic Bold";
+    color: #1EC800;
+    color: var(--main-color);
+    min-width: 0;
+    max-width: 30px;
+    text-align: center;
+    border-style: solid;
+    border-width: 2px 0;
+    border-color: #1EC800;
+    border-color: var(--main-color);
+}
+
+.reserveSection .inputReserver {
+    width:100%;
+    display: table;
+    border-bottom-color: #E9ECEF;
+    border-bottom-color: var(--grey-color);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.reserveSection .inputReserver i{
+    color: #1EC800;
+    color: var(--main-color);
+}
+
+.reserveSection .inputReserver .reserverHeader {
+    display: table-row;
+    border-bottom-color: #E9ECEF;
+    border-bottom-color: var(--grey-color);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.reserveSection .inputReserver .tableRow {
+    display: table-row;
+}
+
+.reserveSection .inputReserver h2{
+    display: table-cell;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+.reserveSection .inputReserver p {
+    display: table-cell;
+    font-size: 16px;
+    padding: 5px 20px;  
+}
+
+.reserveSection .inputReserver input {
+    font-size: 16px;
+    width: 250px;
+}
+
+.reserveSection .inputReserver .tableRow:first-child p{
+   padding: 20px 20px;
+}
+
+.reserveSection .inputReserver .reserverHeader p {
+    font-size: 14px;
+    padding: 10px 20px;
+    text-align: right;  
+}
+
+.reserveSection button[type=submit]{
+    width: 394px;
+    margin: 10px;
+    font-size: 16px;
+    font-family: "Nanum Gothic Bold";
+    background-color: #D1D1D1;
+    border-style: none;
+    line-height: 40px;
+    color: #fff;
+    color: var(--text-bright-color);
+    padding: 0;
+}
+
+.reserveSection button[type=submit] i {
+    vertical-align: middle;
+}
+
+
+@media(min-width:414px){
+    .reserveSection .container {
+        margin: 0 auto;
+    }
+
+
+}
