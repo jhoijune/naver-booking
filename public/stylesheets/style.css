@@ -231,6 +231,12 @@ i:before{
     background-size: 330px 400px
 }
 
+.spr_book2.chk_agree{
+    width: 26px!important;
+    height: 26px!important;
+    background-position: -47px -273px;
+}
+
 .spr_book2.ico_minus3 {
     width: 40px;
     height: 40px;
@@ -242,6 +248,8 @@ i:before{
     height: 40px;
     background-position: -168px -305px
 }
+
+
 
 header.GNBMain .container {
     display: flex;
@@ -1314,8 +1322,7 @@ header.GNBDetail h2 {
     padding:0;
     margin: 0;
     max-width:40px;
-    border-style: solid;
-    border-width: 1px;
+    border-style: none;
     border-color: #1EC800;
     border-color: var(--main-color);
     font-family: "Nanum Gothic Bold";
@@ -1345,7 +1352,7 @@ header.GNBDetail h2 {
     max-width: 30px;
     text-align: center;
     border-style: solid;
-    border-width: 2px 0;
+    border-width: 1px 0;
     border-color: #1EC800;
     border-color: var(--main-color);
 }
@@ -1403,7 +1410,31 @@ header.GNBDetail h2 {
     text-align: right;  
 }
 
-.reserveSection button[type=submit]{
+input[name="TOSCheck"] {
+    display:none;
+}
+
+input[name="TOSCheck"] + label:before {
+    cursor: pointer;
+    content: "";
+    overflow: hidden;
+    display: inline-block;
+    color: transparent;
+    vertical-align: top;
+    background-image: url(../images/img/spr_book2.png);
+    background-size: 330px 400px;
+    width: 26px!important;
+    height: 26px!important;
+    background-position: -47px -273px;
+}
+
+input[name="TOSCheck"]:checked + label:before {
+    background-position: -75px -273px;
+    background-color: transparent;
+}
+
+
+.reserveSection button[type='submit']{
     width: 394px;
     margin: 10px;
     font-size: 16px;
@@ -1414,11 +1445,14 @@ header.GNBDetail h2 {
     color: #fff;
     color: var(--text-bright-color);
     padding: 0;
+    transition: background-color 1s;
 }
 
 .reserveSection button[type=submit] i {
     vertical-align: middle;
 }
+
+
 
 
 @media(min-width:414px){
