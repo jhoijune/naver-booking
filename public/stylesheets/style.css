@@ -226,6 +226,13 @@ i:before{
     background-position: -226px -237px
 }
 
+.spr_book.ico_arr_ipc2 {
+    width: 10px;
+    height: 10px;
+    background-position: -378px -187.5px
+}
+
+
 .spr_book2 {
     background-image: url(../images/img/spr_book2.png);
     background-size: 330px 400px
@@ -1218,7 +1225,7 @@ header.GNBDetail h2 {
 }
 
 .productImage p {
-    padding: 0 0 20px 0;
+    padding: 0 20px 20px 20px;
     margin: 0;
     font-size: 16px;
     color: #fff;
@@ -1300,7 +1307,7 @@ header.GNBDetail h2 {
     font-size: 14px;
     color: #808080;
     color: var(--text-grey-color);
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
 }
 
 .reserveSection .eachTicket .rightContainer {
@@ -1323,104 +1330,159 @@ header.GNBDetail h2 {
     margin: 0;
     max-width:40px;
     border-style: none;
-    border-color: #1EC800;
-    border-color: var(--main-color);
     font-family: "Nanum Gothic Bold";
     background-color: #fff;
     background-color: var(--text-bright-color);
+}
+
+.reserveSection .eachTicket .adjustTicket button.ico_minus3 {
     color: #1EC800;
     color: var(--main-color);
 }
 
-.reserveSection .eachTicket .adjustTicket button.clickable {
+.reserveSection .eachTicket .adjustTicket button.ico_plus3{
     background-color: #1EC800;
     background-color: var(--main-color);
     color: #fff;
     color: var(--text-bright-color);
 }
 
+.reserveSection .eachTicket .adjustTicket .disabled{
+    border-color: #CCC;
+    color: #bbb;
+}
+
+.reserveSection .eachTicket .adjustTicket button.disabled.ico_minus3{
+    background-position: 0 -305px;
+}
+
 .reserveSection .eachTicket .adjustTicket input {
     flex: 1;
     box-sizing: content-box;
-    padding: 0 0 0 10px;
+    padding: 0 0 0 0px;
     margin: 0;
-    font-size: 20px;
+    font-size: 16px;
     font-family: "Nanum Gothic Bold";
     color: #1EC800;
     color: var(--main-color);
     min-width: 0;
-    max-width: 30px;
-    text-align: center;
+    max-width: 40px;
+    text-align: right;
     border-style: solid;
     border-width: 1px 0;
     border-color: #1EC800;
     border-color: var(--main-color);
 }
 
-.reserveSection .inputReserver {
+.reserveSection .inputInfo {
     width:100%;
-    display: table;
-    border-bottom-color: #E9ECEF;
-    border-bottom-color: var(--grey-color);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    margin-bottom: 10px;
 }
 
-.reserveSection .inputReserver i{
+.reserveSection .inputInfo i{
     color: #1EC800;
     color: var(--main-color);
 }
 
-.reserveSection .inputReserver .reserverHeader {
-    display: table-row;
+.reserveSection .inputInfo .reserverHeader {
     border-bottom-color: #E9ECEF;
     border-bottom-color: var(--grey-color);
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    padding: 10px 20px;
 }
 
-.reserveSection .inputReserver .tableRow {
+.reserveSection .inputInfo .reserverHeader h2 {
+    padding: 0;
+    margin: 0;
+    display:inline-block;
+    font-size: 16px;
+    font-family: "Nanum Gothic Bold";
+}
+
+.reserveSection .inputInfo .reserverHeader p {
+    color: #989898;
+    padding: 0 0 0 228px;
+    margin: 0;
+    display: inline-block;
+}
+
+.reserveSection .inputInfo .tableContainer {
+    display: table;
+}
+
+.reserveSection .inputInfo .tableRow {
     display: table-row;
 }
 
-.reserveSection .inputReserver h2{
+.reserveSection .inputInfo .tableRow h2{
     display: table-cell;
     font-size: 16px;
     padding: 10px 20px;
 }
 
-.reserveSection .inputReserver p {
+.reserveSection .inputInfo .tableRow p {
     display: table-cell;
     font-size: 16px;
     padding: 5px 20px;  
 }
 
-.reserveSection .inputReserver input {
+.reserveSection .inputInfo input {
     font-size: 16px;
     width: 250px;
 }
 
-.reserveSection .inputReserver .tableRow:first-child p{
-   padding: 20px 20px;
+.reserveSection .inputInfo .tableRow p:first-child {
+    font-family: "Nanum Gothic Bold";
+    color: #666;
 }
 
-.reserveSection .inputReserver .reserverHeader p {
-    font-size: 14px;
+.reserveSection .inputInfo .alertMessage {
+    font-family: "Nanum Gothic Bold";
+    color: #f00;
+}
+
+.reserveSection .TOS {
+    width: 100%;
+    border-top-color: #E9ECEF;
+    border-top-color: var(--grey-color);
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+.reserveSection .TOS p {
+    padding: 0 20px 20px 20px;
+    margin: 0;
+}
+
+.reserveSection .TOS .allAgreement{
+    display: flex;
+    justify-content: space-between;
     padding: 10px 20px;
-    text-align: right;  
+    margin-bottom: 10px;
+    border-bottom-color: #E9ECEF;
+    border-bottom-color: var(--grey-color);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 }
 
-input[name="TOSCheck"] {
+.reserveSection .TOS .allAgreement input[name="TOSCheck"] {
     display:none;
 }
 
-input[name="TOSCheck"] + label:before {
+.reserveSection .TOS .allAgreement input[name="TOSCheck"] + label {
+    font-size: 16px;
+    font-family: "Nanum Gothic Bold";
+    cursor: pointer;
+}
+
+.reserveSection .TOS .allAgreement input[name="TOSCheck"] + label:before {
     cursor: pointer;
     content: "";
     overflow: hidden;
     display: inline-block;
     color: transparent;
-    vertical-align: top;
+    vertical-align: middle;
     background-image: url(../images/img/spr_book2.png);
     background-size: 330px 400px;
     width: 26px!important;
@@ -1428,15 +1490,40 @@ input[name="TOSCheck"] + label:before {
     background-position: -47px -273px;
 }
 
-input[name="TOSCheck"]:checked + label:before {
+.reserveSection .TOS .allAgreement input[name="TOSCheck"]:checked + label:before {
     background-position: -75px -273px;
     background-color: transparent;
 }
 
+.reserveSection .TOS .allAgreement p {
+    margin: 0;
+    padding: 0;
+    color: #989898;
+    line-height: 25px;
+}
+
+.reserveSection .TOS .agreement {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    padding: 0 20px 20px 20px;
+}
+
+.reserveSection .TOS .agreement p {
+    padding: 0;
+    margin: 0;
+}
+
+.reserveSection .TOS .agreement p:nth-child(2) {
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
 
 .reserveSection button[type='submit']{
     width: 394px;
-    margin: 10px;
+    margin: 0 10px 10px 10px;
     font-size: 16px;
     font-family: "Nanum Gothic Bold";
     background-color: #D1D1D1;

@@ -1,16 +1,17 @@
 const express = require("express");
 const http = require("http");
 const router = express.Router();
+const moment = require("moment-timezone");
 
 function transformMoneyUnit(num){
     let transformed = "";
     num = num.toString();
     const numLen = num.length;
     for(let i = 1 ; i <= numLen ; i++){ 
-        transformed = num.charAt(numLen - i) + transformed;
-        if(i % 3 === 0){
+        if(i>3 && i % 3 === 1){
             transformed = "," + transformed;
         }
+        transformed = num.charAt(numLen - i) + transformed;
     }
     return transformed
 }
@@ -45,6 +46,9 @@ router.get("/:displayInfoId",function(req,res,next){
             };
             res.locals.priceTypeMapper = priceTypeMapper;
             res.locals.transformMoneyUnit = transformMoneyUnit;
+            const date = moment();
+            date.add(Math.floor(Math.random()*5+1),"days");
+            res.locals.reservationDate = date.format("YYYY-MM-DD HH:mm:ss");
             res.render("reserve");
         });
       });
