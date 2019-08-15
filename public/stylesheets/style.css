@@ -325,7 +325,8 @@ header.GNBMain h2 {
     display: flex;
     margin: 0;
     padding: 0;
-    transition: transform 1s;
+    transition-property: transform;
+    transition-duration: 1s;
 }
 
 
