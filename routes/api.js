@@ -3,8 +3,11 @@ const path = require("path");
 const router = express.Router();
 
 const sequelize = require("../models").sequelize;
+const Sequelize = require("../models").Sequelize;
+const DisplayInfo = require("../models").DisplayInfo;
 const ReservationInfo = require("../models").ReservationInfo;
 const ReservationInfoPrice = require("../models").ReservationInfoPrice;
+const ProductPrice = require("../models").ProductPrice;
 
 router.get("/products",function(req,res,next){
     const query = "SELECT display_info.id as displayInfoId,place_name as placeName," +
@@ -123,32 +126,94 @@ router.get("/reservations",async (req,res,next) => {
 });
 
 router.post("/reservations",async (req,res,next) => {
-    // 나중에 테스팅
-    const creationInfo = await ReservationInfo.create({
-        product_id: req.body.productId,
-        dispaly_info_id: req.body.displayInfoId,
-        reservation_name: req.body.reservationName,
-        reservation_tel: req.body.reservationTelephone,
-        reservation_email: req.body.reservationEmail,
-        reservation_date: req.body.reservationYearMonthDay,
-    });
-    for(const element of req.body.prices){
-        await ReservationInfoPrice.create({
-            reservation_info_id: creationInfo.id,
-            product_price_id: element.productPriceId,
-            count: element.count,
+    try{
+        const refererUrlSeparator = req.headers.referer.split("/");
+        if(req.body.displayInfoId !== Number(refererUrlSeparator[refererUrlSeparator.length-1])){
+            res.status(400).send("상품 전시 정보가 일치하지 않습니다");
+            return;
+        }
+        const realProductId = (await DisplayInfo.findOne({
+            attributes: ["product_id"],
+            where:{
+                id : req.body.displayInfoId
+            },
+        })).product_id;
+        if(req.body.productId !== realProductId){
+            res.status(400).send("상품 정보가 일치하지 않습니다");
+            return;
+        }
+        if(req.body.reservationName.length === 0){
+            res.status(400).send("예약자 이름이 존재하지 않습니다");
+            return;
+        }
+        const emailRe = /[a-zA-Z]\w{2,}@[a-zA-Z]{3,}\.[a-zA-Z]{2,}/;
+        if(req.body.reservationEmail.length === 0 || !emailRe.test(req.body.reservationEmail)){
+            res.status(400).send("이메일 형식이 맞지 않습니다");
+            return;
+        }
+        const telRe = /0\d{2}-[1-9]\d{2,3}-\d{4}/;
+        if(req.body.reservationTelephone.length === 0 || !telRe.test(req.body.reservationTelephone)){
+            res.status(400).send("전화번호 형식이 맞지 않습니다");
+            return;
+        }
+        const productPriceIds = await ProductPrice.findAll({
+            attributes: ["id"],
+            where : {
+                product_id: realProductId,
+            },
+         });
+        let countSum = 0;
+        for(priceInfo of req.body.prices){
+            countSum += priceInfo.count;
+            for(let i=0,len=productPriceIds.length;i<len;i++){
+                if(priceInfo.productPriceId === productPriceIds[i].id){
+                    break
+                }
+                if(i === len -1){
+                    res.status(400).send("상품 가격 정보가 맞지 않습니다");
+                    return;
+                }
+            }
+        }
+        if(countSum === 0){
+            res.status(400).send("상품이 선택되지 않았습니다");
+            return;
+        }
+        const creationInfo = await ReservationInfo.create({
+            product_id: req.body.productId,
+            display_info_id: req.body.displayInfoId,
+            reservation_name: req.body.reservationName,
+            reservation_tel: req.body.reservationTelephone,
+            reservation_email: req.body.reservationEmail,
+            reservation_date: req.body.reservationYearMonthDay,
+            create_date: sequelize.fn("NOW"),
+            modify_date: sequelize.fn("NOW"),
         });
+        for(const element of req.body.prices){
+            if(element.count !== 0) {
+                await ReservationInfoPrice.create({
+                    reservation_info_id: creationInfo.id,
+                    product_price_id: element.productPriceId,
+                    count: element.count,
+                });
+            }
+        }
+        /* edwith api에 적혀있지만 목적을 모르겠음
+        const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
+            "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
+            "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info " +
+            `WHERE id = ${creationInfo.id}`;
+        const reservationInfo = (await sequelize.query(reservationInfoQuery))[0][0];
+        const reservationInfoPriceQuery = "SELECT count,product_price_id as productPriceId,reservation_info_id as reservationInfoId," +
+            `id as reservationInfoPriceId from reservation_info_price WHERE reservation_info_id = ${creationInfo.id}`;
+        const reservationInfoPrice = (await sequelize.query(reservationInfoPriceQuery))[0];
+        reservationInfo.prices = reservationInfoPrice;
+        */
+        res.status(201).send();
     }
-    const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
-        "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
-        "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info " +
-        `WHERE id = ${creationInfo.id}`;
-    const reservationInfo = (await sequelize.query(reservationInfoQuery))[0][0];
-    const reservationInfoPriceQuery = "SELECT count,product_price_id as productPriceId,reservation_info_id as reservationInfoId," +
-        `id as reservationInfoPriceId from reservation_info_price WHERE reservation_info_id = ${creationInfo.id}`;
-    const reservationInfoPrice = (await sequelize.query(reservationInfoPriceQuery))[0];
-    reservationInfo.prices = reservationInfoPrice;
-    res.json(reservationInfo);
+    catch(err) {
+        console.error(err);
+    }
 });
 
 router.put("/reservations/:reservationInfoId",async (req,res,next) => {

@@ -41,6 +41,9 @@ db.ReservationUserComment.belongsTo(db.Product,{foreignKey:"product_id",targetKe
 db.Product.hasMany(db.ReservationInfo,{foreignKey:"product_id",sourceKey:"id"});
 db.ReservationInfo.belongsTo(db.Product,{foreignKey:"product_id",targetKey:"id"});
 
+db.DisplayInfo.hasMany(db.ReservationInfo,{foreignKey:"display_info_id",sourceKey:"id"});
+db.ReservationInfo.belongsTo(db.DisplayInfo,{foreignKey:"display_info_id",targetKey:"id"});
+
 db.Product.hasMany(db.ProductPrice,{foreignKey:"product_id",sourceKey:"id"});
 db.ProductPrice.belongsTo(db.Product,{foreignKey:"product_id",targetKey:"id"});
 

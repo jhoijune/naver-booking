@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const router = express.Router();
 const moment = require("moment-timezone");
+moment.locale("ko");
 
 function transformMoneyUnit(num){
     let transformed = "";
@@ -46,9 +47,18 @@ router.get("/:displayInfoId",function(req,res,next){
             };
             res.locals.priceTypeMapper = priceTypeMapper;
             res.locals.transformMoneyUnit = transformMoneyUnit;
-            const date = moment();
-            date.add(Math.floor(Math.random()*5+1),"days");
-            res.locals.reservationDate = date.format("YYYY-MM-DD HH:mm:ss");
+            const date = moment().tz("Asia/Seoul");
+            const diffDays = {
+                reserve: Math.floor(Math.random()*5 +1),
+            }
+            diffDays.start = diffDays.reserve - Math.floor(Math.random()*5 +1);
+            diffDays.end = diffDays.reserve + Math.floor(Math.random()*5 +1);
+            const reservationDate = moment().tz("Asia/Seoul").add(diffDays.reserve,"days"); 
+            const startDate = moment().tz("Asia/Seoul").add(diffDays.start,"days"); 
+            const endDate = moment().tz("Asia/Seoul").add(diffDays.end,"days"); 
+            res.locals.reservationDate = reservationDate.format("YYYY.MM.DD HH:mm:ss");
+            res.locals.startDate = startDate.format("YYYY.MM.DD.(ddd)");
+            res.locals.endDate = endDate.format("YYYY.MM.DD.(ddd)");
             res.render("reserve");
         });
       });

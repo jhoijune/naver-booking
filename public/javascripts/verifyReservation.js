@@ -227,8 +227,19 @@ document.addEventListener("DOMContentLoaded",()=>{
                 reservationInfo.prices.push({count:Number(eachTicketInput[i].value),productPriceId:productInfo.productPrices[i].productPriceID});
             }
             const xhr = new XMLHttpRequest();
-            xhr.open("POST","../api/tempFormHandle");
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onload = () => {
+                if(xhr.status === 400){
+                    alert(xhr.responseText);
+                }
+                else if(xhr.status === 201){
+                    alert("예매가 성공적으로 승인되었습니다");
+                    const nowURL = document.location.href.split("/");
+                    const displayInfo = nowURL[nowURL.length-1];
+                    window.location.href = `../detail/${displayInfo}`;
+                }
+            }
+            xhr.open("POST","../api/reservations");
+            xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(reservationInfo));
         });
     }

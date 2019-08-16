@@ -1222,15 +1222,6 @@ header.GNBDetail h2 {
     max-height: var(--breakpoint-width);
     background-size: cover;
     background-position: center;
-    text-align: center;
-}
-
-.productImage p {
-    padding: 0 20px 20px 20px;
-    margin: 0;
-    font-size: 16px;
-    color: #fff;
-    color: var(--text-bright-color);
 }
 
 @media(min-width:414px){
@@ -1386,6 +1377,8 @@ header.GNBDetail h2 {
 }
 
 .reserveSection .inputInfo .reserverHeader {
+    display: flex;
+    justify-content: space-between;
     border-bottom-color: #E9ECEF;
     border-bottom-color: var(--grey-color);
     border-bottom-style: solid;
@@ -1396,16 +1389,13 @@ header.GNBDetail h2 {
 .reserveSection .inputInfo .reserverHeader h2 {
     padding: 0;
     margin: 0;
-    display:inline-block;
     font-size: 16px;
     font-family: "Nanum Gothic Bold";
 }
 
 .reserveSection .inputInfo .reserverHeader p {
     color: #989898;
-    padding: 0 0 0 228px;
     margin: 0;
-    display: inline-block;
 }
 
 .reserveSection .inputInfo .tableContainer {
@@ -1430,6 +1420,7 @@ header.GNBDetail h2 {
 
 .reserveSection .inputInfo input {
     font-size: 16px;
+    font-family: "Nanum Gothic Regular";
     width: 250px;
 }
 
@@ -1451,9 +1442,11 @@ header.GNBDetail h2 {
     border-top-width: 1px;
 }
 
-.reserveSection .TOS p {
-    padding: 0 20px 20px 20px;
-    margin: 0;
+.reserveSection .TOS>p {
+    background-color: #E9ECEF;
+    background-color: var(--grey-color);
+    padding: 10px 20px;    
+    margin:  0 20px 20px 20px;
 }
 
 .reserveSection .TOS .allAgreement{

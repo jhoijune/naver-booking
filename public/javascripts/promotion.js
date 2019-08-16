@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         degree = degree + 1;
                         const interval = firstItem.clientWidth;
                         if(degree === 1){
+                            // transform이 바로 적용이 안되서 임시로 여기에다가 둠
                             promotionList.style.transitionDuration = originalTransitionDuration;
                         }
                         promotionList.style.transform = `translateX(-${interval*degree}px)`;

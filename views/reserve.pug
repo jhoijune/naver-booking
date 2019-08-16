@@ -8,6 +8,7 @@ html
         link(rel="stylesheet",href="../stylesheets/style.css")
         link(rel="icon",href="../images/img/favicon.ico",type="image/x-icon")
         script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+        script(src="https://momentjs.com/downloads/moment-with-locales.js")
     body
         header.reserveHeader
             .container
@@ -18,41 +19,31 @@ html
                     h1= data.displayInfo.productDescription
                 .rightSection
         section.productImage
-            - let lowesetPrice
-            - const priceList = []
-            each priceInfo in data.productPrices
-                if lowestPrice 
-                    if lowestPrice > priceInfo.price
-                        - lowestPrice = priceInfo.price
-                else
-                    - lowestPrice = priceInfo.price
-                - priceList.push(`${priceTypeMapper[priceInfo.priceTypeName]} ${transformMoneyUnit(priceInfo.price)}원`)
             each imageInfo in data.productImages
                 if imageInfo.type === "ma"
-                    .container(style=`background-image:linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),url(../${imageInfo.saveFileName})`)
-                        p!= "₩"+ transformMoneyUnit(lowestPrice) + " ~ <br>" + data.displayInfo.openingHours.split("\n")[0]
+                    .container(style=`background-image:linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),url(../${imageInfo.saveFileName})`)                    
         section.productInfo
             .container
                 h2= data.displayInfo.productDescription
                 p
                     | 장소 : #{data.displayInfo.placeLot} <br>
-                    | 기간 :
-                h2 관람시간
-                p= data.displayInfo.openingHours
+                    | 기간 : #{startDate} ~ #{endDate}
                 h2 요금
+                - const priceList = []
+                each priceInfo in data.productPrices
+                    - priceList.push(`${priceTypeMapper[priceInfo.priceTypeName]} ${transformMoneyUnit(priceInfo.price)}원`)
                 p= priceList.join(" / ")
         section.reserveSection
             .container
-                form(action="../api/tempFormHandle",method="POST",name="reservationForm")
+                form(action="../api/reservations",method="POST",name="reservationForm")
                     article.inputTicket
                         each priceInfo,index in data.productPrices
                             .eachTicket
                                 .leftContainer
                                     h2!= priceTypeMapper[priceInfo.priceTypeName]+"<br>" + transformMoneyUnit(priceInfo.price) + " 원"
                                     if priceInfo.discountRate > Number.EPSILON
-                                        p!= `${transformMoneyUnit(priceInfo.price)}원 (${Math.round(priceInfo.discountRate)}% 할인가)`
-                                    else
-                                        p!= `${transformMoneyUnit(priceInfo.price)} 원` 
+                                        - const originalCost = Math.round((priceInfo.price / (1 - (priceInfo.discountRate/100)))/100) * 100
+                                        p!= `${transformMoneyUnit(originalCost)}원 (${Math.round(priceInfo.discountRate)}% 할인가)`
                                 .rightContainer
                                     .adjustTicket
                                         button.spr_book2.ico_minus3.disabled
