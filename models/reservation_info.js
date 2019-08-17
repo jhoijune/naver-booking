@@ -8,10 +8,6 @@ module.exports = (sequelize,DataTypes) => {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
-        reservation_email: {
-            type: DataTypes.STRING(255),
-            allowNull: false,
-        },
         reservation_date: {
             type: DataTypes.DATE,
             allowNull: false,

@@ -8,7 +8,6 @@ html
         link(rel="stylesheet",href="../stylesheets/style.css")
         link(rel="icon",href="../images/img/favicon.ico",type="image/x-icon")
         script(src="https://code.jquery.com/jquery-3.2.1.min.js")
-        script(src="https://momentjs.com/downloads/moment-with-locales.js")
     body
         header.reserveHeader
             .container
@@ -58,15 +57,24 @@ html
                             .tableRow#inputReserver
                                 p!= "<i class='fn fn-check'></i> 예매자"
                                 p
-                                    input(type="text",name="reservationName",placeholder="홍길동")
+                                    if cookies
+                                        input(type="text",name="reservationName",placeholder="홍길동",value=cookies.reservationName)
+                                    else
+                                        input(type="text",name="reservationName",placeholder="홍길동")
                             .tableRow#inputTel
                                 p!= "<i class='fn fn-check'></i> 연락처"
-                                p    
-                                    input(type="text",name="reservationTelephone",placeholder="010-0000-0000")
+                                p
+                                    if cookies
+                                        input(type="text",name="reservationTelephone",placeholder="010-0000-0000",value=cookies.reservationTel)
+                                    else
+                                        input(type="text",name="reservationTelephone",placeholder="010-0000-0000")
                             .tableRow#inputEmail
                                 p!= "<i class='fn fn-check'></i> 이메일"
-                                p    
-                                    input(type="text",name="reservationEmail",placeholder="xxxxxx@naver.com")
+                                p
+                                    if cookies
+                                        input(type="text",name="reservationEmail",placeholder="xxxxxx@naver.com",value=cookies.reservationEmail)
+                                    else    
+                                        input(type="text",name="reservationEmail",placeholder="xxxxxx@naver.com")
                             .tableRow#overallReservation
                                 p!= "<i class='fn fn-check' style='color:transparent'></i> 예매내용"
                                 - const dateTime = reservationDate.split(" ") 

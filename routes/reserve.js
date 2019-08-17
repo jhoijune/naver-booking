@@ -56,6 +56,10 @@ router.get("/:displayInfoId",function(req,res,next){
             const reservationDate = moment().tz("Asia/Seoul").add(diffDays.reserve,"days"); 
             const startDate = moment().tz("Asia/Seoul").add(diffDays.start,"days"); 
             const endDate = moment().tz("Asia/Seoul").add(diffDays.end,"days"); 
+            if(Object.keys(req.cookies).length !== 0){
+                console.log(req.cookies);
+                res.locals.cookies = req.cookies;   
+            }
             res.locals.reservationDate = reservationDate.format("YYYY.MM.DD HH:mm:ss");
             res.locals.startDate = startDate.format("YYYY.MM.DD.(ddd)");
             res.locals.endDate = endDate.format("YYYY.MM.DD.(ddd)");

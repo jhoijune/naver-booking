@@ -20,6 +20,10 @@ router.get("/",function(req,res,next){
         
         SELECT reservation_info.id,product.description,display_info.place_name
     */
+    if(!req.isAuthenticated()){
+        return res.redirect("bookinglogin.html");
+    }
+
 });
 
 

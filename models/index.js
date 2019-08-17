@@ -19,6 +19,7 @@ db.ProductPrice = require("./product_price")(sequelize,Sequelize);
 db.Product = require("./product")(sequelize,Sequelize);
 db.Promotion = require("./promotion")(sequelize,Sequelize);
 db.ReservationInfoPrice = require("./reservation_info_price")(sequelize,Sequelize);
+db.ReservationEmail = require("./reservation_email")(sequelize,Sequelize);
 db.ReservationInfo = require("./reservation_info")(sequelize,Sequelize);
 db.ReservationUserCommentImage = require("./reservation_user_comment_image")(sequelize,Sequelize);
 db.ReservationUserComment = require("./reservation_user_comment")(sequelize,Sequelize);
@@ -76,5 +77,10 @@ db.ReservationUserComment.hasMany(db.ReservationUserCommentImage,
 db.ReservationUserCommentImage.belongsTo(db.ReservationUserComment,
     {foreignKey:"reservation_user_comment_id",targetKey:"id"});
 
+db.ReservationEmail.hasMany(db.ReservationInfo,{foreignKey:"reservation_email_id",sourceKey:"id"});
+db.ReservationInfo.belongsTo(db.ReservationEmail,{foreignKey:"reservation_email_id",targetKey:"id"});
+
+db.ReservationEmail.hasMany(db.ReservationUserComment,{foreignKey:"reservation_email_id",sourceKey:"id"});
+db.ReservationUserComment.belongsTo(db.ReservationEmail,{foreignKey:"reservation_email_id",sourceKey:"id"});
 
 module.exports = db;

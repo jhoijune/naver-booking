@@ -5,6 +5,7 @@ const router = express.Router();
 const sequelize = require("../models").sequelize;
 const Sequelize = require("../models").Sequelize;
 const DisplayInfo = require("../models").DisplayInfo;
+const ReservationEmail = require("../models").ReservationEmail;
 const ReservationInfo = require("../models").ReservationInfo;
 const ReservationInfoPrice = require("../models").ReservationInfoPrice;
 const ProductPrice = require("../models").ProductPrice;
@@ -38,12 +39,11 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
             `WHERE product.id = ${productId}`;
         const averageScore = (await sequelize.query(averageScoreQuery))[0][0].averageScore;
         result.averageScore = averageScore;
-        const commentsQuery = "select comment,reservation_user_comment.id as commentId,reservation_user_comment.create_date as " +
-            "createDate,reservation_user_comment.modify_date as modifyDate,product.id as productId,reservation_date " +
-            "as reservationDate,reservation_email as reservationEmail,reservation_info.id as reservationInfoId,reservation_name as " +
-            "reservationName,reservation_tel as reservationTelephone,score from reservation_info INNER JOIN reservation_user_comment ON " +
-            "reservation_info.id = reservation_user_comment.reservation_info_id INNER JOIN product ON reservation_user_comment.product_id " +
-            `= product.id WHERE product.id = ${productId}`; 
+        const commentsQuery = "SELECT comment,reservation_user_comment.id as commentId,reservation_user_comment.create_date as createDate," +
+            "reservation_user_comment.modify_date as modifyDate,reservation_info.product_id as productId,reservation_date as reservationDate," +
+            "email as reservationEmail,reservation_info.id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone," +
+            "score from reservation_info INNER JOIN reservation_user_comment ON reservation_info.id = reservation_user_comment.reservation_info_id " +
+            `INNER JOIN reservation_email ON reservation_email.id = reservation_user_comment.reservation_email_id WHERE reservation_user_comment.product_id = ${productId}`
         const comments = (await sequelize.query(commentsQuery))[0];
         const commentImagesQueryHead = "select content_type as contentType,create_date as createDate,delete_flag as deleteFlag," +
         "file_info.id as fileId,product_image.id as imageId,modify_date as modifyDate,reservation_info_id as reservationInfoId," +
@@ -127,10 +127,10 @@ router.get("/reservations",async (req,res,next) => {
 
 router.post("/reservations",async (req,res,next) => {
     try{
+        // 클라이언트단에서 변조시 검증용
         const refererUrlSeparator = req.headers.referer.split("/");
         if(req.body.displayInfoId !== Number(refererUrlSeparator[refererUrlSeparator.length-1])){
-            res.status(400).send("상품 전시 정보가 일치하지 않습니다");
-            return;
+            return res.status(400).send("상품 전시 정보가 일치하지 않습니다");
         }
         const realProductId = (await DisplayInfo.findOne({
             attributes: ["product_id"],
@@ -139,22 +139,18 @@ router.post("/reservations",async (req,res,next) => {
             },
         })).product_id;
         if(req.body.productId !== realProductId){
-            res.status(400).send("상품 정보가 일치하지 않습니다");
-            return;
+            return res.status(400).send("상품 정보가 일치하지 않습니다");
         }
         if(req.body.reservationName.length === 0){
-            res.status(400).send("예약자 이름이 존재하지 않습니다");
-            return;
+            return res.status(400).send("예약자 이름이 존재하지 않습니다");
         }
         const emailRe = /[a-zA-Z]\w{2,}@[a-zA-Z]{3,}\.[a-zA-Z]{2,}/;
         if(req.body.reservationEmail.length === 0 || !emailRe.test(req.body.reservationEmail)){
-            res.status(400).send("이메일 형식이 맞지 않습니다");
-            return;
+            return res.status(400).send("이메일 형식이 맞지 않습니다");
         }
         const telRe = /0\d{2}-[1-9]\d{2,3}-\d{4}/;
         if(req.body.reservationTelephone.length === 0 || !telRe.test(req.body.reservationTelephone)){
-            res.status(400).send("전화번호 형식이 맞지 않습니다");
-            return;
+            return res.status(400).send("전화번호 형식이 맞지 않습니다");
         }
         const productPriceIds = await ProductPrice.findAll({
             attributes: ["id"],
@@ -170,21 +166,32 @@ router.post("/reservations",async (req,res,next) => {
                     break
                 }
                 if(i === len -1){
-                    res.status(400).send("상품 가격 정보가 맞지 않습니다");
-                    return;
+                    return res.status(400).send("상품 가격 정보가 맞지 않습니다");
                 }
             }
         }
         if(countSum === 0){
-            res.status(400).send("상품이 선택되지 않았습니다");
-            return;
+            return res.status(400).send("상품이 선택되지 않았습니다");
+        }
+        // 쿠키 설정
+        res.cookie("reservationName",req.body.reservationName);
+        res.cookie("reservationEmail",req.body.reservationEmail);
+        res.cookie("reservationTel",req.body.reservationTelephone);
+        // email 중복된게 있다면 그 id 사용하고 없으면 새로 만듬
+        let emailInfo = await ReservationEmail.findOne({
+            where:{
+                email:req.body.reservationEmail
+            }
+        });
+        if(!emailInfo){
+            emailInfo = await ReservationEmail.create({email: req.body.reservationEmail});
         }
         const creationInfo = await ReservationInfo.create({
             product_id: req.body.productId,
             display_info_id: req.body.displayInfoId,
+            reservation_email_id: emailInfo.id,
             reservation_name: req.body.reservationName,
             reservation_tel: req.body.reservationTelephone,
-            reservation_email: req.body.reservationEmail,
             reservation_date: req.body.reservationYearMonthDay,
             create_date: sequelize.fn("NOW"),
             modify_date: sequelize.fn("NOW"),

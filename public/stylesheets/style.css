@@ -278,6 +278,10 @@ header.GNBMain img {
     padding: 2.5vw;
 }
 
+header.GNBMain a {
+    text-decoration: none;
+}
+
 header.GNBMain h2 {
     font-family: "Nanum Gothic Bold";
     font-size: 3.5vw;
@@ -576,6 +580,10 @@ header.GNBDetail img {
     display: inline-block;
     width: 17.5vw;
     padding: 2.5vw;
+}
+
+header.GNBDetail a {
+    text-decoration:none;
 }
 
 

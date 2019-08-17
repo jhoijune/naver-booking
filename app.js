@@ -4,18 +4,22 @@ const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
 require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
+const authRouter = require('./routes/auth');
 const detailRouter = require('./routes/detail');
 const reviewRouter = require('./routes/review');
 const reserveRouter = require('./routes/reserve');
 const myReservationRouter = require('./routes/myReservation');
 const sequelize = require('./models').sequelize;
+const passportConfig = require('./passport');
 
 const app = express();
 sequelize.sync();
+passportConfig(passport);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -47,9 +51,12 @@ if(process.env.NODE_ENV === "production"){
 }
 app.use(session(sessionOption));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use("/",indexRouter);
+app.use("/auth",authRouter);
 app.use("/api",apiRouter);
 app.use("/detail",detailRouter);
 app.use("/review",reviewRouter);
