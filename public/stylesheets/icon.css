@@ -1,0 +1,363 @@
+@font-face{
+    font-family: "Naver Icons";
+    src: url(../font/Naver-Icons.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Naver booking Icons";
+    src: url(../font/Naver-booking-Icons.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.fn {
+    display: inline-block;
+    height: 1em;
+}
+
+.fn:before {
+    font-family: "Naver Icons";
+    font-style: normal;
+    font-weight: 400;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+.fn-alarm1:before{
+    content:"\EA07"
+}
+
+.fn-alarm2:before{
+    content:"\EA08"
+}
+
+.fn-backward1:before {
+    content: "\EA12"
+}
+
+.fn-backward2:before {
+    content: "\EA13"
+}
+
+.fn-call1:before {
+    content: "\EA25"
+}
+
+.fn-call2:before {
+    content: "\EA26"
+}
+
+.fn-present1:before{
+    content: "\EA2C"
+}
+
+.fn-present2:before{
+    content: "\EA2D"
+}
+
+.fn-check:before{
+    content: "\EA35"
+}
+
+.fn-down2:before {
+    content: "\EA3D"
+}
+
+.fn-forward1:before {
+    content: "\EA44"
+}
+
+.fn-forward2:before{
+    content: "\EA45"
+}
+
+.fn-home1:before {
+    content: "\EA4A"
+}
+
+.fn-car-find1:before{
+    content: "\EA64"
+}
+
+.fn-car-find2:before{
+    content: "\EA65"
+}
+
+.fn-nbooking-calender1:before{
+    content: "\EA66"
+}
+
+.fn-nbooking-calender2:before {
+    content: "\EA67"
+}
+
+.fn-path-find1:before {
+    content: "\EA74"
+}
+
+.fn-path-find2:before {
+    content: "\EA75"
+}
+
+.fn-pin1:before{
+    content:"\EA7A"
+}
+
+.fn-pin2:before {
+    content: "\EA7B"
+}
+
+.fn-pin3:before{
+    content:"\EA7C"
+}
+
+.fn-pin4:before{
+    content:"\EA7D"
+}
+
+.fn-share1:before {
+    content: "\EA96"
+}
+
+.fn-star1:before{
+    content:"\EAA2"
+}
+
+.fn-star2:before{
+    content:"\EAA3"
+}
+
+.fn-star3:before{
+    content:"\EAA3";
+    background: linear-gradient(to Right,#f00 70%,#808080 30%);
+    background-clip:text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display:initial;
+}
+
+.fn-up1:before {
+    content: "\EABF"
+}
+
+.fn-up2:before {
+    content: "\EAC0"
+}
+
+.fn-navigation2:before {
+    content: "\EA65"
+}
+
+.fn-mail1:before {
+    content: "\EA58"
+}
+
+.fn-write2:before {
+	content: "\EADB"
+}
+
+.fn-image1:before {
+	content: "\EA4C"
+}
+
+.fn-booking {
+    display: inline-block;
+    height: 1em;
+    line-height: 1em
+}
+
+.fn-booking:before {
+    font-family: "Naver booking Icons";
+    font-style: normal;
+    font-weight: 400;
+    speak: none;
+    display: inline;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+.fn-booking.fn-18 {
+    font-size: 18px
+}
+.fn-booking.fn-24 {
+    font-size: 24px
+}
+.fn-booking.fn-36 {
+    font-size: 36px
+}
+.fn-booking.fn-48 {
+    font-size: 48px
+}
+.fn-booking-backward1:before {
+    content: "\EA01"
+}
+.fn-booking-cafeteria-general:before {
+    content: "\EA02"
+}
+.fn-booking-cafeteria-table:before {
+    content: "\EA03"
+}
+.fn-booking-channel:before {
+    content: "\EA04"
+}
+.fn-booking-check1:before {
+    content: "\EA05"
+}
+.fn-booking-close1:before {
+    content: "\EA06"
+}
+.fn-booking-cross-in-circle:before {
+    content: "\EA07"
+}
+.fn-booking-down1:before {
+    content: "\EA08"
+}
+.fn-booking-exposed:before {
+    content: "\EA09"
+}
+.fn-booking-first-forward1:before {
+    content: "\EA0A"
+}
+.fn-booking-forward1:before {
+    content: "\EA0B"
+}
+.fn-booking-hairshop:before {
+    content: "\EA0C"
+}
+.fn-booking-kwon:before {
+    content: "\EA0D"
+}
+.fn-booking-last-backward1:before {
+    content: "\EA0E"
+}
+.fn-booking-line1:before {
+    content: "\EA0F"
+}
+.fn-booking-m-analysis:before {
+    content: "\EA10"
+}
+.fn-booking-m-channel:before {
+    content: "\EA11"
+}
+.fn-booking-m-config:before {
+    content: "\EA12"
+}
+.fn-booking-m-customer:before {
+    content: "\EA13"
+}
+.fn-booking-m-info1:before {
+    content: "\EA14"
+}
+.fn-booking-m-service:before {
+    content: "\EA15"
+}
+.fn-booking-m-status:before {
+    content: "\EA16"
+}
+.fn-booking-movie:before {
+    content: "\EA17"
+}
+.fn-booking-performance:before {
+    content: "\EA18"
+}
+.fn-booking-plus1:before {
+    content: "\EA19"
+}
+.fn-booking-simple:before {
+    content: "\EA1A"
+}
+.fn-booking-status:before {
+    content: "\EA1B"
+}
+.fn-booking-up1:before {
+    content: "\EA1C"
+}
+
+i:before{
+    vertical-align:middle;
+}
+
+.spr_book {
+    overflow: hidden;
+    display: inline-block;
+    color: transparent;
+    background-image: url(../images/img/spr_book.png?1602251400);
+    background-size: 400px 400px;
+    vertical-align: top;
+    text-indent: 100%;
+    white-space: nowrap;
+}
+
+.spr_book.ico_evt {
+    width: 27px;
+    height: 27px;
+    background-position: -270px -150px;
+}
+
+.spr_book.ico_naver_s {
+    width: 21px;
+    height: 21px;
+    background-position: -226px -237px
+}
+
+.spr_book.ico_arr_ipc2 {
+    width: 10px;
+    height: 10px;
+    background-position: -378px -187.5px
+}
+
+
+.spr_book2 {
+    background-image: url(../images/img/spr_book2.png);
+    background-size: 330px 400px
+}
+
+.spr_book2.chk_agree{
+    width: 26px!important;
+    height: 26px!important;
+    background-position: -47px -273px;
+}
+
+.spr_book2.ico_minus3 {
+    width: 40px;
+    height: 40px;
+    background-position: -42px -305px
+}
+
+.spr_book2.ico_plus3 {
+    width: 40px;
+    height: 40px;
+    background-position: -168px -305px
+}
+
+.spr_bi {
+    background-image: url(../images/img/spr_bi.c753b938cfe0481b000adab9b84a1f8c.png);
+    background-size: 130px 154px;
+    font-size: 0;
+    overflow: hidden;
+    display: inline-block;
+    color: transparent;
+    vertical-align: top;
+    text-indent: 100%;
+    white-space: nowrap;
+}
+
+.spr_bi.txt_logo {
+    width: 78px;
+    height: 30px;
+    background-position: 0 -56px
+}

@@ -30,7 +30,6 @@ router.get("/:displayInfoId",function(req,res,next){
         });
         response.on('end', () => {
             data = JSON.parse(data);
-            res.locals.data = data;
             priceTypeMapper = {
                 A: "성인",
                 Y: "청소년",
@@ -45,9 +44,6 @@ router.get("/:displayInfoId",function(req,res,next){
                 S: "S석",
                 D: "평일",
             };
-            res.locals.priceTypeMapper = priceTypeMapper;
-            res.locals.transformMoneyUnit = transformMoneyUnit;
-            const date = moment().tz("Asia/Seoul");
             const diffDays = {
                 reserve: Math.floor(Math.random()*5 +1),
             }
@@ -56,14 +52,15 @@ router.get("/:displayInfoId",function(req,res,next){
             const reservationDate = moment().tz("Asia/Seoul").add(diffDays.reserve,"days"); 
             const startDate = moment().tz("Asia/Seoul").add(diffDays.start,"days"); 
             const endDate = moment().tz("Asia/Seoul").add(diffDays.end,"days"); 
-            if(Object.keys(req.cookies).length !== 0){
-                console.log(req.cookies);
-                res.locals.cookies = req.cookies;   
-            }
-            res.locals.reservationDate = reservationDate.format("YYYY.MM.DD HH:mm:ss");
-            res.locals.startDate = startDate.format("YYYY.MM.DD.(ddd)");
-            res.locals.endDate = endDate.format("YYYY.MM.DD.(ddd)");
-            res.render("reserve");
+            res.render("reserve",{
+                data: data,
+                cookies: Object.keys(req.cookies).length !== 0 ? cookies : null,
+                priceTypeMapper: priceTypeMapper,
+                transformMoneyUnit: transformMoneyUnit,
+                reservationDate: reservationDate.format("YYYY.MM.DD HH:mm:ss"),
+                startDate: startDate.format("YYYY.MM.DD HH:mm:ss"),
+                endDate: endDate.format("YYYY.MM.DD HH:mm:ss"),
+            });
         });
       });
       request.end();

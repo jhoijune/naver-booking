@@ -10,23 +10,23 @@ const ReservationInfo = require("../models").ReservationInfo;
 const ReservationInfoPrice = require("../models").ReservationInfoPrice;
 const ProductPrice = require("../models").ProductPrice;
 
-router.get("/products",function(req,res,next){
-    const query = "SELECT display_info.id as displayInfoId,place_name as placeName," +
-        "content as productContent,description as productDescription,product.id as productId," +
-        "save_file_name as productImageUrl,product.category_id as categoryId from display_info INNER JOIN product ON " +
-        "display_info.product_id = product.id INNER JOIN product_image ON product.id " +
-        "= product_image.product_id INNER JOIN file_info ON product_image.file_id = file_info.id " +
-        "WHERE product_image.type = 'th'";
-    sequelize.query(query)
-    .then(([results,metadata])=>{
+router.get("/products",async (req,res,next) => {
+    try{
+        const query = "SELECT display_info.id as displayInfoId,place_name as placeName," +
+            "content as productContent,description as productDescription,product.id as productId," +
+            "save_file_name as productImageUrl,product.category_id as categoryId from display_info INNER JOIN product ON " +
+            "display_info.product_id = product.id INNER JOIN product_image ON product.id " +
+            "= product_image.product_id INNER JOIN file_info ON product_image.file_id = file_info.id " +
+            "WHERE product_image.type = 'th'";
+        const results = (await sequelize.query(query))[0];
         results.forEach(e => {
             e.productImageUrl = path.join("images",e.productImageUrl);
         });
         res.json({"items":results,"totalCount":results.length});
-    })
-    .catch(err => {
+    }
+    catch(err){
         console.error(err);
-    })
+    }
 });
 
 router.get("/products/:displayInfoId",async (req,res,next) => {
@@ -96,8 +96,9 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
 router.get("/reservations",async (req,res,next) => {
     try{
         const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
-            "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
-            "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info";
+            "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,email as reservationEmail," +
+            "reservation_info.id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone " +
+            "from reservation_info INNER JOIN reservation_email ON reservation_info.reservation_email_id = reservation_email.id";
         const reservationInfo = (await sequelize.query(reservationInfoQuery))[0];
         for(const element of reservationInfo){
             const totalPriceQuery = "SELECT SUM(price*count) as totalPrice from reservation_info_price INNER JOIN product_price " +
@@ -173,11 +174,9 @@ router.post("/reservations",async (req,res,next) => {
         if(countSum === 0){
             return res.status(400).send("상품이 선택되지 않았습니다");
         }
-        // 쿠키 설정
         res.cookie("reservationName",req.body.reservationName);
         res.cookie("reservationEmail",req.body.reservationEmail);
         res.cookie("reservationTel",req.body.reservationTelephone);
-        // email 중복된게 있다면 그 id 사용하고 없으면 새로 만듬
         let emailInfo = await ReservationEmail.findOne({
             where:{
                 email:req.body.reservationEmail
@@ -224,51 +223,56 @@ router.post("/reservations",async (req,res,next) => {
 });
 
 router.put("/reservations/:reservationInfoId",async (req,res,next) => {
-    await ReservationInfo.update({
-        cancel_flag: 1
-    },{
-        where: {id:req.params.reservationInfoId},
-    });
-    const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
-        "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
-        "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info " +
-        `WHERE id = ${req.params.reservationInfoId}`;
-    const reservationInfo = (await sequelize.query(reservationInfoQuery))[0][0];
-    const reservationInfoPriceQuery = "SELECT count,product_price_id as productPriceId,reservation_info_id as reservationInfoId," +
-        `id as reservationInfoPriceId from reservation_info_price WHERE reservation_info_id = ${req.params.reservationInfoId}`;
-    const reservationInfoPrice = (await sequelize.query(reservationInfoPriceQuery))[0];
-    reservationInfo.prices = reservationInfoPrice;
-    res.json(reservationInfo);
-});
-
-router.get("/categories",function(req,res,next){
-    const query = "SELECT count(*) as count,category_id as id,category.name " +
-        "from product INNER JOIN category ON product.category_id = category.id group by id";
-    sequelize.query(query)
-    .then(([results,metadata])=>{
-        res.json({"items":results});
-    })
-    .catch((err)=>{
+    try{
+        await ReservationInfo.update({
+            cancel_flag: 1
+        },{
+            where: {id:req.params.reservationInfoId},
+        });
+        const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
+            "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
+            "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info " +
+            `WHERE id = ${req.params.reservationInfoId}`;
+        const reservationInfo = (await sequelize.query(reservationInfoQuery))[0][0];
+        const reservationInfoPriceQuery = "SELECT count,product_price_id as productPriceId,reservation_info_id as reservationInfoId," +
+            `id as reservationInfoPriceId from reservation_info_price WHERE reservation_info_id = ${req.params.reservationInfoId}`;
+        const reservationInfoPrice = (await sequelize.query(reservationInfoPriceQuery))[0];
+        reservationInfo.prices = reservationInfoPrice;
+        res.json(reservationInfo);
+    }
+    catch(err){
         console.error(err);
-    })
+    }
 });
 
-router.get("/promotions",function(req,res,next){
-    const query = "SELECT promotion.id,promotion.product_id as productID,save_file_name as productImageUrl " +
-        "from promotion INNER JOIN product_image ON promotion.product_id = product_image.product_id " +
-        "INNER JOIN file_info ON product_image.file_id = file_info.id " +
-        "WHERE product_image.type = 'ma'";
-    sequelize.query(query)
-    .then(([results,metadata]) => {
+
+router.get("/categories",async (req,res,next) => {
+    try{
+        const query = "SELECT count(*) as count,category_id as id,category.name " +
+            "from product INNER JOIN category ON product.category_id = category.id group by id";
+        const results = (await sequelize.query(query))[0];
+        res.json({"items":results});    
+    }
+    catch(err){
+        console.error(err);
+    }
+});
+
+router.get("/promotions",async (req,res,next) => {
+    try{
+        const query = "SELECT promotion.id,promotion.product_id as productID,save_file_name as productImageUrl " +
+            "from promotion INNER JOIN product_image ON promotion.product_id = product_image.product_id " +
+            "INNER JOIN file_info ON product_image.file_id = file_info.id " +
+            "WHERE product_image.type = 'ma'";
+        const results = (await sequelize.query(query))[0];
         results.forEach(e => {
             e.productImageUrl = path.join("images",e.productImageUrl);
         });
         res.json({"items":results});
-    })
-    .catch((err)=>{
+    }
+    catch(err){
         console.error(err);
-    })
-
+    }
 });
 
 module.exports = router;

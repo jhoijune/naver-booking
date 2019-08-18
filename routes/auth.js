@@ -24,4 +24,8 @@ router.post("/login",(req,res,next)=>{
     })(req,res,next);
 });
 
+router.get("/logout",(req,res,next) => {
+    res.send();
+});
+
 module.exports = router;

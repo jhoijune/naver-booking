@@ -20,243 +20,12 @@
     src: url(../font/NanumGothicBold.woff);
 }
 
-@font-face{
-    font-family: "Naver Icons";
-    src: url(../font/Naver-Icons.woff) format("woff");
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Naver booking Icons";
-    src: url(../font/Naver-booking-Icons.woff) format("woff");
-    font-weight: 400;
-    font-style: normal;
-}
-
-
 body {
     margin: 0;
     font-family: "Nanum Gothic Regular","맑은 고딕",
         "Apple SD Gothic Neo",sans-serif;
     font-size: 14px;
 }
-
-.fn {
-    display: inline-block;
-    height: 1em;
-}
-
-.fn:before {
-    font-family: "Naver Icons";
-    font-style: normal;
-    font-weight: 400;
-    speak: none;
-    display: inline-block;
-    text-decoration: inherit;
-    width: 1em;
-    text-align: center;
-    font-variant: normal;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale
-}
-
-.fn-alarm1:before{
-    content:"\EA07"
-}
-
-.fn-alarm2:before{
-    content:"\EA08"
-}
-
-.fn-backward1:before {
-    content: "\EA12"
-}
-
-.fn-backward2:before {
-    content: "\EA13"
-}
-
-.fn-call1:before {
-    content: "\EA25"
-}
-
-.fn-call2:before {
-    content: "\EA26"
-}
-
-.fn-present1:before{
-    content: "\EA2C"
-}
-
-.fn-present2:before{
-    content: "\EA2D"
-}
-
-.fn-check:before{
-    content: "\EA35"
-}
-
-.fn-down2:before {
-    content: "\EA3D"
-}
-
-.fn-forward1:before {
-    content: "\EA44"
-}
-
-.fn-forward2:before{
-    content: "\EA45"
-}
-
-.fn-home1:before {
-    content: "\EA4A"
-}
-
-.fn-car-find1:before{
-    content: "\EA64"
-}
-
-.fn-car-find2:before{
-    content: "\EA65"
-}
-
-.fn-nbooking-calender1:before{
-    content: "\EA66"
-}
-
-.fn-nbooking-calender2:before {
-    content: "\EA67"
-}
-
-.fn-path-find1:before {
-    content: "\EA74"
-}
-
-.fn-path-find2:before {
-    content: "\EA75"
-}
-
-.fn-pin1:before{
-    content:"\EA7A"
-}
-
-.fn-pin2:before {
-    content: "\EA7B"
-}
-
-.fn-pin3:before{
-    content:"\EA7C"
-}
-
-.fn-pin4:before{
-    content:"\EA7D"
-}
-
-.fn-share1:before {
-    content: "\EA96"
-}
-
-.fn-star1:before{
-    content:"\EAA2"
-}
-
-.fn-star2:before{
-    content:"\EAA3"
-}
-
-.fn-star3:before{
-    content:"\EAA3";
-    background: linear-gradient(to Right,#f00 70%,#808080 30%);
-    background-clip:text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display:initial;
-}
-
-.fn-up1:before {
-    content: "\EABF"
-}
-
-.fn-up2:before {
-    content: "\EAC0"
-}
-
-.fn-navigation2:before {
-    content: "\EA65"
-}
-
-.fn-mail1:before {
-    content: "\EA58"
-}
-
-.fn-write2:before {
-	content: "\EADB"
-}
-
-.fn-image1:before {
-	content: "\EA4C"
-}
-
-i:before{
-    vertical-align:middle;
-}
-
-.spr_book {
-    overflow: hidden;
-    display: inline-block;
-    color: transparent;
-    background-image: url(../images/img/spr_book.png?1602251400);
-    background-size: 400px 400px;
-    vertical-align: top;
-    text-indent: 100%;
-    white-space: nowrap;
-}
-
-.spr_book.ico_evt {
-    width: 27px;
-    height: 27px;
-    background-position: -270px -150px;
-}
-
-.spr_book.ico_naver_s {
-    width: 21px;
-    height: 21px;
-    background-position: -226px -237px
-}
-
-.spr_book.ico_arr_ipc2 {
-    width: 10px;
-    height: 10px;
-    background-position: -378px -187.5px
-}
-
-
-.spr_book2 {
-    background-image: url(../images/img/spr_book2.png);
-    background-size: 330px 400px
-}
-
-.spr_book2.chk_agree{
-    width: 26px!important;
-    height: 26px!important;
-    background-position: -47px -273px;
-}
-
-.spr_book2.ico_minus3 {
-    width: 40px;
-    height: 40px;
-    background-position: -42px -305px
-}
-
-.spr_book2.ico_plus3 {
-    width: 40px;
-    height: 40px;
-    background-position: -168px -305px
-}
-
-
 
 header.GNBMain .container {
     display: flex;
@@ -284,7 +53,7 @@ header.GNBMain a {
 
 header.GNBMain h2 {
     font-family: "Nanum Gothic Bold";
-    font-size: 3.5vw;
+    font-size: 4.35vw;
     padding-right: 2.5vw;
     margin: 0px;
     color: #fff;
@@ -301,14 +70,9 @@ header.GNBMain h2 {
         padding: 10.35px;
     }
     header.GNBMain h2 {
-        font-size: 14.49px;
+        font-size: 18px;
         padding-right: 10.35px;
     }
-}
-
-.promotion {
-    color: #fff;
-    color: var(--text-bright-color);
 }
 
 .promotion .container {
@@ -369,6 +133,7 @@ header.GNBMain h2 {
 
 .category li {
     font-family: "Nanum Gothic Bold";
+    font-size: 15px;
     flex: auto;
     padding: 7.5px 0px;
 }
@@ -469,7 +234,7 @@ header.GNBMain h2 {
 .itemList h1 {
     font-family: "Nanum Gothic Bold";
     margin:0;
-    font-size: 14px;
+    font-size: 16px;
     padding: 7px;
 }
 
@@ -484,7 +249,8 @@ header.GNBMain h2 {
     margin: 0;
     color: #808080;
     color: var(--text-grey-color);
-    font-size: 14px;
+    font-size: 16px;
+    line-height: 20px;
     padding: 7px;
 }
 
@@ -520,7 +286,6 @@ header.GNBMain h2 {
 .helping a {
     display: block;
     font-size: 13px;
-    font-family: sans-serif;
     text-align: center;
     height: 50px;
     line-height: 50px;
@@ -545,7 +310,7 @@ footer .caution {
     text-align: center;
     padding: 0 10px;
     opacity: 0.5;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 footer .copyright {
@@ -553,7 +318,7 @@ footer .copyright {
     text-align: center;
     padding: 15px 0;
     opacity: 0.5;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 @media(min-width: 414px){
@@ -590,7 +355,7 @@ header.GNBDetail a {
 
 header.GNBDetail h2 {
     font-family: "Nanum Gothic Bold";
-    font-size: 3.5vw;
+    font-size: 4.35vw;
     padding-right: 2.5vw;
     margin: 0px;
     color: #fff;
@@ -607,7 +372,7 @@ header.GNBDetail h2 {
         padding: 10.35px;
     }
     header.GNBDetail h2 {
-        font-size: 14.49px;
+        font-size: 18px;
         padding-right: 10.35px;
     }
 }
@@ -1541,13 +1306,129 @@ header.GNBDetail h2 {
     vertical-align: middle;
 }
 
-
-
-
 @media(min-width:414px){
     .reserveSection .container {
         margin: 0 auto;
     }
+}
 
 
+
+
+.greyContainer {
+    height: 100vh;
+    width: 100vw;
+    max-width: 414px;
+    background-color: #E9ECEF;
+    background-color: var(--grey-color);
+}
+
+@media(min-width:414px){
+    .greyContainer {
+        margin: 0 auto;
+    }
+}
+
+
+
+.loginHeader .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    max-width: 414px;
+    height: 100px;
+    max-width: var(--breakpoint-width);
+    background-color: #E9ECEF;
+    background-color: var(--grey-color);
+}
+
+.loginHeader a {
+    display:inline-block;
+    text-decoration: none;
+}
+
+@media(min-width:414px){
+    .loginHeader .container {
+        margin: 0 auto;
+    }
+}
+
+.loginSection .container {
+    width: 100vw;
+    max-width: 414px;
+    max-width: var(--breakpoint-width);
+    background-color: #E9ECEF;
+    background-color: var(--grey-color);
+}
+
+.loginSection .headerBox {
+    margin: 0 20px;
+    border-bottom-color: #C0C0C0;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;    
+}
+
+.loginSection h1 {
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+    font-size: 16px;
+    font-family: "Nanum Gothic Bold";
+}
+
+.loginSection p {
+    font-size: 16px;
+    margin: 0;
+    padding: 10px 0 10px 20px;
+}
+
+.loginSection input[type='text']{
+    margin-left: 20px;
+    padding-left: 10px;
+    font-family: "Nanum Gothic Regular";
+    font-size: 16px;
+    width: 364px;
+    height: 40px;
+}
+
+.loginSection input[type='submit']{
+    background-color: #fff;
+    background-color: var(--text-bright-color);
+    font-family: "Nanum Gothic Regular";
+    font-size: 16px;
+    color: #1EC800;
+    color: var(--main-color);
+    padding: 0;
+    margin:20px 0 50px 20px;
+    border-style: solid;
+    border-color: #1EC800;
+    border-color: var(--main-color);
+    border-width: 1px;
+    height:40px;
+    width: 378px;
+}
+
+@media(min-width:414px){
+    .loginSection .container{
+        margin: 0 auto;
+    }
+}
+
+.reservationCount .container {
+    display: flex;
+    width: 100vw;
+    height: 100vw;
+    max-width: 414px; 
+    max-width: var(--breakpoint-width);
+    margin-top: 12vw;
+    background-color: #1EC800;
+    background-color: var(--main-color);
+    overflow: hidden;
+}
+
+@media (min-width: 414px){
+    .reservationCount .container {
+        margin: 49.88px auto 0 auto;
+    }
 }

@@ -4,6 +4,37 @@ html
         meta(charset="UTF-8")
         meta(name="viewport",content="width=device-width,initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible",content="ie=edge")
-        title= data.displayInfo.productDescription
+        title 예약 확인
         link(rel="stylesheet",href="../stylesheets/style.css")
+        link(rel="stylesheet",href="../stylesheets/icon.css")
         link(rel="icon",href="../images/img/favicon.ico",type="image/x-icon")
+    body
+        header.GNBMain
+            .container
+                a(href="/")
+                    img(src="../images/icon/icon.png" alt="")
+                a(href="/auth/logout")
+                    h2 로그아웃
+        section.reservationCount
+            .container
+                .all
+                    span(style="font-size:48px").text!= "<i class='fn fn-backward1'></i> blah blah"
+                    h1
+                .toBeUsed
+                .completionOfUse
+                .cancelRefund
+        section
+            .container
+                article
+                article
+                article
+        aside.helping
+            .container
+                p.more 더보기
+                a(href="#")
+                    i.fn.fn-up1
+                    |  TOP
+        footer
+            .container
+                p.caution 네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.
+                span.copyright © NAVER Corp.

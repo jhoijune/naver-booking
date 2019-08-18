@@ -6,6 +6,7 @@ html
         meta(http-equiv="X-UA-Compatible",content="ie=edge")
         title= data.displayInfo.productDescription
         link(rel="stylesheet",href="../stylesheets/style.css")
+        link(rel="stylesheet",href="../stylesheets/icon.css")
         link(rel="icon",href="../images/img/favicon.ico",type="image/x-icon")
         - const maxStar = 5
         - const getStar = Math.floor(data.averageScore)
@@ -28,10 +29,13 @@ html
     body
         header.GNBDetail
             .container
-                a(href="../mainpage.html")
+                a(href="../")
                     img(src="../images/icon/icon.png",alt="")
                 a(href="../myreservation")
-                    h2 {id or login} 
+                    if user
+                        h2= user.email
+                    else
+                        h2 예약확인 
         section.titleImage
             .container
                 ul

@@ -29,7 +29,6 @@ router.get("/:displayInfoId",function(req,res,next){
         });
         response.on('end', () => {
             data = JSON.parse(data);
-            res.locals.data = data;
             priceTypeMapper = {
                 A: "성인",
                 Y: "청소년",
@@ -44,8 +43,11 @@ router.get("/:displayInfoId",function(req,res,next){
                 S: "S석",
                 D: "평일",
             };
-            res.locals.priceTypeMapper = priceTypeMapper;
-            res.render("detail");
+            res.render("detail",{
+                data: data,
+                user: req.user | null,
+                priceTypeMapper: priceTypeMapper,
+            });
         });
       });
       request.end();
