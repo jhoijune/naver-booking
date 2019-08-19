@@ -14,6 +14,7 @@ const detailRouter = require('./routes/detail');
 const reviewRouter = require('./routes/review');
 const reserveRouter = require('./routes/reserve');
 const myReservationRouter = require('./routes/myReservation');
+const reviewWriteRouter = require('./routes/reviewWrite');
 const sequelize = require('./models').sequelize;
 const passportConfig = require('./passport');
 
@@ -62,6 +63,7 @@ app.use("/detail",detailRouter);
 app.use("/review",reviewRouter);
 app.use("/reserve",reserveRouter);
 app.use("/myreservation",myReservationRouter);
+app.use("/reviewWrite",reviewWriteRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');

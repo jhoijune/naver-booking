@@ -1312,9 +1312,6 @@ header.GNBDetail h2 {
     }
 }
 
-
-
-
 .greyContainer {
     height: 100vh;
     width: 100vw;
@@ -1328,8 +1325,6 @@ header.GNBDetail h2 {
         margin: 0 auto;
     }
 }
-
-
 
 .loginHeader .container{
     display: flex;
@@ -1416,19 +1411,105 @@ header.GNBDetail h2 {
 }
 
 .reservationCount .container {
-    display: flex;
     width: 100vw;
-    height: 100vw;
     max-width: 414px; 
     max-width: var(--breakpoint-width);
-    margin-top: 12vw;
+    margin-top: 12.8vw;
     background-color: #1EC800;
     background-color: var(--main-color);
     overflow: hidden;
 }
 
+.reservationCount ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.reservationCount li{
+    flex:1;
+    color: #fff;
+    color: var(--text-bright-color);
+    text-align: center;
+    padding: 0 10px;
+    margin: 10px 0 5px 0;
+    border-right: 1px solid #00b436
+}
+
+.reservationCount li:nth-child(4){
+    border-right:none;
+}
+
+.reservationCount h1 {
+    font-size: 24px;
+    font-family: "Nanum Gothic Bold";
+    margin:0;
+    padding: 5px 0;
+}
+
 @media (min-width: 414px){
     .reservationCount .container {
-        margin: 49.88px auto 0 auto;
+        margin: 52.88px auto 0 auto;
+    }
+}
+
+.reservationInfo .container {
+    width:100vw;
+    max-width: 414px;
+    max-width: var(--breakpoint-width);
+    background-color: #E9ECEF;
+    background-color: var(--grey-color);
+}
+
+.reservationInfo .cardHeader {
+    display: flex;
+    padding: 10px 10px 0 10px;
+}
+
+.reservationInfo ul {
+    list-style: none;
+    margin: 0 10px;
+    padding: 0;
+    background-color: #fff;
+    background-color: var(--text-bright-color);
+}
+
+.reservationInfo li {
+    width: 100%;
+}
+
+.reservationInfo h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.reservationInfo h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.reservationInfo .middleSection {
+    display: table;
+}
+
+.reservationInfo .tableRow {
+    display: table-row;
+}
+
+.reservationInfo .tableRow p{
+    display: table-cell;
+}
+
+
+.reservationInfo .bottomSection{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+@media(min-width:414px){
+    .reservationInfo .container {
+        margin: 0 auto;
     }
 }

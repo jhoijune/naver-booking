@@ -19,10 +19,10 @@ html
                         h1 비회원 예약확인
                     p 예약자 이메일 입력
                     form(action="auth/login",method="POST")
-                        input(type="text", name="",placeHolder="xxxxxx@naver.com")
+                        input(type="text", name="email",placeHolder="xxxxxx@naver.com")
                         input(type="submit", value="내 예약 확인")
             footer
                 .container
                     p.caution 네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.
                     span.copyright © NAVER Corp.
-    
+            h2= flashMessage

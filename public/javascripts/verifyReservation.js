@@ -142,6 +142,12 @@ document.addEventListener("DOMContentLoaded",()=>{
         const submitButton = document.querySelector("button[type='submit']");
         const reservationDate = document.querySelector(".inputInfo .reservationDate");
         const totalTicket = document.querySelector(".inputInfo .totalTicket");
+        (() => {
+            // 쿠키가 있을 때 작동하기 위한 init작업
+            verificationFun.verifyName();
+            verificationFun.verifyEmail();
+            verificationFun.verifyTel();
+        })();
         ticketContainer.addEventListener("click",event => {
             event.preventDefault();
             const classes = event.target.className.split(/\s/);

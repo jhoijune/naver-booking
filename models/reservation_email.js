@@ -4,6 +4,11 @@ module.exports = (sequelize,DataTypes) => {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
+        is_admin: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        }
     },{
         freezeTableName: true,
         timestamps: false,

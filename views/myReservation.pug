@@ -17,20 +17,136 @@ html
                     h2 로그아웃
         section.reservationCount
             .container
-                .all
-                    span(style="font-size:48px").text!= "<i class='fn fn-backward1'></i> blah blah"
-                    h1
-                .toBeUsed
-                .completionOfUse
-                .cancelRefund
-        section
+                ul
+                    li.all
+                        span.text!= "<i class='spr_book2 ico_book2'></i> 전체"
+                        h1= length
+                    li.toUsed
+                        span.tex!= "<i class='spr_book2 ico_book_ss'></i> 이용예정"
+                        h1= toUsed.length
+                    li.used
+                        span.text!= "<i class='spr_book2 ico_check'></i> 이용완료"
+                        h1= used.length
+                    li.canceled
+                        span.text!= "<i class='spr_book2 ico_back'></i> 취소·환불"
+                        h1= canceled.length
+        section.reservationInfo
             .container
-                article
-                article
-                article
+                article.toUsed
+                    .cardHeader.green
+                        .left
+                        .middle
+                            span!= "<i class='spr_book2 ico_check2'></i> 예약 확정"
+                        .right
+                    ul
+                        each item in toUsed
+                            li
+                                .topSection
+                                    - const transformId = String(item.reservationInfoId).padStart(8,"0")
+                                    h2= `No.${transformId}`
+                                    h1= item.description
+                                .middleSection
+                                    .tableRow
+                                        p 일정
+                                        p= item.reservationDate
+                                    .tableRow
+                                        p 내역
+                                        p
+                                            span 예매자 이름 :
+                                            |#{item.reservationName}
+                                            br
+                                            span 예매자 전화번호 :
+                                            | #{item.reservationTel}
+                                            br
+                                            span 예매 매수 : 
+                                            - let text = ""
+                                            each price in item.priceInfo
+                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매`
+                                            | #{text}
+                                    .tableRow
+                                        p 장소
+                                        p= item.placeName
+                                .bottomSection
+                                   p 결제 금액
+                                   p= `${transformMoneyUnit(item.totalPrice)} 원`
+                                button(data-reservation-info-id=item.reservationInfoId) 취소
+                article.used
+                    .cardHeader.grey
+                        .left
+                        .middle
+                            span!= "<i class='spr_book2 ico_check2'></i> 이용 완료"
+                        .right
+                    ul
+                        each item in used
+                            li
+                                .topSection
+                                    - const transformId = String(item.reservationInfoId).padStart(8,"0")
+                                    h2= `No.${transformId}`
+                                    h1= item.description
+                                .middleSection
+                                    .tableRow
+                                        p 일정
+                                        p= item.reservationDate
+                                    .tableRow
+                                        p 내역
+                                        p
+                                            span 예매자 이름 :
+                                            |#{item.reservationName}
+                                            br
+                                            span 예매자 전화번호 :
+                                            | #{item.reservationTel}
+                                            br
+                                            span 예매 매수 : 
+                                            - let text = ""
+                                            each price in item.priceInfo
+                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매`
+                                            | #{text}
+                                    .tableRow
+                                        p 장소
+                                        p= item.placeName
+                                .bottomSection
+                                   p 결제 금액
+                                   p= `${transformMoneyUnit(item.totalPrice)} 원`
+                                a(href=`reviewwrite/${item.productId}`) 예매자 리뷰 남기기
+                article.canceled
+                    .cardHeader.grey
+                        .left
+                        .middle
+                            span!= "<i class='spr_book2 ico_cancel'></i> 취소된 예약"
+                        .right
+                    ul
+                        each item in canceled
+                            li
+                                .topSection
+                                    - const transformId = String(item.reservationInfoId).padStart(8,"0")
+                                    h2= `No.${transformId}`
+                                    h1= item.description
+                                .middleSection
+                                    .tableRow
+                                        p 일정
+                                        p= item.reservationDate
+                                    .tableRow
+                                        p 내역
+                                        p
+                                            span 예매자 이름 :
+                                            |#{item.reservationName}
+                                            br
+                                            span 예매자 전화번호 :
+                                            | #{item.reservationTel}
+                                            br
+                                            span 예매 매수 : 
+                                            - let text = ""
+                                            each price in item.priceInfo
+                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매`
+                                            | #{text}
+                                    .tableRow
+                                        p 장소
+                                        p= item.placeName
+                                .bottomSection
+                                   p 결제 금액
+                                   p= `${transformMoneyUnit(item.totalPrice)} 원`
         aside.helping
             .container
-                p.more 더보기
                 a(href="#")
                     i.fn.fn-up1
                     |  TOP

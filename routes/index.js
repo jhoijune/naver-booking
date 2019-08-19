@@ -2,16 +2,23 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 
+const {isNotLoggedIn} = require("./middlewares");
+
+
+
+
 router.get("/", (req, res, next) => {
-    // 여기서 로그인중이면 {id or login} 바꿔야함
+    email = req.isAuthenticated() ? req.user.email : null
     res.render("mainpage",{
-        user: req.user | null,
-    });
+        email: email
+    })
 });
 
-router.get("/bookinglogin",(req,res,next)=>{
-    // 여기에서 로그인 중이면 이미 로그인됐다고 알리고 메인페이지로 보내야 함
-    res.render("bookingLogin");
+
+router.get("/bookinglogin",isNotLoggedIn,(req,res,next)=>{
+    res.render("bookingLogin",{
+        flashMessage: res.locals.loginError
+    });
 })
 
 module.exports = router;

@@ -5,9 +5,11 @@ const {ReservationEmail} = require("../models");
 module.exports = (passport) =>{
     passport.use(new LocalStrategy({
         usernameField: "email",
-    },async (email,done) =>{
+        passwordField: "email"
+    },async (email,password,done) =>{
         try{
-            const exUser = await ReservationEmail.findOne({where:{email}});
+            console.log("나의",email);
+            const exUser = await ReservationEmail.findOne({where:{email:email}});
             if(exUser){
                 done(null,exUser);
             }

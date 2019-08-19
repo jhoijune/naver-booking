@@ -11,4 +11,6 @@ module.exports = (passport) =>{
         .then(user => done(null,user))
         .catch(err => done(err));
     });
+
+    local(passport);
 }

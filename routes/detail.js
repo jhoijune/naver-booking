@@ -5,6 +5,8 @@ const router = express.Router();
 
 const sequelize = require("../models").sequelize;
 const DisplayInfo = require("../models").DisplayInfo;
+const {isLoggedIn} = require("./middlewares");
+const {priceTypeMapper} = require("../public/javascripts/common");
 
 router.get("/",function(req,res,next){
     DisplayInfo.findOne({
@@ -29,23 +31,10 @@ router.get("/:displayInfoId",function(req,res,next){
         });
         response.on('end', () => {
             data = JSON.parse(data);
-            priceTypeMapper = {
-                A: "성인",
-                Y: "청소년",
-                B: "유아",
-                S: "셋트",
-                D: "장애인",
-                C: "지역주민",
-                E: "어얼리버드",
-                V: "VIP",
-                R: "R석",
-                B: "B석",
-                S: "S석",
-                D: "평일",
-            };
+            email = req.isAuthenticated() ? req.user.email : null
             res.render("detail",{
                 data: data,
-                user: req.user | null,
+                email: email,
                 priceTypeMapper: priceTypeMapper,
             });
         });

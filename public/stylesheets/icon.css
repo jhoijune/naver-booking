@@ -323,13 +323,17 @@ i:before{
 
 .spr_book2 {
     background-image: url(../images/img/spr_book2.png);
-    background-size: 330px 400px
+    background-size: 330px 400px;
+    vertical-align: top;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    color: transparent;
 }
 
-.spr_book2.chk_agree{
-    width: 26px!important;
-    height: 26px!important;
-    background-position: -47px -273px;
+.spr_book2.ico_minus3.max {
+    background-position: -84px -305px
 }
 
 .spr_book2.ico_minus3 {
@@ -338,10 +342,91 @@ i:before{
     background-position: -42px -305px
 }
 
+.spr_book2.ico_minus3.disabled {
+    background-position: 0 -305px
+}
+
 .spr_book2.ico_plus3 {
     width: 40px;
     height: 40px;
     background-position: -168px -305px
+}
+
+.spr_book2.ico_plus3.disabled {
+    background-position: -126px -305px
+}
+
+.spr_book2.ico_bell {
+    width: 13px;
+    height: 13px;
+    background-position: -249px -178px
+}
+
+.spr_book2.ico_book2 {
+    width: 15px;
+    height: 15px;
+    background-position: -202px -284px
+}
+
+.spr_book2.ico_book_ss {
+    width: 15px;
+    height: 15px;
+    background-position: -151px -284px
+}
+
+.spr_book2.ico_back {
+    width: 15px;
+    height: 15px;
+    background-position: -185px -284px
+}
+
+.spr_book2.ico_check {
+    width: 15px;
+    height: 15px;
+    background-position: -168px -284px
+}
+
+.spr_book2.ico_clock {
+    width: 17px;
+    height: 17px;
+    background-position: -277px -46px
+}
+
+.spr_book2.ico_check2 {
+    width: 17px;
+    height: 17px;
+    background-position: -277px -65px
+}
+
+.spr_book2.ico_cancel {
+    width: 17px;
+    height: 17px;
+    background-position: -277px -150px
+}
+
+.spr_book2.ico_mapview {
+    width: 40px;
+    height: 40px;
+    background-position: -287px -196px
+}
+.spr_book2.ico_cls {
+	width: 16px;
+	height: 16px;
+	background-position:-281px -26px;
+}
+
+.spr_book2.ico_arr6_lt {
+    width: 11px;
+	height: 20px;
+    background-position:-151px -50px;
+}
+.spr_book2.ico_arr6_rt {
+	width: 11px;
+	height: 20px;
+    background-position:-164px -50px;
+}
+.spr_book2.ico_arr6_lt.off {
+	opacity: 0.6;
 }
 
 .spr_bi {
@@ -360,4 +445,47 @@ i:before{
     width: 78px;
     height: 30px;
     background-position: 0 -56px
+}
+
+.cardHeader .left,.right{
+    overflow: hidden;
+    background-size: 12px 54px;
+    background-repeat: no-repeat;
+    width: 12px;
+    height: 54px;
+    vertical-align: top;
+}
+
+.cardHeader.green .left {
+    background-image: url(../images/img/bg_card2_hl.png);
+}
+
+.cardHeader.green .right {
+    background-image: url(../images/img/bg_card2_hr.png);
+}
+
+.cardHeader.grey .left {
+    background-image: url(../images/img/bg_card3_hl.png);
+}
+
+.cardHeader.grey .right {
+    background-image: url(../images/img/bg_card3_hr.png);
+}
+
+.cardHeader .middle {
+    overflow: hidden;
+    background-size: auto 54px;
+    background-repeat: repeat-x;
+    width: 100%;
+    height: 54px;
+    max-height: 54px;
+    vertical-align: top
+}
+
+.cardHeader.green .middle {
+    background-image: url(../images/img/bg_card2_hm.gif);
+}
+
+.cardHeader.grey .middle {
+    background-image: url(../images/img/bg_card3_hm.gif);
 }

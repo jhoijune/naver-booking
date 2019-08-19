@@ -2,20 +2,8 @@ const express = require("express");
 const http = require("http");
 const router = express.Router();
 const moment = require("moment-timezone");
+const {transformMoneyUnit,priceTypeMapper} = require("../public/javascripts/common");
 moment.locale("ko");
-
-function transformMoneyUnit(num){
-    let transformed = "";
-    num = num.toString();
-    const numLen = num.length;
-    for(let i = 1 ; i <= numLen ; i++){ 
-        if(i>3 && i % 3 === 1){
-            transformed = "," + transformed;
-        }
-        transformed = num.charAt(numLen - i) + transformed;
-    }
-    return transformed
-}
 
 router.get("/:displayInfoId",function(req,res,next){
     const request = http.request({
@@ -30,20 +18,6 @@ router.get("/:displayInfoId",function(req,res,next){
         });
         response.on('end', () => {
             data = JSON.parse(data);
-            priceTypeMapper = {
-                A: "성인",
-                Y: "청소년",
-                B: "유아",
-                S: "셋트",
-                D: "장애인",
-                C: "지역주민",
-                E: "어얼리버드",
-                V: "VIP",
-                R: "R석",
-                B: "B석",
-                S: "S석",
-                D: "평일",
-            };
             const diffDays = {
                 reserve: Math.floor(Math.random()*5 +1),
             }
@@ -54,12 +28,12 @@ router.get("/:displayInfoId",function(req,res,next){
             const endDate = moment().tz("Asia/Seoul").add(diffDays.end,"days"); 
             res.render("reserve",{
                 data: data,
-                cookies: Object.keys(req.cookies).length !== 0 ? cookies : null,
+                cookies: Object.keys(req.cookies).length !== 0 ? req.cookies : null,
                 priceTypeMapper: priceTypeMapper,
                 transformMoneyUnit: transformMoneyUnit,
                 reservationDate: reservationDate.format("YYYY.MM.DD HH:mm:ss"),
-                startDate: startDate.format("YYYY.MM.DD HH:mm:ss"),
-                endDate: endDate.format("YYYY.MM.DD HH:mm:ss"),
+                startDate: startDate.format("YYYY.MM.DD.(ddd)"),
+                endDate: endDate.format("YYYY.MM.DD.(ddd)"),
             });
         });
       });
