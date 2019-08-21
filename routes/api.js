@@ -224,11 +224,21 @@ router.post("/reservations",async (req,res,next) => {
 
 router.put("/reservations/:reservationInfoId",async (req,res,next) => {
     try{
+        /*
+        유저가 cancel하려는 예약 정보를 가지고 있을때에만 승인함
+        아니면 거부해야됨
+        await ReservationInfo.findOne({
+
+        },{
+            where: {reservation_email_id:req.user.id}
+        })
+        */
         await ReservationInfo.update({
             cancel_flag: 1
         },{
             where: {id:req.params.reservationInfoId},
         });
+        /*
         const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
             "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,reservation_email as reservationEmail," +
             "id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone from reservation_info " +
@@ -239,6 +249,8 @@ router.put("/reservations/:reservationInfoId",async (req,res,next) => {
         const reservationInfoPrice = (await sequelize.query(reservationInfoPriceQuery))[0];
         reservationInfo.prices = reservationInfoPrice;
         res.json(reservationInfo);
+        */
+        res.send();
     }
     catch(err){
         console.error(err);

@@ -22,7 +22,7 @@ html
                         span.text!= "<i class='spr_book2 ico_book2'></i> 전체"
                         h1= length
                     li.toUsed
-                        span.tex!= "<i class='spr_book2 ico_book_ss'></i> 이용예정"
+                        span.text!= "<i class='spr_book2 ico_book_ss'></i> 이용예정"
                         h1= toUsed.length
                     li.used
                         span.text!= "<i class='spr_book2 ico_check'></i> 이용완료"
@@ -51,18 +51,18 @@ html
                                         p= item.reservationDate
                                     .tableRow
                                         p 내역
-                                        p
-                                            span 예매자 이름 :
-                                            |#{item.reservationName}
-                                            br
-                                            span 예매자 전화번호 :
-                                            | #{item.reservationTel}
-                                            br
-                                            span 예매 매수 : 
+                                        .tableRow
+                                            p 예매자 이름
+                                            p= item.reservationName
+                                        .tableRow
+                                            p 예매자 전화번호
+                                            p= item.reservationTel                                            
+                                        .tableRow
+                                            p 예매 매수
                                             - let text = ""
                                             each price in item.priceInfo
-                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매`
-                                            | #{text}
+                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매,`
+                                            p.ticket= text.slice(0,-1)
                                     .tableRow
                                         p 장소
                                         p= item.placeName
@@ -89,18 +89,18 @@ html
                                         p= item.reservationDate
                                     .tableRow
                                         p 내역
-                                        p
-                                            span 예매자 이름 :
-                                            |#{item.reservationName}
-                                            br
-                                            span 예매자 전화번호 :
-                                            | #{item.reservationTel}
-                                            br
-                                            span 예매 매수 : 
+                                        .tableRow
+                                            p 예매자 이름
+                                            p= item.reservationName
+                                        .tableRow
+                                            p 예매자 전화번호
+                                            p= item.reservationTel                                            
+                                        .tableRow
+                                            p 예매 매수
                                             - let text = ""
                                             each price in item.priceInfo
-                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매`
-                                            | #{text}
+                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매,`
+                                            p.ticket= text.slice(0,-1)
                                     .tableRow
                                         p 장소
                                         p= item.placeName
@@ -127,18 +127,18 @@ html
                                         p= item.reservationDate
                                     .tableRow
                                         p 내역
-                                        p
-                                            span 예매자 이름 :
-                                            |#{item.reservationName}
-                                            br
-                                            span 예매자 전화번호 :
-                                            | #{item.reservationTel}
-                                            br
-                                            span 예매 매수 : 
+                                        .tableRow
+                                            p 예매자 이름
+                                            p= item.reservationName
+                                        .tableRow
+                                            p 예매자 전화번호
+                                            p= item.reservationTel                                            
+                                        .tableRow
+                                            p 예매 매수
                                             - let text = ""
                                             each price in item.priceInfo
-                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매`
-                                            | #{text}
+                                                - text += `    ${priceTypeMapper[price.priceTypeName]} ${price.count} 매,`
+                                            p.ticket= text.slice(0,-1)
                                     .tableRow
                                         p 장소
                                         p= item.placeName
@@ -154,3 +154,4 @@ html
             .container
                 p.caution 네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.
                 span.copyright © NAVER Corp.
+        script(src="javascripts/cancelReservation.js")
