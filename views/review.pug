@@ -28,13 +28,13 @@ html
     body
         header.reviewHeader
             .container
-                .leftSection
-                    a(href=`/detail/${data.displayInfo.displayInfoId}`)
-                        i.fn.fn-backward1
-                .CenterSection
-                    h1= data.displayInfo.productDescription
-                .rightSection
-        .blankSpace
+                .innerContainer
+                    .leftSection
+                        a(href=`/detail/${data.displayInfo.displayInfoId}`)
+                            i.fn.fn-backward1
+                    .centerSection
+                        h1= data.displayInfo.productDescription
+                    .rightSection
         section.comment
             .outerContainer
                 .innerContainer

@@ -1,11 +1,33 @@
 const express = require("express");
 const {isLoggedIn} = require("./middlewares");
 const router = express.Router();
+const {ReservationInfo,Product} = require("../models");
 
-router.get("/:productId",isLoggedIn,(req,res,next) =>{
-    // 로그인 상태면서 해당 사용자가 예매를 했으며 시간이 지나야
-    // 렌더할 수 있게
-    res.render("reviewWrite");
+
+router.get("/:productId",isLoggedIn,async (req,res,next) =>{
+    const exReservations = await ReservationInfo.findAll({
+        where: {
+            reservation_email_id: req.user.id,
+            product_id: req.params.productId,
+        }
+    });
+    if(!exReservations){
+        return res.status(400).redirect("/");
+    }
+    for(const reservation of exReservations){
+        if(new Date(reservation.reservation_date) < new Date()){
+            const toReviewProduct = await Product.findOne({
+                where: {
+                    id: reservation.product_id
+                }
+            })
+            return res.render("reviewWrite",{
+                description: toReviewProduct.description,
+                reservationId: reservation.id,
+            });
+        }
+    }
+    res.status(400).redirect("/")
 })
 
 

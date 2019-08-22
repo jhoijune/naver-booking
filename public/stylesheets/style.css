@@ -670,7 +670,7 @@ header.GNBDetail h2 {
 }
 
 .comment .commentSummary .notGetStar {
-    color: #808080;
+    color: #808080; 
     color: var(--text-grey-color);
 }
 
@@ -914,22 +914,26 @@ header.GNBDetail h2 {
 }
 
 .reviewHeader .container{
-    padding: 20px 10px;
     width: 100vw;
-    max-width: 392px;
-    border-color: #C0C0C0;
+    max-width: 414px;
+    max-width: var(--breakpoint-width);
+    border-color: #E9ECEF;
     border-style: solid;
-    border-width: 1px 1px 10px 1px;
+    border-width: 0 0 10px 0;
+}
+
+.reviewHeader .innerContainer {
+    width: auto;
     display: flex;
-    font-size: 18px;
+    padding: 20px 10px;
 }
 
 .reviewHeader .leftSection{
     flex: 1;
 }
 
-.reviewHeader .centerSection{
-    flex: 8;
+.reviewHeader .leftSection i{
+    font-size: 20px;
 }
 
 .reviewHeader .rightSection{
@@ -960,6 +964,10 @@ header.GNBDetail h2 {
 
 .reserveHeader .leftSection{
     flex: 1;
+}
+
+.reserveHeader .leftSection i {
+    font-size: 20px;
 }
 
 .reserveHeader .centerSection{
@@ -1597,6 +1605,130 @@ header.GNBDetail h2 {
 
 @media(min-width:414px){
     .reservationInfo .container {
+        margin: 0 auto;
+    }
+}
+
+.writeReview .container {
+    width: 100vw;
+    max-width: 414px;
+    max-width: var(--breakpoint-width);
+}
+
+.writeReview .ratingSection p {
+    text-align: center;
+    font-size: 17px;
+    margin: 15px 0 10px 0;
+}
+
+.writeReview .ratingSection .ratingStar{
+    display: flex;
+    justify-content: center;
+}
+
+.writeReview .ratingSection i {
+    font-size: 38px;
+    cursor: pointer;
+}
+
+.writeReview .ratingSection i.getStar {
+    color: #f00;
+}
+
+.writeReview .ratingSection i.notGetStar {
+    color: #E6E6E6;
+}
+
+.writeReview .ratingSection input[type='number']{
+    all: unset;
+    font-size: 36px;
+    font-family: "Nanum Gothic Bold";
+    padding-left: 5px;
+    text-align: right;
+    width: 40px;
+    color: #ddd;
+}
+
+.writeReview .writeComment {
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px 0 20px;
+}
+
+.writeReview .writeComment textarea {
+    width: 100%;
+    font-size: 16px;
+    line-height: 20px;
+    font-family: "Nanum Gothic Regular";
+    border: 1px solid #e8e8e8;
+    resize: none;
+}
+
+.writeReview .postImage .imageLetterCount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    margin: 0 20px;
+    border-style: solid;
+    border-color: #e8e8e8;
+    border-width: 0 1px 1px 1px;
+}
+
+.writeReview .postImage .imageLetterCount input[type='file']{
+    display: none;
+}
+
+.writeReview .postImage .imageLetterCount label {
+    font-size: 18px;
+    margin: 10px 0 10px 10px;
+}
+
+
+.writeReview .postImage .imageLetterCount p {
+    margin: 0 10px 0 0;
+    font-size: 14px;
+    color: #999;
+}
+
+.writeReview .postImage .thumbnailImage {
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.writeReview .postImage .thumbnailImage i {
+    font-size: 10px;
+    color: #1EC800;
+    color: var(--main-color);
+    border: 1px solid #1EC800;
+    cursor: pointer;
+}
+
+.writeReview .submitSection {
+    background-color: #E9ECEF;
+    background-color: var(--grey-color);
+}
+
+.writeReview input[type='submit']{
+    color:#fff;
+    color: var(--text-bright-color);
+    font-size: 17px;
+    font-family: "Nanum Gothic Bold";
+    line-height: 40px;
+    text-align: center;
+    margin: 10px 0 30px 10px;
+    padding: 0;
+    width: 394px;
+    background-color: #1EC800;
+    background-color: var(--main-color);
+    border: none;
+}
+
+@media(min-width:414px){
+    .writeReview .container {
         margin: 0 auto;
     }
 }

@@ -63,7 +63,7 @@ app.use("/detail",detailRouter);
 app.use("/review",reviewRouter);
 app.use("/reserve",reserveRouter);
 app.use("/myreservation",myReservationRouter);
-app.use("/reviewWrite",reviewWriteRouter);
+app.use("/reviewwrite",reviewWriteRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');

@@ -1,0 +1,48 @@
+doctype html
+html
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport",content="width=device-width,initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible",content="ie=edge")
+        title= `${description} 리뷰 남기기`
+        link(rel="stylesheet",href="../stylesheets/style.css")
+        link(rel="stylesheet",href="../stylesheets/icon.css")
+        link(rel="icon",href="../images/img/favicon.ico",type="image/x-icon")
+        script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+    body
+        header.reviewHeader
+            .container
+                .innerContainer
+                    .leftSection
+                        a(href=`../myreservation`)
+                            i.fn.fn-backward1
+                    .centerSection
+                        h1= description
+                    .rightSection
+        section.writeReview
+            .container
+                form(action=`/api/reservations/${reservationId}/comments`,method="POST",enctype="multipart/form-data",name="reviewForm")
+                    article.ratingSection
+                        p 별점과 이용 경험을 남겨주세요.
+                        .ratingStar
+                            i.fn.fn-star2.notGetStar
+                            i.fn.fn-star2.notGetStar
+                            i.fn.fn-star2.notGetStar
+                            i.fn.fn-star2.notGetStar
+                            i.fn.fn-star2.notGetStar
+                            input(type="number",name="rating",value="0",readonly)
+                    article.writeComment
+                        textarea(name="comment",rows="15",minlength="5",maxlength="400")
+                    article.postImage
+                        .imageLetterCount
+                            input(type="file",name="image",id="imageUpload")
+                            label(for="imageUpload")!= "<i class='fn fn-image1'></i> 사진 추가"
+                            p.commentCount!= "<span class=''>0</span>/400 (최소 5자 이상)"
+                        .thumbnailImage
+                            i.fn.fn-cross1
+                    article.submitSection
+                        input(type="submit",value="리뷰 등록")
+        footer
+            .container
+                p.caution 네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.
+                span.copyright © NAVER Corp.

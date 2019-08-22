@@ -224,15 +224,15 @@ router.post("/reservations",async (req,res,next) => {
 
 router.put("/reservations/:reservationInfoId",async (req,res,next) => {
     try{
-        /*
-        유저가 cancel하려는 예약 정보를 가지고 있을때에만 승인함
-        아니면 거부해야됨
-        await ReservationInfo.findOne({
-
-        },{
-            where: {reservation_email_id:req.user.id}
-        })
-        */
+        const exReservation = await ReservationInfo.findOne({
+            where: {
+                id: req.params.reservationInfoId,
+                reservation_email_id: req.user.id,
+            }
+        });
+        if(!exReservation){
+            return res.status(400).send();
+        }
         await ReservationInfo.update({
             cancel_flag: 1
         },{
@@ -250,7 +250,7 @@ router.put("/reservations/:reservationInfoId",async (req,res,next) => {
         reservationInfo.prices = reservationInfoPrice;
         res.json(reservationInfo);
         */
-        res.send();
+        res.status(201).send();
     }
     catch(err){
         console.error(err);

@@ -11,40 +11,46 @@ document.addEventListener("DOMContentLoaded",()=>{
                 const button = event.target;
                 const xhr = new XMLHttpRequest();
                 xhr.onload = () =>{
-                    alert("예약이 취소되었습니다");
-                    const specificReservation = button.closest("li"); 
-                    specificReservation.removeChild(button);
-                    toUsedList.removeChild(specificReservation);
-                    if(canceledReservation.length === 0){
-                        canceledList.appendChild(specificReservation);
+                    if(xhr.status === 400) {
+                        alert("잘못된 요청입니다");
+                        return;
                     }
-                    else{
-                        const rawAddReservationId = specificReservation.querySelector(".topSection h2");
-                        const addReservationId = parseInt(rawAddReservationId.innerText.slice(3));
-                        let beforeReservationId;
-                        for(let index = 0,len=canceledReservation.length; index < len ; index++){
-                            const rawReservationId = canceledReservation[index].querySelector(".topSection h2");
-                            const reservationId = parseInt(rawReservationId.innerText.slice(3));
-                            if(addReservationId < reservationId && index === 0){
-                                // 처음 삽입
-                                canceledList.insertBefore(specificReservation,canceledReservation[index]);
-                                break;
-                            }
-                            if(beforeReservationId < addReservationId && addReservationId < reservationId){
-                                // 중간 삽입
-                                canceledList.insertBefore(specificReservation,canceledReservation[index]);
-                                break;
-                            }
-                            if(addReservationId > reservationId && index === canceledReservation.length -1){
-                                // 끝 삽입
-                                canceledList.appendChild(specificReservation);
-                                break;
-                            }
-                            beforeReservationId = reservationId;
+                    else if(xhr.status === 201){
+                        alert("예약이 취소되었습니다");
+                        const specificReservation = button.closest("li"); 
+                        specificReservation.removeChild(button);
+                        toUsedList.removeChild(specificReservation);
+                        if(canceledReservation.length === 0){
+                            canceledList.appendChild(specificReservation);
                         }
+                        else{
+                            const rawAddReservationId = specificReservation.querySelector(".topSection h2");
+                            const addReservationId = parseInt(rawAddReservationId.innerText.slice(3));
+                            let beforeReservationId;
+                            for(let index = 0,len=canceledReservation.length; index < len ; index++){
+                                const rawReservationId = canceledReservation[index].querySelector(".topSection h2");
+                                const reservationId = parseInt(rawReservationId.innerText.slice(3));
+                                if(addReservationId < reservationId && index === 0){
+                                    // 처음 삽입
+                                    canceledList.insertBefore(specificReservation,canceledReservation[index]);
+                                    break;
+                                }
+                                if(beforeReservationId < addReservationId && addReservationId < reservationId){
+                                    // 중간 삽입
+                                    canceledList.insertBefore(specificReservation,canceledReservation[index]);
+                                    break;
+                                }
+                                if(addReservationId > reservationId && index === canceledReservation.length -1){
+                                    // 끝 삽입
+                                    canceledList.appendChild(specificReservation);
+                                    break;
+                                }
+                                beforeReservationId = reservationId;
+                            }
+                        }
+                        toUsedCount.innerText = Number(toUsedCount.innerText) - 1;
+                        canceledCount.innerText = Number(canceledCount.innerText) + 1;
                     }
-                    toUsedCount.innerText = Number(toUsedCount.innerText) - 1;
-                    canceledCount.innerText = Number(canceledCount.innerText) + 1;
                 }
                 xhr.open("PUT",`/api/reservations/${button.dataset.reservationInfoId}`);
                 xhr.send();
