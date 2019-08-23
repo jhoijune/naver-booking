@@ -26,5 +26,13 @@ priceTypeMapper = {
     D: "평일",
 };
 
+function validImageType(image) {
+	const result = ([ 'image/jpeg',
+					  'image/png',
+					  'image/jpg' ].indexOf(image.type) > -1);
+	return result;
+}
+
 module.exports.transformMoneyUnit = transformMoneyUnit;
 module.exports.priceTypeMapper = priceTypeMapper;
+module.exports.validImageType = validImageType;

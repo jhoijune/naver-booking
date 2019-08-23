@@ -1,14 +1,41 @@
 const express = require("express");
 const path = require("path");
+const multer = require("multer");
+const fs = require("fs");
 const router = express.Router();
 
 const sequelize = require("../models").sequelize;
-const Sequelize = require("../models").Sequelize;
 const DisplayInfo = require("../models").DisplayInfo;
 const ReservationEmail = require("../models").ReservationEmail;
 const ReservationInfo = require("../models").ReservationInfo;
 const ReservationInfoPrice = require("../models").ReservationInfoPrice;
+const ReservationUserComment = require("../models").ReservationUserComment;
+const ReservationUserCommentImage = require("../models").ReservationUserCommentImage;
 const ProductPrice = require("../models").ProductPrice;
+const FileInfo = require("../models").FileInfo;
+const {validImageType} = require("../public/javascripts/common");
+
+const uploadFolderPath = path.join(__dirname,"..","public","images","uploads");
+
+fs.readdir(uploadFolderPath,(error)=>{
+    if(error){
+        fs.mkdirSync(uploadFolderPath);
+    }
+});
+
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req,file,cb){
+            cb(null,uploadFolderPath);
+        },
+        filename(req,file,cb){
+            const ext = path.extname(file.originalname);
+            cb(null,path.basename(file.originalname,ext)+new Date().valueOf() + ext);
+        },
+    }),
+    limits: {fileSize: 5*1024*1024},
+});
 
 router.get("/products",async (req,res,next) => {
     try{
@@ -19,9 +46,6 @@ router.get("/products",async (req,res,next) => {
             "= product_image.product_id INNER JOIN file_info ON product_image.file_id = file_info.id " +
             "WHERE product_image.type = 'th'";
         const results = (await sequelize.query(query))[0];
-        results.forEach(e => {
-            e.productImageUrl = path.join("images",e.productImageUrl);
-        });
         res.json({"items":results,"totalCount":results.length});
     }
     catch(err){
@@ -70,16 +94,12 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
             "ON display_info.id = display_info_image.display_info_id INNER JOIN file_info ON display_info_image.file_id = file_info.id " +
             `WHERE display_info.id = ${req.params.displayInfoId}`;
         const displayInfoImage =(await sequelize.query(displayInfoImageQuery))[0][0];
-        displayInfoImage.saveFileName = path.join("images",displayInfoImage.saveFileName);
         result.displayInfoImage = displayInfoImage;
         const productImagesQuery = "select content_type as contentType,create_date as createDate,delete_flag as deleteFlag," +
             "file_info.id as fileInfoId,file_name as fileName,modify_date as modifyDate,product_id as productId," +
             "product_image.id as productImageId,save_file_name as saveFileName,type from product_image INNER JOIN " +
             `file_info ON product_image.file_id = file_info.id WHERE product_id = ${productId}`;
         const productImages = (await sequelize.query(productImagesQuery))[0];
-        productImages.forEach(element => {
-            element.saveFileName = path.join("images",element.saveFileName);
-        })
         result.productImages = productImages;
         const productPricesQuery = "select create_date as createDate,discount_rate as discountRate,modify_date as modifyDate," +
             "price,price_type_name as priceTypeName,product_id as productId,id as productPriceID from product_price " +
@@ -234,7 +254,8 @@ router.put("/reservations/:reservationInfoId",async (req,res,next) => {
             return res.status(400).send();
         }
         await ReservationInfo.update({
-            cancel_flag: 1
+            cancel_flag: 1,
+            modify_date: sequelize.fn("NOW"),
         },{
             where: {id:req.params.reservationInfoId},
         });
@@ -258,6 +279,57 @@ router.put("/reservations/:reservationInfoId",async (req,res,next) => {
 });
 
 
+router.post("/reservations/:reservationInfoId/comments",upload.single("image"),async (req,res,next) => {
+    try{
+        const exReservation = await ReservationInfo.findOne({
+            where: {
+                id: req.params.reservationInfoId,
+                reservation_email_id: req.user.id
+            }
+        })
+        if(!exReservation || new Date(exReservation.reservation_date) > new Date()){
+            return res.status(400).send("잘못된 접근입니다");
+        }
+        if(Number(req.body.score) <= 0 || Number(req.body.score) > 5 || !Number.isInteger(Number(req.body.score))){
+            return res.status(400).send("별점 개수가 올바르지 않습니다");
+        }
+        if(req.body.comment.length < 5 || req.body.comment.length > 400){
+            return res.status(400).send("리뷰 글자수가 맞지 않습니다.");
+        }
+        if(req.file && !validImageType(req.file.mimetype)){
+            return res.status(400).send("이미지는 jpg,jpeg,png 파일만 가능합니다");
+        }
+        const commentCreationInfo = await ReservationUserComment.create({
+            product_id: exReservation.product_id,
+            reservation_info_id: Number(req.params.reservationInfoId),
+            reservation_email_id: req.user.id,
+            score: Number(req.body.score),
+            comment: req.body.comment,
+            create_date: sequelize.fn("NOW"),
+            modify_date: sequelize.fn("NOW"),
+        });
+        if(req.file){
+            const fileCreationInfo = await FileInfo.create({
+                file_name: req.file.filename,
+                save_file_name: `images/uploads/${req.file.filename}`,
+                content_type: req.file.mimetype,
+                delete_flag: 0,
+                create_date: sequelize.fn("NOW"),
+                modify_date: sequelize.fn("NOW"),
+            });
+            await ReservationUserCommentImage.create({
+                reservation_info_id: commentCreationInfo.reservation_info_id,
+                reservation_user_comment_id: commentCreationInfo.id,
+                file_id: fileCreationInfo.id,
+            });
+        }
+        res.status(201).send();
+    }
+    catch(error){
+        console.error(error);
+    }
+});
+
 router.get("/categories",async (req,res,next) => {
     try{
         const query = "SELECT count(*) as count,category_id as id,category.name " +
@@ -277,9 +349,6 @@ router.get("/promotions",async (req,res,next) => {
             "INNER JOIN file_info ON product_image.file_id = file_info.id " +
             "WHERE product_image.type = 'ma'";
         const results = (await sequelize.query(query))[0];
-        results.forEach(e => {
-            e.productImageUrl = path.join("images",e.productImageUrl);
-        });
         res.json({"items":results});
     }
     catch(err){

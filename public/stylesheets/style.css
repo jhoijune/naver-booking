@@ -1641,7 +1641,8 @@ header.GNBDetail h2 {
 
 .writeReview .ratingSection input[type='number']{
     all: unset;
-    font-size: 36px;
+    font-size: 40px;
+    line-height: 48px;
     font-family: "Nanum Gothic Bold";
     padding-left: 5px;
     text-align: right;
@@ -1669,7 +1670,7 @@ header.GNBDetail h2 {
     justify-content: space-between;
     align-items: center;
     width: auto;
-    margin: 0 20px;
+    margin: 0 20px 30px 20px;
     border-style: solid;
     border-color: #e8e8e8;
     border-width: 0 1px 1px 1px;
@@ -1692,15 +1693,18 @@ header.GNBDetail h2 {
 }
 
 .writeReview .postImage .thumbnailImage {
-    background-size: cover;
+    width:200px;
+    margin: 20px 0 30px 107px;
+    background-size: 100% 100%;
     background-position: center;
-    display: flex;
+    background-repeat: no-repeat;
     justify-content: flex-end;
     align-items: flex-start;
+    display: none;
 }
 
 .writeReview .postImage .thumbnailImage i {
-    font-size: 10px;
+    font-size: 20px;
     color: #1EC800;
     color: var(--main-color);
     border: 1px solid #1EC800;
