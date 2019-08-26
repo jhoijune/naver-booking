@@ -16,7 +16,7 @@ html
             - notGetStar = maxStar - getStar - 1 
             style.
                 .comment .commentSummary .ratioStar:before{
-                    background: linear-gradient(to Right,#f00 #{Math.round(ratioStar*100)}%,#808080 #{Math.round((1-ratioStar)*100)}%);
+                    background: linear-gradient(to Right,#f00 #{Math.round(ratioStar*100)}%,#E6E6E6 #{Math.round((1-ratioStar)*100)}%);
                     content:"\EAA3";    
                     background-clip:text;
                     -webkit-background-clip: text;
@@ -55,19 +55,22 @@ html
                                 span.commentCount= data.comments.length + "건 "
                                 span.enrollText 등록
                     if data.comments.length !== 0
-                        each comments in data.comments
-                            article.eachComment
-                                .eachContainer
-                                    .leftContainer
-                                        p= comments.comment
-                                    if comments.commentImages.length !== 0
-                                        .rightContainer(background-image= `url(../${comments.commentImages[0].saveFileName})`)
-                                        span= comments.commentImages.length
-                                    else
-                                        .rightContainer
-                                span.score= comments.score
-                                span.email= comments.reservationEmail.slice(0,4) + "****"
-                                span.visitDate= comments.reservationDate.slice(0,10) + " 방문"
+                        - let reverseIndex = data.comments.length - 1
+                        while reverseIndex >= 0
+                            if !data.comments[reverseIndex].deleteFlag
+                                article.eachComment
+                                    .eachContainer
+                                        .leftContainer
+                                            p= data.comments[reverseIndex].comment
+                                        if data.comments[reverseIndex].commentImages.length !== 0
+                                            .rightContainer(style=`background-image:url("../${data.comments[reverseIndex].commentImages[0].saveFileName}")`)
+                                            span= data.comments[reverseIndex].commentImages.length
+                                        else
+                                            .rightContainer
+                                    span.score= data.comments[reverseIndex].score
+                                    span.email= data.comments[reverseIndex].reservationEmail.slice(0,4) + "****"
+                                    span.visitDate= data.comments[reverseIndex].reservationDate.slice(0,10) + " 방문"
+                            - reverseIndex -= 1
                     aside
                         p!= "<i class='fn fn-alarm1'></i> 네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다."
         aside.helping

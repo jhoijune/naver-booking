@@ -169,6 +169,14 @@
     content: "\EA58"
 }
 
+.fn-dots1:before{
+    content: "\EA5E"
+}
+
+.fn-dots2:before{
+    content:"\EA5F"
+}
+
 .fn-write2:before {
 	content: "\EADB"
 }
@@ -298,6 +306,8 @@
 i:before{
     vertical-align:middle;
 }
+
+
 
 .spr_book {
     overflow: hidden;

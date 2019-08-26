@@ -1,4 +1,5 @@
 const express = require("express");
+const moment = require("moment-timezone");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
@@ -66,19 +67,19 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
         const commentsQuery = "SELECT comment,reservation_user_comment.id as commentId,reservation_user_comment.create_date as createDate," +
             "reservation_user_comment.modify_date as modifyDate,reservation_info.product_id as productId,reservation_date as reservationDate," +
             "email as reservationEmail,reservation_info.id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone," +
-            "score from reservation_info INNER JOIN reservation_user_comment ON reservation_info.id = reservation_user_comment.reservation_info_id " +
+            "score,delete_flag as deleteFlag from reservation_info INNER JOIN reservation_user_comment ON reservation_info.id = reservation_user_comment.reservation_info_id " +
             `INNER JOIN reservation_email ON reservation_email.id = reservation_user_comment.reservation_email_id WHERE reservation_user_comment.product_id = ${productId}`
         const comments = (await sequelize.query(commentsQuery))[0];
-        const commentImagesQueryHead = "select content_type as contentType,create_date as createDate,delete_flag as deleteFlag," +
-        "file_info.id as fileId,product_image.id as imageId,modify_date as modifyDate,reservation_info_id as reservationInfoId," +
-        "reservation_user_comment_id as reservationUserCommentId,save_file_name as saveFileName from reservation_user_comment_image " +
-        "INNER JOIN file_info ON reservation_user_comment_image.file_id = file_info.id INNER JOIN product_image ON " +
-        "product_image.file_id = file_info.id";
-        comments.forEach(async element => {
-            const commentImagesQuery = commentImagesQueryHead + ` WHERE reservation_user_comment_id = ${element.commentId}`;
+        const commentImagesQueryHead = "SELECT content_type as contentType,create_date as createDate,delete_flag as deleteFlag,file_info.id as fileId," +
+            "reservation_user_comment_image.id as imageId,modify_date as modifyDate,reservation_info_id as reservationInfoId," +
+            "reservation_user_comment_id as reservationUserCommentId,save_file_name as saveFileName FROM reservation_user_comment_image " +
+            "INNER JOIN file_info ON reservation_user_comment_image.file_id = file_info.id"
+        for(comment of comments){
+            comment.reservationDate = moment(comment.reservationDate).format("YYYY.MM.DD.(ddd)");
+            const commentImagesQuery = commentImagesQueryHead + ` WHERE reservation_user_comment_id = ${comment.commentId}`;
             const commentImages = (await sequelize.query(commentImagesQuery))[0];
-            element.commentImages = commentImages;
-        })
+            comment.commentImages = commentImages;
+        }
         result.comments = comments;
         const displayInfoQuery = "select category.id as categoryId,name as categoryName,display_info.create_date as createDate," +
             "display_info.id as displayInfoId,email,homepage,display_info.modify_date as modifyDate,opening_hours as openingHours," +
@@ -148,10 +149,12 @@ router.get("/reservations",async (req,res,next) => {
 
 router.post("/reservations",async (req,res,next) => {
     try{
-        // 클라이언트단에서 변조시 검증용
+        let postable = true;
+        let message;
         const refererUrlSeparator = req.headers.referer.split("/");
         if(req.body.displayInfoId !== Number(refererUrlSeparator[refererUrlSeparator.length-1])){
-            return res.status(400).send("상품 전시 정보가 일치하지 않습니다");
+            postable = false;
+            message = "상품 전시 정보가 일치하지 않습니다"
         }
         const realProductId = (await DisplayInfo.findOne({
             attributes: ["product_id"],
@@ -159,19 +162,26 @@ router.post("/reservations",async (req,res,next) => {
                 id : req.body.displayInfoId
             },
         })).product_id;
-        if(req.body.productId !== realProductId){
-            return res.status(400).send("상품 정보가 일치하지 않습니다");
+        if(postable && req.body.productId !== realProductId){
+            postable = false;
+            message = "상품 정보가 일치하지 않습니다";
         }
-        if(req.body.reservationName.length === 0){
-            return res.status(400).send("예약자 이름이 존재하지 않습니다");
+        if(postable && req.body.reservationName.length === 0){
+            postable = false;
+            message = "예약자 이름이 존재하지 않습니다";
         }
         const emailRe = /[a-zA-Z]\w{2,}@[a-zA-Z]{3,}\.[a-zA-Z]{2,}/;
-        if(req.body.reservationEmail.length === 0 || !emailRe.test(req.body.reservationEmail)){
-            return res.status(400).send("이메일 형식이 맞지 않습니다");
+        if(postable && (req.body.reservationEmail.length === 0 || !emailRe.test(req.body.reservationEmail))){
+            postable = false;
+            message = "이메일 형식이 맞지 않습니다";
         }
         const telRe = /0\d{2}-[1-9]\d{2,3}-\d{4}/;
-        if(req.body.reservationTelephone.length === 0 || !telRe.test(req.body.reservationTelephone)){
-            return res.status(400).send("전화번호 형식이 맞지 않습니다");
+        if(postable && (req.body.reservationTelephone.length === 0 || !telRe.test(req.body.reservationTelephone))){
+            postable = false;
+            message = "전화번호 형식이 맞지 않습니다";
+        }
+        if(!postable){
+            return res.status(400).send(message);
         }
         const productPriceIds = await ProductPrice.findAll({
             attributes: ["id"],
@@ -281,6 +291,8 @@ router.put("/reservations/:reservationInfoId",async (req,res,next) => {
 
 router.post("/reservations/:reservationInfoId/comments",upload.single("image"),async (req,res,next) => {
     try{
+        let postable = true;
+        let message;
         const exReservation = await ReservationInfo.findOne({
             where: {
                 id: req.params.reservationInfoId,
@@ -288,16 +300,39 @@ router.post("/reservations/:reservationInfoId/comments",upload.single("image"),a
             }
         })
         if(!exReservation || new Date(exReservation.reservation_date) > new Date()){
-            return res.status(400).send("잘못된 접근입니다");
+            postable = false;
+            message = "잘못된 접근입니다"
         }
-        if(Number(req.body.score) <= 0 || Number(req.body.score) > 5 || !Number.isInteger(Number(req.body.score))){
-            return res.status(400).send("별점 개수가 올바르지 않습니다");
+        const exComment = await ReservationUserComment.findOne({
+            where: {
+                reservation_info_id: Number(req.params.reservationInfoId),
+            }
+        });
+        if(postable && exComment){
+            postable = false;
+            message = "한 공연당 하나의 리뷰만 입력할 수 있습니다";    
         }
-        if(req.body.comment.length < 5 || req.body.comment.length > 400){
-            return res.status(400).send("리뷰 글자수가 맞지 않습니다.");
+        if(postable && (Number(req.body.score) <= 0 || Number(req.body.score) > 5 || !Number.isInteger(Number(req.body.score)))){
+            postalbe = false;
+            message = "별점 개수가 올바르지 않습니다"
         }
-        if(req.file && !validImageType(req.file.mimetype)){
-            return res.status(400).send("이미지는 jpg,jpeg,png 파일만 가능합니다");
+        if(postable && (req.body.comment.length < 5 || req.body.comment.length > 400)){
+            postable = false;
+            message = "리뷰 글자수가 맞지 않습니다."
+        }
+        if(postable && (req.file && !validImageType(req.file.mimetype))){
+            postable = false;
+            message = "이미지는 jpg,jpeg,png 파일만 가능합니다"
+        }
+        if(!postable){
+            if(req.file){
+                fs.unlink(req.file.path,(error)=>{
+                    if(error){
+                        console.error(error);
+                    }
+                });
+            }
+            return res.status(400).send(message);
         }
         const commentCreationInfo = await ReservationUserComment.create({
             product_id: exReservation.product_id,
@@ -357,3 +392,4 @@ router.get("/promotions",async (req,res,next) => {
 });
 
 module.exports = router;
+

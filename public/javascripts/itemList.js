@@ -37,6 +37,12 @@ function updateArticle(article,itemInfo){
         moreText.innerText = textObj.detail;
         paragraph.appendChild(dotText);
         paragraph.appendChild(moreText);
+        const helpingContainer = document.createElement("div");
+        helpingContainer.classList.add("helping");
+        const moreTextButton = document.createElement("i");
+        moreTextButton.classList.add("fn","fn-dots2");
+        helpingContainer.appendChild(moreTextButton);
+        article.querySelector("a").appendChild(helpingContainer);
     }
     paragraph.innerHTML = paragraph.innerHTML.replace(/\<br\>/g,"");
 }
@@ -86,11 +92,21 @@ document.addEventListener("DOMContentLoaded",()=>{
         xhrProducts.onload = function(){
             function fillArticle(){
                 if(listInfo.left.fillCount === listInfo.right.fillCount){
+                    const exHelping = leftArticle[listInfo.left.fillCount].querySelector(".helping");
+                    if(exHelping){
+                        const anchor = leftArticle[listInfo.left.fillCount].querySelector("a");
+                        anchor.removeChild(exHelping);
+                    }
                     updateArticle(leftArticle[listInfo.left.fillCount],specificProducts[listInfo.all.fillCount]);
                     listInfo.all.fillCount += 1;
                     listInfo.left.fillCount += 1;
                 }
                 else{
+                    const exHelping = rightArticle[listInfo.right.fillCount].querySelector(".helping");
+                    if(exHelping){
+                        const anchor = rightArticle[listInfo.right.fillCount].querySelector("a");
+                        anchor.removeChild(exHelping);
+                    }
                     updateArticle(rightArticle[listInfo.right.fillCount],specificProducts[listInfo.all.fillCount]);
                     listInfo.all.fillCount += 1;
                     listInfo.right.fillCount += 1;
@@ -199,17 +215,25 @@ document.addEventListener("DOMContentLoaded",()=>{
                 }                     
             } 
             function showDetailText(event){
-                if(event.target.tagName === "P"){
-                    const dotText = event.target.querySelector(".dots");
-                    if(dotText){
-                        dotText.style.display = "none";
-                        $(event.target).children(".moreInfo").slideDown(100);
-                        event.target.addEventListener("mouseleave",()=>{
-                        dotText.style.display = "inline";
-                        $(event.target).children(".moreInfo").slideUp(100);
-                        });
-                    }
-                }
+                event.preventDefault();
+                event.stopImmediate
+                const article = event.target.closest("article");
+                const paragraph = article.querySelector(".mainText p");
+                const dotText = paragraph.querySelector(".dots");
+                dotText.style.display = "none";
+                $(paragraph).children(".moreInfo").slideDown(100);
+                event.target.classList.remove("fn-dots2");
+                event.target.classList.add("fn-up2");
+            }
+            function hideDetailText(event){
+                event.preventDefault();
+                const article = event.target.closest("article");
+                const paragraph = article.querySelector(".mainText p");
+                const dotText = paragraph.querySelector(".dots");
+                $(paragraph).children(".moreInfo").slideUp(100);
+                dotText.style.display = "inline";  
+                event.target.classList.remove("fn-up2");
+                event.target.classList.add("fn-dots2");
             }
             const products = JSON.parse(xhrProducts.responseText).items;
             let selectedCategory = document.querySelector(".selected");
@@ -249,7 +273,22 @@ document.addEventListener("DOMContentLoaded",()=>{
             const moreButton = document.querySelector(".helping .more");
             tabUI.addEventListener("click",changeCategory);
             moreButton.addEventListener("click",showMoreProduct);
-            itemList.addEventListener("mouseover",showDetailText);
+            itemList.addEventListener("mousemove",(event)=>{
+                if(event.target.localName === "i"){
+                    event.target.style.color = "black";
+                    event.target.addEventListener("mouseleave",(event)=>{
+                        event.target.style.color = "transparent";
+                    },true);
+                }
+            });
+            itemList.addEventListener("click",event=>{
+                if(event.target.localName === "i" && event.target.classList.contains("fn-dots2")){
+                    showDetailText(event);
+                }
+                else if(event.target.localName === "i" && event.target.classList.contains("fn-up2")){
+                    hideDetailText(event);
+                }
+            });
         };
         xhrProducts.onerror = function(){
             console.error(xhrProducts.responseText);

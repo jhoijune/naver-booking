@@ -254,6 +254,19 @@ header.GNBMain h2 {
     padding: 7px;
 }
 
+
+.itemList .helping {
+    height: 1em;
+}
+
+.itemList i {
+    display: block;
+    color: transparent;
+    float: right;
+    margin-right: 10px;
+}
+
+
 .itemList span.moreInfo {
     display: none;
 }
@@ -670,8 +683,7 @@ header.GNBDetail h2 {
 }
 
 .comment .commentSummary .notGetStar {
-    color: #808080; 
-    color: var(--text-grey-color);
+    color: #E6E6E6;
 }
 
 .comment .summaryContainer {
