@@ -52,24 +52,28 @@ html
                                 span.averageScore= getStar + ratioStar
                                 span.maxScore / 5.0
                             .rightContainer
-                                span.commentCount= data.comments.length + "건 "
+                                span.commentCount= `${data.comments.length} 건 `
                                 span.enrollText 등록
                     if data.comments.length !== 0
                         - let reverseIndex = data.comments.length - 1
                         while reverseIndex >= 0
-                            if !data.comments[reverseIndex].deleteFlag
-                                article.eachComment
-                                    .eachContainer
-                                        .leftContainer
-                                            p= data.comments[reverseIndex].comment
-                                        if data.comments[reverseIndex].commentImages.length !== 0
-                                            .rightContainer(style=`background-image:url("../${data.comments[reverseIndex].commentImages[0].saveFileName}")`)
-                                            span= data.comments[reverseIndex].commentImages.length
-                                        else
-                                            .rightContainer
-                                    span.score= data.comments[reverseIndex].score
-                                    span.email= data.comments[reverseIndex].reservationEmail.slice(0,4) + "****"
-                                    span.visitDate= data.comments[reverseIndex].reservationDate.slice(0,10) + " 방문"
+                            article.eachComment(data-comment-id=data.comments[reverseIndex].commentId)
+                                .topContainer
+                                    .leftContainer
+                                        p= data.comments[reverseIndex].comment
+                                    if data.comments[reverseIndex].commentImages.length !== 0
+                                        .rightContainer
+                                            img(src=`../${data.comments[reverseIndex].commentImages[0].saveFileName}`, alt="")
+                                    else
+                                        .rightContainer
+                                .bottomContainer
+                                    .leftContainer
+                                        span.score= data.comments[reverseIndex].score
+                                        span.email= data.comments[reverseIndex].reservationEmail.slice(0,4) + "****"
+                                        span.visitDate= data.comments[reverseIndex].reservationDate.slice(0,10) + " 방문"
+                                    .rightContainer
+                                        span.edit 수정
+                                        span.delete 삭제
                             - reverseIndex -= 1
                     aside
                         p!= "<i class='fn fn-alarm1'></i> 네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다."
@@ -80,4 +84,6 @@ html
             .container
                 p.caution 네이버(주)는 통신판매의 당사자가 아니며, 상품의정보, 거래조건, 이용 및 환불 등과 관련한 의무와 책임은 각 회원에게 있습니다.
                 span.copyright © NAVER Corp.
+        script(src="../javascripts/imageCorrectionZoom.js")
+        script(src="../javascripts/reviewEditDelete.js")
 

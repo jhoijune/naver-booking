@@ -26,6 +26,7 @@ html
         else
             - notGetStar = maxStar - getStar
         script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js")
     body
         header.GNBDetail
             .container
@@ -93,30 +94,30 @@ html
                                 span.averageScore= getStar + ratioStar
                                 span.maxScore / 5.0
                             .rightContainer
-                                span.commentCount= data.comments.length + "건 "
+                                span.commentCount= `${data.comments.length} 건 `
                                 span.enrollText 등록
                     if data.comments.length !== 0
                         - let reverseIndex = 1
-                        - let commentCount = 1
                         - const len = data.comments.length
-                        while commentCount <= 3 && reverseIndex <= len
-                            if !data.comments[len-reverseIndex].deleteFlag
-                                article.eachComment
-                                    .eachContainer
-                                        .leftContainer
-                                            p= data.comments[len-reverseIndex].comment
-                                        if data.comments[len-reverseIndex].commentImages.length !== 0
-                                            .rightContainer(style=`background-image:url("../${data.comments[len-reverseIndex].commentImages[0].saveFileName}")`)
-                                            span= data.comments[len-reverseIndex].commentImages.length
-                                        else
-                                            .rightContainer
-                                    span.score= data.comments[len-reverseIndex].score
-                                    span.email= data.comments[len-reverseIndex].reservationEmail.slice(0,4) + "****"
-                                    span.visitDate= data.comments[len-reverseIndex].reservationDate.slice(0,10) + " 방문"
-                                    - reverseIndex +=1
-                                    - commentCount += 1
-                            else
-                                - reverseIndex += 1
+                        while reverseIndex <= len && reverseIndex <= 3
+                            article.eachComment(data-comment-id=data.comments[len-reverseIndex].commentId)
+                                .topContainer
+                                    .leftContainer
+                                        p= data.comments[len-reverseIndex].comment
+                                    if data.comments[len-reverseIndex].commentImages.length !== 0
+                                        .rightContainer
+                                            img(src=`../${data.comments[len-reverseIndex].commentImages[0].saveFileName}`, alt="")
+                                    else
+                                        .rightContainer
+                                .bottomContainer
+                                    .leftContainer
+                                        span.score= data.comments[len-reverseIndex].score
+                                        span.email= data.comments[len-reverseIndex].reservationEmail.slice(0,4) + "****"
+                                        span.visitDate= data.comments[len-reverseIndex].reservationDate.slice(0,10) + " 방문"
+                                    .rightContainer
+                                        span.edit 수정
+                                        span.delete 삭제
+                                - reverseIndex +=1
                     aside
                         p!= "<i class='fn fn-alarm1'></i> 네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다."
                 a(href= `../review/${data.displayInfo.displayInfoId}`)
@@ -164,4 +165,8 @@ html
         script(src="../javascripts/titleImageScroll.js")
         script(src="../javascripts/detailDescription.js")
         script(src="../javascripts/descriptionOnOff.js")
+        script(src="../javascripts/imageCorrectionZoom.js")
+        script(src="../javascripts/reviewEditDelete.js")
+        include ../template/editReviewTemplate.html
+        include ../template/reviewTemplate.html
 

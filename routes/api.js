@@ -61,14 +61,15 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
         const result = {};
         const averageScoreQuery = "select AVG(score) as averageScore from product INNER JOIN " +
             "reservation_user_comment ON product.id = reservation_user_comment.product_id " +
-            `WHERE product.id = ${productId}`;
+            `WHERE product.id = ${productId} AND delete_flag=0`;
         const averageScore = (await sequelize.query(averageScoreQuery))[0][0].averageScore;
         result.averageScore = averageScore;
         const commentsQuery = "SELECT comment,reservation_user_comment.id as commentId,reservation_user_comment.create_date as createDate," +
             "reservation_user_comment.modify_date as modifyDate,reservation_info.product_id as productId,reservation_date as reservationDate," +
             "email as reservationEmail,reservation_info.id as reservationInfoId,reservation_name as reservationName,reservation_tel as reservationTelephone," +
-            "score,delete_flag as deleteFlag from reservation_info INNER JOIN reservation_user_comment ON reservation_info.id = reservation_user_comment.reservation_info_id " +
-            `INNER JOIN reservation_email ON reservation_email.id = reservation_user_comment.reservation_email_id WHERE reservation_user_comment.product_id = ${productId}`
+            "score from reservation_info INNER JOIN reservation_user_comment ON reservation_info.id = reservation_user_comment.reservation_info_id " +
+            `INNER JOIN reservation_email ON reservation_email.id = reservation_user_comment.reservation_email_id WHERE reservation_user_comment.product_id = ${productId} ` +
+            "AND delete_flag = 0"
         const comments = (await sequelize.query(commentsQuery))[0];
         const commentImagesQueryHead = "SELECT content_type as contentType,create_date as createDate,delete_flag as deleteFlag,file_info.id as fileId," +
             "reservation_user_comment_image.id as imageId,modify_date as modifyDate,reservation_info_id as reservationInfoId," +
@@ -306,6 +307,7 @@ router.post("/reservations/:reservationInfoId/comments",upload.single("image"),a
         const exComment = await ReservationUserComment.findOne({
             where: {
                 reservation_info_id: Number(req.params.reservationInfoId),
+                delete_flag: 0,
             }
         });
         if(postable && exComment){
@@ -363,6 +365,40 @@ router.post("/reservations/:reservationInfoId/comments",upload.single("image"),a
     catch(error){
         console.error(error);
     }
+});
+
+router.delete("/reservations/comments/:commentId",async (req,res,next) =>{
+    try{
+        if(!req.isAuthenticated()){
+            return res.status(400).send("로그인 하세요");
+        }
+        const exComment = await ReservationUserComment.findOne({
+            where: {
+                id: req.params.commentId,
+                reservation_email_id: req.user.id
+            }
+        })
+        if(!exComment){
+            return res.status(400).send("리뷰 정보와 회원 정보가 일치하지 않습니다");
+        }
+        ReservationUserComment.update({
+            modify_date: sequelize.fn("NOW"),
+            delete_flag: 1,
+        },{
+            where: {
+                id: req.params.commentId,
+                reservation_email_id: req.user.id,
+            }
+        });
+        res.status(201).send();
+    }
+    catch(error){
+        console.error(error);
+    }
+});
+
+router.put("/reservations/comments/:commentId",async (req,res,next) =>{
+
 });
 
 router.get("/categories",async (req,res,next) => {

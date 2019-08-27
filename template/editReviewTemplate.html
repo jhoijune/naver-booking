@@ -1,0 +1,33 @@
+<template id="editReviewTemplate">
+        <form action="/api/reservations/comments/{{commentId}}" method="PUT" enctype="multipart/form-data" name="reviewForm">
+            <article class="ratingSection">
+                <p>별점과 이용 경험을 남겨주세요.</p>
+                <div class="ratingStar">
+                    <i class="fn fn-star2 {{star[0]}}"></i>
+                    <i class="fn fn-star2 {{star[1]}}"></i>
+                    <i class="fn fn-star2 {{star[2]}}"></i>
+                    <i class="fn fn-star2 {{star[3]}}"></i>
+                    <i class="fn fn-star2 {{star[4]}}"></i>
+                    <input type="number" name="score" value="{{score}}" readonly="readonly"/>
+                </div>
+            </article>
+            <article class="writeComment">
+                <textarea name="comment" rows="15" minlength="5" maxlength="400">
+                    {{exComment}}
+                </textarea>
+            </article>
+            <article class="postImage">
+                <div class="imageLetterCount">
+                    <input type="file" name="image" id="imageUpload" />
+                    <label for="imageUpload">
+                        <i class='fn fn-image1'></i> 사진 추가
+                    </label>
+                    <p class="commentCount">
+                        <span>{{exCommentLength}}</span>/400 (최소 5자 이상)
+                    </p>
+                </div>
+                <div class="thumbnailImage"><i class="fn fn-cross1"></i></div>
+            </article>
+            <article class="submitSection"><input type="submit" name="submit" value="리뷰 등록" /></article>
+        </form>
+</template>

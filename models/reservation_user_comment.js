@@ -8,6 +8,11 @@ module.exports = (sequelize,DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false,
         },
+        delete_flag: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        },
         create_date:{
             type: DataTypes.DATE,
             allowNull: true,

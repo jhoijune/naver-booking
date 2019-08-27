@@ -726,24 +726,35 @@ header.GNBDetail h2 {
     border-bottom-width: 1px;
 }
 
-.comment .eachComment .eachContainer {
+.comment .eachComment .topContainer {
     display: flex;
 }
 
-.comment .eachComment .leftContainer {
+.comment .eachComment .topContainer .leftContainer {
     flex: 7;
 }
 
-.comment .eachComment .rightContainer {
+.comment .eachComment .topContainer .rightContainer {
+    text-align: right;
     flex: 3;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 
 .comment .eachComment .rightContainer img {
-    width: 100%;
+    display: none;
+    width: auto;
 }
+
+.comment .eachComment .rightContainer img:hover {
+    transform: scale(2);
+}
+
+
+.comment .eachComment .bottomContainer {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
 
 .comment .eachComment p {
     margin:0;
@@ -768,6 +779,21 @@ header.GNBDetail h2 {
 }
 
 .comment .eachComment .visitDate{
+    padding-left: 0.75em;
+    opacity: 0.5;
+}
+
+.comment .eachComment .edit{
+    cursor: pointer;
+    opacity: 0.5;
+    padding-right: 0.75em;
+    border-color: #C0C0C0;
+    border-style: solid;
+    border-width: 0 1px 0 0;    
+}
+
+.comment .eachComment .delete{
+    cursor: pointer;
     padding-left: 0.75em;
     opacity: 0.5;
 }
