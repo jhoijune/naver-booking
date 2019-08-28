@@ -29,12 +29,12 @@ router.get("/logout",(req,res,next) => {
     res.redirect("/");
 });
 
-router.get("edit/comments/:commentId",async (req,res,next)=>{
+router.get("/edit/comments/:commentId",async (req,res,next)=>{
     try{
         if(!req.isAuthenticated()){
             return res.status(400).send("로그인하세요");
         }
-        const exReservation = ReservationUserComment.findOne({
+        const exReservation = await ReservationUserComment.findOne({
             where:{
                 id: req.params.commentId,
                 reservation_email_id: req.user.id,

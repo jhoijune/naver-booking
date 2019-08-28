@@ -1,23 +1,21 @@
 <template id="reviewTemplate">
-        <article class="eachComment">
-                <div class="topContainer">
-                    <div class="leftContainer">
-                        <p></p>
-                    </div>
-                    <div class="rightContainer">
-                        <img src="" alt="">
-                    </div>
-                </div>
-                <div class="bottomContainer">
-                    <div class="leftContainer">
-                        <span class="score"></span>
-                        <span class="email"></span>
-                        <span class="visitDate"></span>
-                    </div>
-                    <div class="rightContainer">
-                        <span class="edit">수정</span>
-                        <span class="delete">삭제</span>
-                    </div>
-                </div>
-            </article>
+     <div class="topContainer">
+         <div class="leftContainer">
+             <p>{{comment}}</p>
+         </div>
+         <div class="rightContainer">
+             <img src="{{imageSrc}}" alt="">
+         </div>
+     </div>
+     <div class="bottomContainer">
+         <div class="leftContainer">
+             <span class="score">{{score}}.0</span>
+             <span class="email">{{email}}</span>
+             <span class="visitDate">{{visitDate}}</span>
+         </div>
+         <div class="rightContainer">
+             <span class="edit">수정</span>
+             <span class="delete">삭제</span>
+         </div>
+     </div>
 </template>

@@ -77,7 +77,8 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
             "INNER JOIN file_info ON reservation_user_comment_image.file_id = file_info.id"
         for(comment of comments){
             comment.reservationDate = moment(comment.reservationDate).format("YYYY.MM.DD.(ddd)");
-            const commentImagesQuery = commentImagesQueryHead + ` WHERE reservation_user_comment_id = ${comment.commentId}`;
+            const commentImagesQuery = commentImagesQueryHead + ` WHERE reservation_user_comment_id = ${comment.commentId}` +
+                " AND delete_flag = 0";
             const commentImages = (await sequelize.query(commentImagesQuery))[0];
             comment.commentImages = commentImages;
         }
@@ -397,8 +398,118 @@ router.delete("/reservations/comments/:commentId",async (req,res,next) =>{
     }
 });
 
-router.put("/reservations/comments/:commentId",async (req,res,next) =>{
-
+router.put("/reservations/comments/:commentId",upload.single("image"),async (req,res,next) =>{
+    try{
+       let postable = true;
+       let message;
+       if(!req.isAuthenticated()){
+            return res.status(400).send("로그인 하세요");
+        }
+       const exComment = await ReservationUserComment.findOne({
+           where: {
+               id: Number(req.params.commentId),
+               reservation_email_id: req.user.id,
+               delete_flag: 0,
+           }
+       });
+       if(!exComment){
+           postable = false;
+           message = "기존에 등록된 리뷰가 없습니다";    
+       }
+       if(postable && (Number(req.body.score) <= 0 || Number(req.body.score) > 5 || !Number.isInteger(Number(req.body.score)))){
+           postalbe = false;
+           message = "별점 개수가 올바르지 않습니다"
+       }
+       if(postable && (req.body.comment.length < 5 || req.body.comment.length > 400)){
+           postable = false;
+           message = "리뷰 글자수가 맞지 않습니다."
+       }
+       if(postable && (req.file && !validImageType(req.file.mimetype))){
+           postable = false;
+           message = "이미지는 jpg,jpeg,png 파일만 가능합니다"
+       }
+       if(!postable){
+           if(req.file){
+               fs.unlink(req.file.path,(error)=>{
+                   if(error){
+                       console.error(error);
+                   }
+               });
+           }
+           return res.status(400).send(message);
+       }
+        await ReservationUserComment.update({
+           score: Number(req.body.score),
+           comment: req.body.comment,
+           modify_date: sequelize.fn("NOW"),
+        },
+        {
+           where:{
+                id: Number(req.params.commentId),
+                reservation_email_id: req.user.id,
+                delete_flag: 0,
+           }
+       });
+       console.log("exImage는",req.body.exImage);
+       console.log("newImage는",req.body.newImage);
+       if(req.body.exImage && req.body.newImage !== 0){
+           // 파일 삭제
+           // 기존에 이미지가 존재하면서 추가하였거나 제거한 경우
+           const exImages = await ReservationUserCommentImage.findAll({
+                where: {
+                    reservation_user_comment_id: Number(req.params.commentId),
+                } 
+            });
+            for(const image of exImages){
+                if(!image.delete_flag){
+                    const updateInfo = await FileInfo.update({
+                        delete_flag: 1,
+                        modify_date: sequelize.fn("NOW"), 
+                    },{
+                        where: {
+                            id: image.file_id,
+                        }
+                    });
+                    const toDeleteFile = await FileInfo.findOne({
+                        where: {
+                            id:image.file_id,
+                        }
+                    });
+                    fs.unlink(path.join(__dirname,"..","public",toDeleteFile.save_file_name),(error)=>{
+                        if(error){
+                            console.error(error);
+                        }
+                    });
+                }
+            }
+       }
+       if(req.file){
+           const fileCreationInfo = await FileInfo.create({
+               file_name: req.file.filename,
+               save_file_name: `images/uploads/${req.file.filename}`,
+               content_type: req.file.mimetype,
+               delete_flag: 0,
+               create_date: sequelize.fn("NOW"),
+               modify_date: sequelize.fn("NOW"),
+           });
+           const commentInfo = await ReservationUserComment.findOne({
+                where:{
+                    id: Number(req.params.commentId),
+                    reservation_email_id: req.user.id,
+                    delete_flag: 0,
+                }
+           });
+           await ReservationUserCommentImage.create({
+               reservation_info_id: commentInfo.reservation_info_id,
+               reservation_user_comment_id: commentInfo.id,
+               file_id: fileCreationInfo.id,
+           });
+       }
+       res.status(201).send();
+    }
+    catch(error){
+        console.error(error);
+    }
 });
 
 router.get("/categories",async (req,res,next) => {
