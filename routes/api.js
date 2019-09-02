@@ -14,6 +14,7 @@ const ReservationUserComment = require("../models").ReservationUserComment;
 const ReservationUserCommentImage = require("../models").ReservationUserCommentImage;
 const ProductPrice = require("../models").ProductPrice;
 const FileInfo = require("../models").FileInfo;
+const Op = require("../models").Sequelize.Op;
 const {validImageType} = require("../public/javascripts/common");
 
 const uploadFolderPath = path.join(__dirname,"..","public","images","uploads");
@@ -370,6 +371,7 @@ router.post("/reservations/:reservationInfoId/comments",upload.single("image"),a
 
 router.delete("/reservations/comments/:commentId",async (req,res,next) =>{
     try{
+        // 연결된 파일도 제거해야 함
         if(!req.isAuthenticated()){
             return res.status(400).send("로그인 하세요");
         }
@@ -391,6 +393,37 @@ router.delete("/reservations/comments/:commentId",async (req,res,next) =>{
                 reservation_email_id: req.user.id,
             }
         });
+        let imageId = await ReservationUserCommentImage.findAll({
+            attributes:["file_id"],
+             where: {
+                 reservation_user_comment_id: Number(req.params.commentId),
+             } ,
+             raw: true,
+        });
+        imageId = imageId.map(x => x.file_id);
+        const exImages = await FileInfo.findAll({
+            where:{
+                delete_flag:0,
+                id:{
+                     [Op.in] :imageId,
+                } 
+            }
+        })
+        for(const image of exImages){
+            await FileInfo.update({
+                delete_flag: 1,
+                modify_date: sequelize.fn("NOW"), 
+                },{
+                where: {
+                     id: image.id,
+                }
+             });
+            fs.unlink(path.join(__dirname,"..","public",image.save_file_name),(error)=>{
+                if(error){
+                    console.error(error);
+                }
+            });
+        }
         res.status(201).send();
     }
     catch(error){
@@ -455,32 +488,36 @@ router.put("/reservations/comments/:commentId",upload.single("image"),async (req
        if(req.body.exImage && req.body.newImage !== 0){
            // 파일 삭제
            // 기존에 이미지가 존재하면서 추가하였거나 제거한 경우
-           const exImages = await ReservationUserCommentImage.findAll({
+            let imageId = await ReservationUserCommentImage.findAll({
+               attributes:["file_id"],
                 where: {
                     reservation_user_comment_id: Number(req.params.commentId),
-                } 
+                } ,
+                raw: true,
             });
-            for(const image of exImages){
-                if(!image.delete_flag){
-                    const updateInfo = await FileInfo.update({
-                        delete_flag: 1,
-                        modify_date: sequelize.fn("NOW"), 
-                    },{
-                        where: {
-                            id: image.file_id,
-                        }
-                    });
-                    const toDeleteFile = await FileInfo.findOne({
-                        where: {
-                            id:image.file_id,
-                        }
-                    });
-                    fs.unlink(path.join(__dirname,"..","public",toDeleteFile.save_file_name),(error)=>{
-                        if(error){
-                            console.error(error);
-                        }
-                    });
+            imageId = imageId.map(x => x.file_id);
+            const exImages = await FileInfo.findAll({
+                where:{
+                    delete_flag:0,
+                    id:{
+                        [Op.in] :imageId,
+                    } 
                 }
+            })
+            for(const image of exImages){
+                await FileInfo.update({
+                    delete_flag: 1,
+                    modify_date: sequelize.fn("NOW"), 
+                    },{
+                    where: {
+                        id: image.id,
+                    }
+                });
+                fs.unlink(path.join(__dirname,"..","public",image.save_file_name),(error)=>{
+                    if(error){
+                        console.error(error);
+                    }
+                });
             }
        }
        if(req.file){
