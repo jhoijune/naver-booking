@@ -15,7 +15,9 @@ const ReservationUserCommentImage = require("../models").ReservationUserCommentI
 const ProductPrice = require("../models").ProductPrice;
 const FileInfo = require("../models").FileInfo;
 const Op = require("../models").Sequelize.Op;
+
 const {validImageType} = require("../public/javascripts/common");
+const {confirmAPIRequest} = require("./middlewares");
 
 const uploadFolderPath = path.join(__dirname,"..","public","images","uploads");
 
@@ -39,7 +41,7 @@ const upload = multer({
     limits: {fileSize: 5*1024*1024},
 });
 
-router.get("/products",async (req,res,next) => {
+router.get("/products",confirmAPIRequest,async (req,res,next) => {
     try{
         const query = "SELECT display_info.id as displayInfoId,place_name as placeName," +
             "content as productContent,description as productDescription,product.id as productId," +
@@ -55,7 +57,7 @@ router.get("/products",async (req,res,next) => {
     }
 });
 
-router.get("/products/:displayInfoId",async (req,res,next) => {
+router.get("/products/:displayInfoId",confirmAPIRequest,async (req,res,next) => {
     try{
         const subquery = `select product_id from display_info WHERE id=${req.params.displayInfoId}`;
         const productId = (await sequelize.query(subquery))[0][0].product_id;
@@ -117,7 +119,7 @@ router.get("/products/:displayInfoId",async (req,res,next) => {
     }
 });
 
-router.get("/reservations",async (req,res,next) => {
+router.get("/reservations",confirmAPIRequest,async (req,res,next) => {
     try{
         const reservationInfoQuery = "SELECT cancel_flag as cancelYn,create_date as createDate,display_info_id as displayInfoId," +
             "modify_date as modifyDate,product_id as productId,reservation_date as reservationDate,email as reservationEmail," +
@@ -371,7 +373,6 @@ router.post("/reservations/:reservationInfoId/comments",upload.single("image"),a
 
 router.delete("/reservations/comments/:commentId",async (req,res,next) =>{
     try{
-        // 연결된 파일도 제거해야 함
         if(!req.isAuthenticated()){
             return res.status(400).send("로그인 하세요");
         }
@@ -549,7 +550,7 @@ router.put("/reservations/comments/:commentId",upload.single("image"),async (req
     }
 });
 
-router.get("/categories",async (req,res,next) => {
+router.get("/categories",confirmAPIRequest,async (req,res,next) => {
     try{
         const query = "SELECT count(*) as count,category_id as id,category.name " +
             "from product INNER JOIN category ON product.category_id = category.id group by id";
@@ -561,7 +562,7 @@ router.get("/categories",async (req,res,next) => {
     }
 });
 
-router.get("/promotions",async (req,res,next) => {
+router.get("/promotions",confirmAPIRequest,async (req,res,next) => {
     try{
         const query = "SELECT promotion.id,promotion.product_id as productID,save_file_name as productImageUrl " +
             "from promotion INNER JOIN product_image ON promotion.product_id = product_image.product_id " +
