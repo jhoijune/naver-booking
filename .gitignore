@@ -1,9 +1,0 @@
-node_modules
-*.[oa]
-*~
-.env
-config
-config.json
-idea
-report*
-uploads
