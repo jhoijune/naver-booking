@@ -29,9 +29,11 @@
     "sequelize": "^5.21.1"
   },
   "devDependencies": {
+    "acorn": "^7.1.1",
     "eslint": "^6.3.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
+    "kind-of": "^6.0.3",
     "nodemon": "^1.19.1"
   },
   "description": "에드위드에서 진행하는 풀스택 코스의 프로젝트입니다.",
