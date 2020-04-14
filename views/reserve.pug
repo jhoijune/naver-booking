@@ -21,7 +21,7 @@ html
         section.productImage
             each imageInfo in data.productImages
                 if imageInfo.type === "ma"
-                    .container(style=`background-image:linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),url(../${imageInfo.saveFileName})`)                    
+                    .container(style=`background-image:linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),url(/${imageInfo.saveFileName})`)                    
         section.productInfo
             .container
                 h2= data.displayInfo.productDescription

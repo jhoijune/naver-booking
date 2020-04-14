@@ -11,7 +11,7 @@ function transformMoneyUnit(num){
     return transformed
 }
 
-priceTypeMapper = {
+const priceTypeMapper = {
     A: "성인",
     Y: "청소년",
     B: "유아",

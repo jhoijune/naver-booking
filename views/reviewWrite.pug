@@ -21,7 +21,7 @@ html
                     .rightSection
         section.writeReview
             .container
-                form(action=`/api/reservations/${reservationId}/comments`,method="POST",enctype="multipart/form-data",name="reviewForm")
+                form(action=`/api/reservations/comments/${reservationId}`,method="POST",enctype="multipart/form-data",name="reviewForm")
                     article.ratingSection
                         p 별점과 이용 경험을 남겨주세요.
                         .ratingStar

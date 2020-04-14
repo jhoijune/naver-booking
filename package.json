@@ -12,6 +12,7 @@
     "cross-env": "^5.2.0",
     "debug": "~2.6.9",
     "dotenv": "^8.0.0",
+    "eslint-config-prettier": "^6.2.0",
     "express": "^4.16.4",
     "express-ipfilter": "^1.0.1",
     "express-session": "^1.16.2",
@@ -25,9 +26,30 @@
     "passport-local": "^1.0.0",
     "pug": "^2.0.4",
     "request": "^2.88.0",
-    "sequelize": "^5.11.0"
+    "sequelize": "^5.21.1"
   },
   "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "nodemon": "^1.19.1"
-  }
+  },
+  "description": "에드위드에서 진행하는 풀스택 코스의 프로젝트입니다.",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhoijune/naver-booking.git"
+  },
+  "keywords": [
+    "naver",
+    "booking",
+    "copying",
+    "project"
+  ],
+  "author": "jhoijune",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhoijune/naver-booking/issues"
+  },
+  "homepage": "https://github.com/jhoijune/naver-booking#readme"
 }
